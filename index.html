@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Reading Room — A Shelf of Books</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wood:#171310;
+    --wood-2:#1F1A14;
+    --card:#F1E9D6;
+    --card-line:#D9C8A0;
+    --brass:#B4893F;
+    --brass-bright:#E0B25B;
+    --ink:#241B10;
+    --ink-soft:#6E5F45;
+    --paper:#EDE6D6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--wood);
+    background-image:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 80px),
+      radial-gradient(ellipse at top, rgba(180,137,63,0.08), transparent 60%);
+    color:var(--paper);
+    font-family:"Source Serif 4", Georgia, serif;
+    line-height:1.6;
+    min-height:100vh;
+  }
+  .wrap{ max-width:1100px; margin:0 auto; padding:0 24px; }
+
+  header.top{
+    padding:20px 24px; border-bottom:1px solid rgba(237,230,214,0.12);
+  }
+  .top-inner{
+    max-width:1100px; margin:0 auto; display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+  }
+  .brand{
+    font-family:"IBM Plex Mono", monospace; font-size:0.7rem; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--brass-bright);
+  }
+  .brand span{ color:var(--paper); opacity:0.6; }
+  .count{
+    font-family:"IBM Plex Mono", monospace; font-size:0.68rem; letter-spacing:0.06em;
+    color:var(--paper); opacity:0.45; white-space:nowrap;
+  }
+
+  .hero{ padding:64px 24px 40px; max-width:1100px; margin:0 auto; }
+  .hero h1{
+    font-family:"Fraunces", serif; font-weight:700; font-size:clamp(2.2rem, 6vw, 3.6rem);
+    letter-spacing:-0.02em; margin:0 0 14px; color:var(--paper);
+  }
+  .hero h1 em{ font-style:italic; color:var(--brass-bright); }
+  .hero p{ max-width:56ch; color:var(--paper); opacity:0.7; font-size:1.02rem; margin:0; }
+
+  .shelf-line{
+    height:6px; margin:36px 0 44px; border-radius:2px;
+    background:linear-gradient(90deg, var(--brass) 0%, var(--brass-bright) 50%, var(--brass) 100%);
+    box-shadow:0 6px 18px rgba(180,137,63,0.25);
+  }
+
+  main{ max-width:1100px; margin:0 auto; padding:0 24px 100px; }
+
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:22px;
+  }
+
+  .card{
+    position:relative; background:var(--card); color:var(--ink);
+    border-radius:3px; padding:22px 20px 20px; text-decoration:none;
+    display:flex; flex-direction:column; gap:10px; min-height:190px;
+    box-shadow:0 10px 22px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(36,27,16,0.06);
+    transform:translateY(0); transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover{ transform:translateY(-4px); box-shadow:0 16px 30px rgba(0,0,0,0.4); }
+  .card::before{
+    content:""; position:absolute; top:0; left:16px; width:34px; height:14px;
+    background:var(--tab-color, var(--brass)); border-radius:0 0 4px 4px;
+  }
+  .call-number{
+    font-family:"IBM Plex Mono", monospace; font-size:0.66rem; letter-spacing:0.08em;
+    color:var(--ink-soft); margin-top:6px;
+  }
+  .card h2{
+    font-family:"Fraunces", serif; font-weight:700; font-size:1.28rem; margin:0;
+    line-height:1.22; letter-spacing:-0.01em;
+  }
+  .card .subtitle{
+    font-family:"Source Serif 4", serif; font-style:italic; font-size:0.86rem;
+    color:var(--ink-soft); margin:0;
+  }
+  .card .tagline{ font-size:0.86rem; color:var(--ink); opacity:0.8; margin:0; }
+  .card .stamp{
+    margin-top:auto; align-self:flex-start; font-family:"IBM Plex Mono", monospace;
+    font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase;
+    border:1px solid var(--ink); border-radius:999px; padding:5px 12px;
+    color:var(--ink); opacity:0.75;
+  }
+  .card:hover .stamp{ opacity:1; border-color:var(--tab-color, var(--brass)); color:var(--tab-color, var(--brass)); }
+
+  .state{
+    font-family:"IBM Plex Mono", monospace; font-size:0.8rem; color:var(--paper); opacity:0.55;
+    padding:40px 0; text-align:left;
+  }
+  .state.error{ color:#E0895B; opacity:0.9; }
+  .state a{ color:var(--brass-bright); }
+
+  footer{
+    padding:30px 24px 50px; text-align:center; font-family:"IBM Plex Mono", monospace;
+    font-size:0.68rem; letter-spacing:0.05em; color:var(--paper); opacity:0.35;
+  }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">The Reading Room <span>/ personal library</span></div>
+    <div class="count" id="countLabel"></div>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>A shelf of books,<br><em>kept and revisited.</em></h1>
+  <p>Every volume here is an interactive read-through — not a summary you skim once, but a room you can walk back into. Pick one up.</p>
+  <div class="shelf-line"></div>
+</section>
+
+<main>
+  <div id="content">
+    <div class="state" id="stateMsg">Pulling the catalog…</div>
+  </div>
+</main>
+
+<footer>Built one book at a time · pushed straight from a phone</footer>
+
+<script src="assets/library-core.js"></script>
+<script>
+  function cardHTML(book){
+    const call = (book.title.replace(/[^A-Za-z]/g, "").slice(0,3).toUpperCase() || "BK") +
+                 " " + (Math.abs(hash(book.filename)) % 900 + 100);
+    return `
+      <a class="card" href="${Library.CONFIG.booksPath}/${book.filename}" style="--tab-color:${book.accent}">
+        <span class="call-number">${call}</span>
+        <h2>${escapeHTML(book.title)}</h2>
+        ${book.subtitle ? `<p class="subtitle">${escapeHTML(book.subtitle)}</p>` : ""}
+        ${book.tagline ? `<p class="tagline">${escapeHTML(book.tagline)}</p>` : ""}
+        <span class="stamp">Open this book →</span>
+      </a>`;
+  }
+  function hash(str){
+    let h = 0;
+    for(let i=0;i<str.length;i++){ h = (h<<5)-h+str.charCodeAt(i); h|=0; }
+    return h;
+  }
+  function escapeHTML(s){
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  async function render(force){
+    const content = document.getElementById("content");
+    const countLabel = document.getElementById("countLabel");
+    try{
+      const books = await Library.getCatalog(Library.CONFIG.booksPath + "/", { force });
+      if(!books.length){
+        content.innerHTML = `<div class="state">The shelf is empty right now — drop an .html file into <code>/books</code> and push.</div>`;
+        countLabel.textContent = "";
+        return;
+      }
+      countLabel.textContent = `${books.length} volume${books.length === 1 ? "" : "s"} on the shelf`;
+      content.innerHTML = `<div class="grid">${books.map(cardHTML).join("")}</div>`;
+    }catch(e){
+      content.innerHTML = `
+        <div class="state error">
+          Couldn't reach the catalog (${escapeHTML(e.message)}).<br>
+          Check that <code>githubUser</code> / <code>githubRepo</code> are set correctly in
+          <code>assets/library-core.js</code>, or the repo is public.
+          <br><a href="#" id="retryLink">Try again</a>
+        </div>`;
+      document.getElementById("retryLink")?.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        Library.clearCache();
+        render(true);
+      });
+    }
+  }
+  render(false);
+</script>
+
+</body>
+</html>
