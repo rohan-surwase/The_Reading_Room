@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atomic Habits — The Compound Ledger</title>
+<meta name="book:tagline" content="Tiny changes, remarkable results — how 1% habits compound over time.">
+<meta name="book:date" content="2026-07-05">
+<meta name="book:accent" content="#33503F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eee3c8;
+    --fg:#1c1f1a;
+    --muted:#847a63;
+    --line:#c9b98a;
+    --card:#ddcda3;
+    --accent:#33503f;
+    --accent-break:#b5502c;
+    --gold:#c69214;
+
+    /* accent panels (hero, loop detail, footer): dark card on a light page */
+    --panel-bg:#1c1f1a;
+    --panel-fg:#eee3c8;
+    --panel-muted:#9aa192;
+
+    /* fixed always: the ledger stays paper-colored regardless of theme */
+    --surface-dark:#1c1f1a;
+    --surface-light:#eee3c8;
+    --surface-light-muted:#847a63;
+    --surface-dark-muted:#9aa192;
+    --forest-fixed:#33503f;
+    --rust-fixed:#b5502c;
+    --forest-deep:#233830;
+    --card-on-light:#ddcda3;
+  }
+  html[data-theme="dark"]{
+    --bg:#101208;
+    --fg:#ecdfc0;
+    --muted:#9a9686;
+    --line:#2b2e22;
+    --card:#1b1e15;
+    --accent:#78b193;
+    --accent-break:#e0895f;
+    --gold:#e0b756;
+
+    /* panels sit lighter than the near-black page, reversing the light-theme relationship */
+    --panel-bg:#2a2e21;
+    --panel-fg:#ecdfc0;
+    --panel-muted:#a9a996;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    transition:background 0.25s ease, color 0.25s ease;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  h1,h2,h3{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  a{color:inherit;}
+
+  /* ---------- theme toggle ---------- */
+  #themeToggle{
+    position:fixed;
+    top:18px;
+    right:18px;
+    z-index:50;
+    height:38px;
+    padding:0 16px 0 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.28);
+    background:rgba(0,0,0,0.45);
+    backdrop-filter:blur(6px);
+    color:#eee3c8;
+    font-size:13px;
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:0.04em;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    line-height:1;
+  }
+  #themeToggle:hover{ background:rgba(0,0,0,0.6); }
+  #themeToggle .icon{ font-size:15px; }
+
+  /* ---------- layout shells ---------- */
+  .section{
+    max-width:920px;
+    margin:0 auto;
+    padding:88px 28px;
+  }
+  .section-eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .section-eyebrow::before{
+    content:"";
+    width:22px;
+    height:1px;
+    background:var(--accent);
+    display:inline-block;
+  }
+  .section h2{
+    font-size:clamp(28px,4vw,40px);
+    margin-bottom:10px;
+  }
+  .section-sub{
+    color:var(--muted);
+    max-width:60ch;
+    margin-bottom:44px;
+    font-size:16px;
+  }
+
+  hr.tear{
+    border:none;
+    height:1px;
+    background:repeating-linear-gradient(90deg, var(--line) 0 8px, transparent 8px 14px);
+    margin:0;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--panel-bg);
+    color:var(--panel-fg);
+    padding:80px 28px 60px;
+    position:relative;
+    overflow:hidden;
+    transition:background 0.25s ease, color 0.25s ease;
+  }
+  .hero-inner{
+    max-width:920px;
+    margin:0 auto;
+  }
+  .hero-kicker{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:22px;
+  }
+  .hero h1{
+    font-size:clamp(38px,7vw,68px);
+    line-height:1.02;
+    color:var(--panel-fg);
+    max-width:14ch;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--gold);
+  }
+  .hero-desc{
+    margin-top:22px;
+    max-width:52ch;
+    color:var(--panel-muted);
+    font-size:17px;
+  }
+
+  /* ---- Compound Ledger (signature element, always paper-colored) ---- */
+  .ledger{
+    margin-top:52px;
+    background:var(--surface-light);
+    color:var(--surface-dark);
+    border-radius:6px;
+    padding:28px 26px 30px;
+    box-shadow:0 30px 60px -25px rgba(0,0,0,0.6);
+  }
+  .ledger-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+  }
+  .ledger-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--surface-light-muted);
+  }
+  .ledger-value{
+    font-family:'Fraunces',serif;
+    font-size:44px;
+    font-weight:600;
+    line-height:1;
+  }
+  .ledger-value.up{color:var(--forest-fixed);}
+  .ledger-value.down{color:var(--rust-fixed);}
+  .ledger-value.flat{color:var(--surface-dark);}
+
+  .slider-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:22px;
+  }
+  .slider-row input[type=range]{
+    flex:1;
+    -webkit-appearance:none;
+    appearance:none;
+    height:3px;
+    background:var(--card-on-light);
+    border-radius:2px;
+    outline:none;
+  }
+  .slider-row input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:18px;height:18px;
+    border-radius:50%;
+    background:var(--forest-fixed);
+    border:3px solid var(--surface-light);
+    box-shadow:0 0 0 1px var(--forest-fixed);
+    cursor:pointer;
+  }
+  .slider-row input[type=range]::-moz-range-thumb{
+    width:18px;height:18px;
+    border-radius:50%;
+    background:var(--forest-fixed);
+    border:3px solid var(--surface-light);
+    box-shadow:0 0 0 1px var(--forest-fixed);
+    cursor:pointer;
+  }
+  .slider-row span.mono{ color:var(--surface-light-muted); font-size:12px; }
+  .slider-readout{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    min-width:74px;
+    text-align:right;
+  }
+
+  .grid-365{
+    display:grid;
+    grid-template-columns:repeat(30,1fr);
+    gap:2.5px;
+  }
+  .grid-365 .cell{
+    aspect-ratio:1;
+    border-radius:1.5px;
+    background:var(--card-on-light);
+    transition:background 0.15s ease;
+  }
+  .ledger-foot{
+    display:flex;
+    justify-content:space-between;
+    margin-top:14px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--surface-light-muted);
+    letter-spacing:0.04em;
+  }
+
+  /* ---------- CORE IDEA ---------- */
+  .core-idea-body{
+    font-size:19px;
+    max-width:64ch;
+    color:var(--fg);
+  }
+  .core-idea-body strong{color:var(--accent);}
+
+  /* ---------- FOUR LAWS ---------- */
+  .laws-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap:0;
+    border:1px solid var(--fg);
+    border-radius:999px;
+    padding:3px;
+    margin-bottom:36px;
+    background:var(--card);
+  }
+  .laws-toggle button{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    border:none;
+    background:transparent;
+    padding:9px 18px;
+    border-radius:999px;
+    cursor:pointer;
+    color:var(--muted);
+    transition:background 0.2s ease, color 0.2s ease;
+  }
+  .laws-toggle button.active{
+    background:var(--fg);
+    color:var(--bg);
+  }
+  .laws-toggle button[data-mode="break"].active{
+    background:var(--accent-break);
+    color:var(--bg);
+  }
+
+  .laws-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  @media (max-width:640px){ .laws-grid{grid-template-columns:1fr;} }
+
+  .law-card{
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:22px 22px 20px;
+    background:var(--card);
+    position:relative;
+  }
+  .law-num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:10px;
+    display:block;
+  }
+  .law-card h3{
+    font-size:21px;
+    margin-bottom:8px;
+    transition:color 0.2s ease;
+  }
+  body.mode-break .law-card h3{ color:var(--accent-break); }
+  body:not(.mode-break) .law-card h3{ color:var(--accent); }
+  .law-card p{
+    margin:0;
+    color:var(--muted);
+    font-size:14.5px;
+  }
+
+  /* ---------- HABIT LOOP ---------- */
+  .loop-wrap{
+    display:flex;
+    gap:36px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+  .loop-nodes{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    min-width:220px;
+  }
+  .loop-node{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 4px;
+    cursor:pointer;
+    border:none;
+    background:none;
+    text-align:left;
+    font-family:'Inter',sans-serif;
+    border-bottom:1px solid var(--line);
+    width:100%;
+  }
+  .loop-node:last-child{border-bottom:none;}
+  .loop-node .dot{
+    width:11px;height:11px;
+    border-radius:50%;
+    background:var(--card);
+    border:2px solid var(--muted);
+    flex-shrink:0;
+    transition:background 0.2s ease, border-color 0.2s ease;
+  }
+  .loop-node.active .dot{
+    background:var(--gold);
+    border-color:var(--gold);
+  }
+  .loop-node span.name{
+    font-family:'Fraunces',serif;
+    font-size:19px;
+    color:var(--muted);
+  }
+  .loop-node.active span.name{ color:var(--fg); }
+
+  .loop-detail{
+    flex:1;
+    min-width:260px;
+    background:var(--panel-bg);
+    color:var(--panel-fg);
+    border-radius:8px;
+    padding:26px 24px;
+    min-height:150px;
+    transition:background 0.25s ease, color 0.25s ease;
+  }
+  .loop-detail .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--gold);
+    margin-bottom:10px;
+    display:block;
+  }
+  .loop-detail p{ margin:0; color:var(--panel-muted); font-size:15px; }
+
+  /* ---------- KEYWORDS ---------- */
+  .keywords{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+  }
+  .kw{
+    border:1px solid var(--fg);
+    border-radius:999px;
+    padding:8px 15px;
+    font-size:13.5px;
+    cursor:pointer;
+    background:transparent;
+    color:var(--fg);
+    font-family:'Inter',sans-serif;
+  }
+  .kw.open{
+    background:var(--accent);
+    color:var(--bg);
+    border-color:var(--accent);
+  }
+  .kw-def{
+    grid-column:1/-1;
+    background:var(--card);
+    border-radius:8px;
+    padding:16px 18px;
+    font-size:14.5px;
+    color:var(--fg);
+    margin-top:4px;
+  }
+  #kwDefWrap{ margin-top:14px; }
+
+  /* ---------- QUOTES ---------- */
+  .quote-card{
+    background:var(--forest-deep);
+    color:var(--surface-light);
+    border-radius:10px;
+    padding:44px 40px;
+    min-height:160px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .quote-text{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:clamp(20px,3vw,27px);
+    line-height:1.35;
+    margin-bottom:16px;
+  }
+  .quote-text::before{content:"\201C";}
+  .quote-text::after{content:"\201D";}
+  .quote-count{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--gold);
+  }
+  .quote-nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:18px;
+  }
+  .quote-nav button{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    background:none;
+    border:1px solid var(--surface-light);
+    border-radius:999px;
+    padding:8px 16px;
+    cursor:pointer;
+    color:var(--surface-light);
+  }
+  .quote-nav button:hover{ background:rgba(238,227,200,0.12); }
+
+  /* ---------- LESSONS / TRACKER ---------- */
+  .tracker-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .tracker-count{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    color:var(--accent);
+  }
+  .lesson-row{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+    cursor:pointer;
+  }
+  .lesson-row:last-child{ border-bottom:none; }
+  .lesson-box{
+    width:22px;height:22px;
+    border:1.5px solid var(--fg);
+    border-radius:4px;
+    flex-shrink:0;
+    margin-top:2px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    color:var(--bg);
+  }
+  .lesson-row.done .lesson-box{ background:var(--accent); border-color:var(--accent); }
+  .lesson-row.done .lesson-text{ color:var(--muted); text-decoration:line-through; text-decoration-color:var(--line); }
+  .lesson-text{ font-size:15.5px; padding-top:1px; color:var(--fg); }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--panel-bg);
+    color:var(--panel-muted);
+    text-align:center;
+    padding:34px 20px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.04em;
+    transition:background 0.25s ease, color 0.25s ease;
+  }
+
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+
+<button id="themeToggle" aria-label="Toggle light and dark theme"><span class="icon">&#9789;</span><span id="themeLabel">Dark</span></button>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">Study guide &middot; Atomic Habits, James Clear</div>
+    <h1>You don't rise to your goals.<br>You fall to <em>your systems.</em></h1>
+    <p class="hero-desc">Everything below the ledger is built to be used, not just read: flip the laws, walk the loop, log your lessons. Drag the slider — it's the whole book in one number.</p>
+
+    <div class="ledger">
+      <div class="ledger-top">
+        <div>
+          <div class="ledger-label">365 days of...</div>
+          <div class="ledger-value flat" id="ledgerValue">1.00&times;</div>
+        </div>
+        <div class="ledger-label mono" id="ledgerFormula">(1.00) ^ 365</div>
+      </div>
+      <div class="slider-row">
+        <span class="mono">&minus;5%</span>
+        <input type="range" id="pctSlider" min="-5" max="5" step="1" value="1">
+        <span class="mono">+5%</span>
+        <span class="slider-readout mono" id="pctReadout">+1%/day</span>
+      </div>
+      <div class="grid-365" id="grid365"></div>
+      <div class="ledger-foot">
+        <span>Day 1</span>
+        <span>Day 365</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="core">
+  <div class="section-eyebrow">Core idea</div>
+  <h2>Systems over goals</h2>
+  <div class="core-idea-body">
+    <p>Small improvements made consistently produce remarkable long-term results. Goals set a direction, but it's your <strong>systems</strong> — the habits and processes you repeat — that determine whether you actually get there. Build the system, and the outcome takes care of itself.</p>
+  </div>
+</section>
+
+<hr class="tear">
+
+<section class="section" id="laws">
+  <div class="section-eyebrow">The four laws</div>
+  <h2>Build one. Break one.</h2>
+  <p class="section-sub">Same four laws, run in opposite directions. Flip the switch to see how each law works for a habit you want — and against one you don't.</p>
+
+  <div class="laws-toggle" role="group" aria-label="Choose build or break">
+    <button data-mode="build" class="active">Build a habit</button>
+    <button data-mode="break">Break a habit</button>
+  </div>
+
+  <div class="laws-grid" id="lawsGrid"></div>
+</section>
+
+<hr class="tear">
+
+<section class="section" id="loop">
+  <div class="section-eyebrow">The mechanism</div>
+  <h2>The habit loop</h2>
+  <p class="section-sub">Every habit runs on the same four-stage loop, on repeat. Click a stage to see what it's doing.</p>
+
+  <div class="loop-wrap">
+    <div class="loop-nodes" id="loopNodes"></div>
+    <div class="loop-detail" id="loopDetail"></div>
+  </div>
+</section>
+
+<hr class="tear">
+
+<section class="section" id="keywords">
+  <div class="section-eyebrow">Glossary</div>
+  <h2>Keywords</h2>
+  <p class="section-sub">Tap any term for a one-line definition.</p>
+  <div class="keywords" id="keywordList"></div>
+  <div id="kwDefWrap"></div>
+</section>
+
+<hr class="tear">
+
+<section class="section" id="quotes">
+  <div class="section-eyebrow">In his words</div>
+  <h2>Key quotes</h2>
+  <div class="quote-card">
+    <div class="quote-text" id="quoteText"></div>
+    <div class="quote-nav">
+      <span class="quote-count mono" id="quoteCount"></span>
+      <div style="display:flex; gap:8px;">
+        <button id="quotePrev" aria-label="Previous quote">&larr;</button>
+        <button id="quoteNext" aria-label="Next quote">&rarr;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="tear">
+
+<section class="section" id="lessons">
+  <div class="section-eyebrow">Apply it</div>
+  <div class="tracker-head">
+    <h2>Biggest lessons</h2>
+    <span class="tracker-count mono" id="lessonCount">0 / 7 logged</span>
+  </div>
+  <p class="section-sub">Check off the ones you're actually going to act on this week.</p>
+  <div id="lessonList"></div>
+</section>
+
+<footer>
+  Compiled study guide &middot; Atomic Habits by James Clear &middot; not affiliated with the author or publisher
+</footer>
+
+<script>
+(function(){
+
+  /* ---------------- Theme toggle ---------------- */
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeToggle');
+  var themeIcon = themeBtn.querySelector('.icon');
+  var themeLabel = document.getElementById('themeLabel');
+  function setTheme(mode){
+    root.setAttribute('data-theme', mode);
+    // icon and label describe the mode you'll switch TO
+    themeIcon.innerHTML = mode === 'dark' ? '&#9728;' : '&#9789;';
+    themeLabel.textContent = mode === 'dark' ? 'Light' : 'Dark';
+    themeBtn.setAttribute('aria-label', mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+  setTheme('light');
+  themeBtn.addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    setTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ---------------- Compound Ledger ---------------- */
+  var slider = document.getElementById('pctSlider');
+  var grid = document.getElementById('grid365');
+  var valueEl = document.getElementById('ledgerValue');
+  var formulaEl = document.getElementById('ledgerFormula');
+  var readout = document.getElementById('pctReadout');
+  var DAYS = 365;
+  var cells = [];
+
+  for(var i=0;i<DAYS;i++){
+    var c = document.createElement('div');
+    c.className = 'cell';
+    grid.appendChild(c);
+    cells.push(c);
+  }
+
+  function mixColor(a, b, t){
+    return 'rgb(' + Math.round(a[0]+(b[0]-a[0])*t) + ',' + Math.round(a[1]+(b[1]-a[1])*t) + ',' + Math.round(a[2]+(b[2]-a[2])*t) + ')';
+  }
+
+  var PAPER_DARK = [221,205,163];
+  var FOREST = [51,80,63];
+  var RUST = [181,80,44];
+
+  function render(){
+    var pct = parseInt(slider.value, 10);
+    readout.textContent = (pct > 0 ? '+' : '') + pct + '%/day';
+    var factor = 1 + pct/100;
+    var cumulative = 1;
+    var maxSeen = 1;
+    var vals = [];
+    for(var d=0; d<DAYS; d++){
+      cumulative *= factor;
+      vals.push(cumulative);
+      if(cumulative > maxSeen) maxSeen = cumulative;
+    }
+    for(var i=0;i<DAYS;i++){
+      var t;
+      var color;
+      if(pct === 0){
+        color = 'rgb(' + PAPER_DARK.join(',') + ')';
+      } else if(pct > 0){
+        t = Math.min(1, Math.log(vals[i]) / Math.log(maxSeen || 2));
+        color = mixColor(PAPER_DARK, FOREST, t);
+      } else {
+        t = Math.min(1, 1 - vals[i]);
+        color = mixColor(PAPER_DARK, RUST, t);
+      }
+      cells[i].style.background = color;
+    }
+    var finalVal = vals[DAYS-1];
+    var display = finalVal >= 100 ? finalVal.toFixed(0) : finalVal.toFixed(2);
+    valueEl.textContent = display + '\u00D7';
+    valueEl.className = 'ledger-value ' + (pct > 0 ? 'up' : pct < 0 ? 'down' : 'flat');
+    formulaEl.textContent = '(' + factor.toFixed(2) + ') ^ 365';
+  }
+  slider.addEventListener('input', render);
+  render();
+
+  /* ---------------- Four Laws ---------------- */
+  var laws = [
+    {
+      build: {t:'Make it obvious', d:'Design your environment so the cues for good habits are impossible to miss — lay out the running shoes, put the book on the pillow.'},
+      brk:   {t:'Make it invisible', d:'Remove the cues that trigger the habit — put the remote in a drawer, delete the app, keep junk food out of the house.'}
+    },
+    {
+      build: {t:'Make it attractive', d:'Pair a habit you need with one you want, or join a group where the behavior is the norm.'},
+      brk:   {t:'Make it unattractive', d:'Reframe the habit around its real cost — highlight the benefits of avoiding it instead of the appeal of doing it.'}
+    },
+    {
+      build: {t:'Make it easy', d:'Cut the friction to almost nothing. Start with a version so small you cannot say no to it.'},
+      brk:   {t:'Make it difficult', d:'Add friction on purpose — a commitment device, a delay, an extra step between you and the habit.'}
+    },
+    {
+      build: {t:'Make it satisfying', d:'Give yourself an immediate, visible reward so the brain files the habit as worth repeating.'},
+      brk:   {t:'Make it unsatisfying', d:'Add an immediate cost or an accountability partner who makes slipping up feel bad right away.'}
+    }
+  ];
+
+  var lawsGrid = document.getElementById('lawsGrid');
+  var currentMode = 'build';
+
+  function renderLaws(){
+    lawsGrid.innerHTML = '';
+    laws.forEach(function(law, idx){
+      var v = law[currentMode === 'build' ? 'build' : 'brk'];
+      var card = document.createElement('div');
+      card.className = 'law-card';
+      card.innerHTML = '<span class="law-num">Law ' + (idx+1) + '</span><h3>' + v.t + '</h3><p>' + v.d + '</p>';
+      lawsGrid.appendChild(card);
+    });
+  }
+  renderLaws();
+
+  document.querySelectorAll('.laws-toggle button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.laws-toggle button').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentMode = btn.getAttribute('data-mode');
+      document.body.classList.toggle('mode-break', currentMode === 'break');
+      renderLaws();
+    });
+  });
+
+  /* ---------------- Habit Loop ---------------- */
+  var loopStages = [
+    {name:'Cue', tag:'Stage 1', d:'The trigger that tells your brain to start a behavior — a time, a place, an emotion, other people, or a preceding action.'},
+    {name:'Craving', tag:'Stage 2', d:'The motivational force behind the habit. You do not crave the habit itself — you crave the change in state it delivers.'},
+    {name:'Response', tag:'Stage 3', d:'The actual habit you perform, shaped by how easy it is and how capable you feel of doing it.'},
+    {name:'Reward', tag:'Stage 4', d:'The payoff. Rewards satisfy the craving and teach your brain which actions are worth remembering and repeating.'}
+  ];
+  var loopNodes = document.getElementById('loopNodes');
+  var loopDetail = document.getElementById('loopDetail');
+
+  function renderLoopDetail(idx){
+    var s = loopStages[idx];
+    loopDetail.innerHTML = '<span class="tag">' + s.tag + '</span><p>' + s.d + '</p>';
+  }
+
+  loopStages.forEach(function(s, idx){
+    var btn = document.createElement('button');
+    btn.className = 'loop-node' + (idx === 0 ? ' active' : '');
+    btn.innerHTML = '<span class="dot"></span><span class="name">' + s.name + '</span>';
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.loop-node').forEach(function(n){ n.classList.remove('active'); });
+      btn.classList.add('active');
+      renderLoopDetail(idx);
+    });
+    loopNodes.appendChild(btn);
+  });
+  renderLoopDetail(0);
+
+  /* ---------------- Keywords ---------------- */
+  var keywords = [
+    {t:'Atomic habits', d:'Tiny routines that are a small part of a larger system, but a source of outsized results.'},
+    {t:'Habit stacking', d:'Anchoring a new habit to an existing one: "After [current habit], I will [new habit]."'},
+    {t:'Identity-based habits', d:'Habits built around who you want to become, not just what you want to have or achieve.'},
+    {t:'Systems over goals', d:'Focusing on the daily process that produces results, rather than fixating on the result itself.'},
+    {t:'1% improvement', d:'The idea that tiny, consistent gains compound into large change over time.'},
+    {t:'Cue', d:'The trigger that starts the habit loop.'},
+    {t:'Craving', d:'The desire for the change of state a habit provides — the motivational engine of the loop.'},
+    {t:'Response', d:'The habit or action itself, performed in reaction to the craving.'},
+    {t:'Reward', d:'The payoff that satisfies the craving and reinforces the loop.'},
+    {t:'Habit loop', d:'The repeating four-part cycle of cue, craving, response, and reward that underlies every habit.'},
+    {t:'Environment design', d:'Shaping your physical and social surroundings so good cues are visible and bad ones are hidden.'},
+    {t:'Consistency', d:'Showing up regularly — the trait that compounds habits into meaningful change over time.'},
+    {t:'Tiny habits', d:'Scaled-down versions of a habit, small enough to remove any excuse not to start.'},
+    {t:'Habit tracking', d:'Recording each time you complete a habit, which itself becomes a satisfying cue and reward.'},
+    {t:'Immediate reward', d:'A payoff felt right away, which teaches the brain to repeat the behavior sooner than a delayed one.'},
+    {t:'Delayed gratification', d:'Choosing a long-term benefit over an immediate reward — the discipline that good systems make easier.'},
+    {t:'Plateau of latent potential', d:'The period where consistent effort produces little visible change, right before results compound rapidly.'},
+    {t:'Goldilocks Rule', d:'People stay motivated on tasks that are neither too easy nor too hard — right at the edge of their ability.'},
+    {t:'Feedback loop', d:'The cycle of taking action, seeing the result, and adjusting behavior based on it.'}
+  ];
+
+  var kwList = document.getElementById('keywordList');
+  var kwDefWrap = document.getElementById('kwDefWrap');
+  var openIdx = null;
+
+  keywords.forEach(function(kw, idx){
+    var chip = document.createElement('button');
+    chip.className = 'kw';
+    chip.textContent = kw.t;
+    chip.addEventListener('click', function(){
+      if(openIdx === idx){
+        openIdx = null;
+        kwDefWrap.innerHTML = '';
+        chip.classList.remove('open');
+        return;
+      }
+      document.querySelectorAll('.kw').forEach(function(c){ c.classList.remove('open'); });
+      chip.classList.add('open');
+      openIdx = idx;
+      kwDefWrap.innerHTML = '<div class="kw-def"><strong>' + kw.t + '.</strong> ' + kw.d + '</div>';
+    });
+    kwList.appendChild(chip);
+  });
+
+  /* ---------------- Quotes ---------------- */
+  var quotes = [
+    'You do not rise to the level of your goals. You fall to the level of your systems.',
+    'Every action you take is a vote for the type of person you wish to become.',
+    'Success is the product of daily habits, not once-in-a-lifetime transformations.',
+    'Habits are the compound interest of self-improvement.',
+    'You should be far more concerned with your current trajectory than with your current results.',
+    'Be the designer of your world and not merely the consumer of it.',
+    'The most effective way to change your habits is to focus not on what you want to achieve, but on who you wish to become.',
+    'Professionals stick to the schedule; amateurs let life get in the way.'
+  ];
+  var qIdx = 0;
+  var qText = document.getElementById('quoteText');
+  var qCount = document.getElementById('quoteCount');
+
+  function renderQuote(){
+    qText.textContent = quotes[qIdx];
+    qCount.textContent = (qIdx+1) + ' / ' + quotes.length;
+  }
+  renderQuote();
+  document.getElementById('quotePrev').addEventListener('click', function(){
+    qIdx = (qIdx - 1 + quotes.length) % quotes.length;
+    renderQuote();
+  });
+  document.getElementById('quoteNext').addEventListener('click', function(){
+    qIdx = (qIdx + 1) % quotes.length;
+    renderQuote();
+  });
+
+  /* ---------------- Lessons / tracker ---------------- */
+  var lessons = [
+    'Improve by 1% every day.',
+    'Build habits around the person you want to become.',
+    "Don't rely on motivation — design your environment.",
+    "Make starting so easy you can't say no.",
+    'Track habits to stay consistent.',
+    'Recover quickly after missing a day.',
+    'Focus on the process, not just the outcome.'
+  ];
+  var lessonList = document.getElementById('lessonList');
+  var lessonCount = document.getElementById('lessonCount');
+  var doneSet = {};
+
+  function updateCount(){
+    var n = Object.keys(doneSet).filter(function(k){ return doneSet[k]; }).length;
+    lessonCount.textContent = n + ' / ' + lessons.length + ' logged';
+  }
+
+  lessons.forEach(function(text, idx){
+    var row = document.createElement('div');
+    row.className = 'lesson-row';
+    row.innerHTML = '<span class="lesson-box"></span><span class="lesson-text">' + text + '</span>';
+    row.addEventListener('click', function(){
+      doneSet[idx] = !doneSet[idx];
+      row.classList.toggle('done', !!doneSet[idx]);
+      row.querySelector('.lesson-box').textContent = doneSet[idx] ? '\u2713' : '';
+      updateCount();
+    });
+    lessonList.appendChild(row);
+  });
+  updateCount();
+
+})();
+</script>
+<script src="../assets/library-core.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>
