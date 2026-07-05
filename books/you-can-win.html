@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>You Can Win — A Step-by-Step Tool for Top Achievers</title>
+<meta name="book:tagline" content="An interactive summary of Shiv Khera's guide to attitude, character, and daily discipline.">
+<meta name="book:date" content="2026-07-05">
+<meta name="book:accent" content="#d4a657">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ink:#0a0f1c;
+  --ink-2:#0f1830;
+  --panel:rgba(255,255,255,0.05);
+  --panel-brd:rgba(212,166,87,0.18);
+  --gold:#d4a657;
+  --gold-2:#f0cf8c;
+  --teal:#2dd4bf;
+  --rose:#e0725c;
+  --text:#eef0f6;
+  --text-dim:#a9b0c4;
+  --serif: Georgia, 'Times New Roman', Times, serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --shadow: 0 20px 60px rgba(0,0,0,0.45);
+  --radius: 22px;
+}
+[data-theme="light"]{
+  --ink:#f6f2e8;
+  --ink-2:#efe6d3;
+  --panel:rgba(255,255,255,0.55);
+  --panel-brd:rgba(150,110,40,0.2);
+  --text:#241d10;
+  --text-dim:#5b5240;
+  --shadow: 0 20px 50px rgba(120,90,40,0.15);
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color: transparent; touch-action:manipulation;}
+html{scroll-behavior:smooth; overflow-x:hidden; width:100%;}
+body{
+  margin:0; font-family:var(--sans); background:var(--ink); color:var(--text);
+  overflow-x:hidden; max-width:100vw; transition:background .5s ease, color .5s ease;
+  min-height:100vh;
+}
+img,svg,canvas{max-width:100%;}
+h1,h2,h3{font-family:var(--serif); font-weight:700; margin:0;}
+::selection{background:var(--gold); color:#141414;}
+a{color:inherit;}
+button{font-family:var(--sans); cursor:pointer;}
+.container{max-width:640px; margin:0 auto; padding:0 22px;}
+@media(min-width:900px){.container{max-width:820px;}}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;}
+}
+
+/* ============ BACKGROUND CANVAS ============ */
+#particles{position:fixed; inset:0; z-index:0; pointer-events:none;}
+.grain{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* ============ TOP UI ============ */
+#progressbar{position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--teal)); z-index:1000; width:0%; box-shadow:0 0 12px var(--gold);}
+.topbar{position:fixed; top:10px; right:14px; z-index:999; display:flex; gap:8px;}
+.iconbtn{width:42px; height:42px; border-radius:50%; border:1px solid var(--panel-brd); background:var(--panel); backdrop-filter:blur(14px); color:var(--text); display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:var(--shadow); transition:transform .25s;}
+.iconbtn:active{transform:scale(.88);}
+
+.dotsnav{position:fixed; right:10px; top:50%; transform:translateY(-50%); z-index:900; display:flex; flex-direction:column; gap:8px;}
+@media(max-width:640px){.dotsnav{display:none;}}
+.dotsnav span{width:7px; height:7px; border-radius:50%; background:var(--text-dim); opacity:.4; display:block; transition:.3s;}
+.dotsnav span.active{background:var(--gold); opacity:1; height:20px; border-radius:5px;}
+
+.fab{position:fixed; left:16px; bottom:76px; z-index:900; width:52px; height:52px; border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--rose)); color:#1a1206; border:none; font-size:20px;
+  box-shadow:0 12px 30px rgba(212,166,87,0.4); display:flex; align-items:center; justify-content:center;}
+.totop{position:fixed; right:16px; bottom:76px; z-index:900; width:46px; height:46px; border-radius:50%;
+  background:var(--panel); border:1px solid var(--panel-brd); backdrop-filter:blur(14px); color:var(--text);
+  opacity:0; pointer-events:none; transition:opacity .3s, transform .3s; transform:translateY(10px);}
+.totop.show{opacity:1; pointer-events:auto; transform:translateY(0);}
+
+/* ripple */
+.ripple{position:absolute; border-radius:50%; background:rgba(212,166,87,0.45); transform:scale(0); animation:rip .6s ease-out; pointer-events:none;}
+@keyframes rip{to{transform:scale(3); opacity:0;}}
+
+/* ============ SECTION SHELL ============ */
+section{position:relative; z-index:2; padding:90px 0 40px;}
+.eyebrow{display:inline-flex; align-items:center; gap:8px; font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); font-weight:600; margin-bottom:14px;}
+.eyebrow::before{content:''; width:22px; height:1px; background:var(--gold);}
+.sec-title{font-size:clamp(28px,7vw,42px); line-height:1.1; margin-bottom:14px;}
+.sec-sub{color:var(--text-dim); font-size:15.5px; line-height:1.6; max-width:520px; margin-bottom:36px;}
+.reveal{opacity:0; transform:translateY(34px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+.glass{background:var(--panel); border:1px solid var(--panel-brd); border-radius:var(--radius); backdrop-filter:blur(18px) saturate(140%); box-shadow:var(--shadow); position:relative; overflow:hidden;}
+.glass::before{content:''; position:absolute; top:-60%; left:-60%; width:60%; height:220%; background:linear-gradient(120deg, transparent, rgba(255,255,255,0.12), transparent); transform:rotate(20deg); transition:left 1.2s ease;}
+.glass:hover::before, .glass.shine::before{left:140%;}
+
+/* ============ HERO ============ */
+#hero{min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding-top:60px;}
+.hero-badge{font-size:12px; letter-spacing:.25em; text-transform:uppercase; color:var(--teal); margin-bottom:22px; opacity:.9;}
+.hero-title{font-size:clamp(46px,15vw,96px); line-height:.98; letter-spacing:-1px; background:linear-gradient(100deg,var(--gold-2),var(--gold) 40%,var(--rose) 80%); -webkit-background-clip:text; background-clip:text; color:transparent; animation:glowmove 6s ease-in-out infinite alternate; margin-bottom:6px;}
+@keyframes glowmove{0%{filter:drop-shadow(0 0 18px rgba(212,166,87,.25));}100%{filter:drop-shadow(0 0 32px rgba(224,114,92,.35));}}
+.hero-sub{font-family:var(--serif); font-style:italic; font-size:clamp(16px,4.4vw,22px); color:var(--text-dim); margin-bottom:8px;}
+.hero-author{font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin-bottom:46px;}
+.orb-wrap{position:relative; width:min(78vw,320px); height:min(78vw,320px); margin-bottom:46px;}
+.orb{position:absolute; inset:0; border-radius:50%; background:radial-gradient(circle at 32% 28%, rgba(240,207,140,.35), transparent 60%), radial-gradient(circle at 68% 72%, rgba(45,212,191,.22), transparent 60%); border:1px solid var(--panel-brd); backdrop-filter:blur(6px); animation:spin 22s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.orb-core{position:absolute; inset:26%; border-radius:50%; background:var(--panel); border:1px solid var(--panel-brd); display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-weight:700; font-size:14px; letter-spacing:.08em; text-align:center; box-shadow:var(--shadow); animation:pulse 3.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+.startbtn{padding:17px 44px; border-radius:100px; border:none; background:linear-gradient(120deg,var(--gold),var(--rose)); color:#1a1206; font-weight:700; font-size:15.5px; letter-spacing:.03em; box-shadow:0 16px 40px rgba(212,166,87,.35); position:relative; overflow:hidden;}
+.startbtn:active{transform:scale(.96);}
+.scrollcue{margin-top:34px; font-size:11px; color:var(--text-dim); letter-spacing:.2em; text-transform:uppercase; animation:bob 2s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
+
+/* ============ CORE IDEA ============ */
+.keyword-row{display:flex; flex-wrap:wrap; gap:10px; margin:22px 0 28px;}
+.kw-chip{padding:9px 16px; border-radius:100px; font-size:13.5px; font-weight:600; background:var(--panel); border:1px solid var(--panel-brd); opacity:0; transform:translateY(14px) scale(.9); transition:opacity .5s, transform .5s; color:var(--gold-2);}
+.kw-chip.in{opacity:1; transform:translateY(0) scale(1);}
+.quotebox{padding:30px 26px; font-family:var(--serif); font-style:italic; font-size:19px; line-height:1.55; border-left:3px solid var(--gold);}
+.quotebox span{color:var(--gold);}
+
+/* ============ PYRAMID ============ */
+.pyramid{display:flex; flex-direction:column; align-items:center; gap:10px; margin:20px 0 10px;}
+.pyr-row{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; width:100%;}
+.pyr-block{padding:14px 10px; text-align:center; border-radius:14px; font-size:13px; font-weight:700; cursor:pointer; transition:transform .25s, box-shadow .25s; border:1px solid var(--panel-brd);}
+.pyr-block:active{transform:scale(.94);}
+.pyr-top{width:150px; background:linear-gradient(135deg,var(--gold),var(--gold-2)); color:#1a1206; font-size:15px; padding:18px 10px;}
+.pyr-mid{flex:1 1 42%; max-width:150px; background:rgba(45,212,191,0.14); color:var(--teal);}
+.pyr-bot{flex:1 1 30%; max-width:150px; background:rgba(224,114,92,0.14); color:var(--rose);}
+.pyr-explain{max-height:0; overflow:hidden; transition:max-height .4s ease, padding .4s ease, margin .4s ease; font-size:14px; color:var(--text-dim); line-height:1.5;}
+.pyr-explain.open{max-height:200px; padding:16px 18px; margin-top:6px;}
+
+/* ============ TIMELINE / LESSONS ============ */
+.timeline{position:relative; padding-left:34px; margin-top:10px;}
+.timeline::before{content:''; position:absolute; left:11px; top:6px; bottom:6px; width:2px; background:linear-gradient(var(--gold),var(--teal));}
+.tl-item{position:relative; margin-bottom:16px;}
+.tl-dot{position:absolute; left:-34px; top:16px; width:24px; height:24px; border-radius:50%; background:var(--ink-2); border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:var(--gold-2); z-index:2;}
+.tl-card{padding:18px 18px 18px 22px; cursor:pointer;}
+.tl-head{display:flex; justify-content:space-between; align-items:center; gap:10px;}
+.tl-head h3{font-size:16.5px;}
+.tl-icon{font-size:20px;}
+.tl-arrow{transition:transform .3s; color:var(--gold); font-size:13px;}
+.tl-card.open .tl-arrow{transform:rotate(180deg);}
+.tl-body{max-height:0; overflow:hidden; transition:max-height .45s ease;}
+.tl-card.open .tl-body{max-height:260px;}
+.tl-body-in{padding-top:12px; font-size:14px; color:var(--text-dim); line-height:1.65;}
+.tl-progress{height:3px; background:rgba(255,255,255,0.08); border-radius:3px; margin-top:12px; overflow:hidden;}
+.tl-progress i{display:block; height:100%; background:linear-gradient(90deg,var(--gold),var(--teal)); width:0%; transition:width .8s ease .1s;}
+.tl-card.open .tl-progress i{width:var(--pct);}
+.tl-fav{background:none; border:none; color:var(--text-dim); font-size:17px; padding:2px;}
+.tl-fav.active{color:var(--rose);}
+
+/* ============ QUOTES SWIPE ============ */
+.quote-scroll{display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; padding:10px 4px 22px; margin:0 -22px; padding-left:22px; padding-right:22px;}
+.quote-scroll::-webkit-scrollbar{height:5px;}
+.quote-scroll::-webkit-scrollbar-thumb{background:var(--panel-brd); border-radius:3px;}
+.qcard{min-width:82%; scroll-snap-align:center; padding:30px 22px; display:flex; flex-direction:column; justify-content:space-between; min-height:190px;}
+.qcard p{font-family:var(--serif); font-style:italic; font-size:18px; line-height:1.5;}
+.qcard-foot{display:flex; justify-content:space-between; align-items:center; margin-top:16px;}
+.qcard-foot span{font-size:11px; color:var(--text-dim); letter-spacing:.1em; text-transform:uppercase;}
+.bookmark-btn{background:none; border:none; font-size:19px; color:var(--text-dim);}
+.bookmark-btn.active{color:var(--gold);}
+.dots-indicator{display:flex; justify-content:center; gap:6px; margin-top:6px;}
+.dots-indicator span{width:6px; height:6px; border-radius:50%; background:var(--text-dim); opacity:.35;}
+.dots-indicator span.active{background:var(--gold); opacity:1;}
+.randbtn{margin-top:20px; padding:13px 26px; border-radius:100px; background:var(--panel); border:1px solid var(--panel-brd); color:var(--gold-2); font-weight:600; font-size:13.5px;}
+
+/* ============ GALAXY ============ */
+.galaxy{position:relative; height:400px; border-radius:var(--radius); overflow:hidden; margin-top:10px;}
+.galaxy-kw{position:absolute; padding:8px 14px; border-radius:100px; background:var(--panel); border:1px solid var(--panel-brd); font-size:12.5px; font-weight:600; white-space:nowrap; transition:transform .3s, background .3s, z-index 0s; animation:float 7s ease-in-out infinite;}
+.galaxy-kw.active{transform:scale(1.5); background:linear-gradient(120deg,var(--gold),var(--rose)); color:#1a1206; z-index:5;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+.galaxy-meaning{text-align:center; font-size:13.5px; color:var(--text-dim); margin-top:14px; min-height:20px;}
+
+/* ============ WHEEL ============ */
+.wheel-wrap{position:relative; width:min(72vw,360px); height:min(72vw,360px); margin:20px auto 50px;}
+.wheel-ring{position:absolute; inset:0; border-radius:50%; border:1px dashed var(--panel-brd); animation:spin 60s linear infinite;}
+.wheel-center{position:absolute; inset:32%; border-radius:50%; background:var(--panel); border:1px solid var(--panel-brd); display:flex; align-items:center; justify-content:center; text-align:center; font-family:var(--serif); font-weight:700; font-size:14px; box-shadow:var(--shadow);}
+.wheel-node{position:absolute; width:60px; height:60px; margin:-30px; border-radius:50%; background:var(--ink-2); border:1px solid var(--panel-brd); display:flex; align-items:center; justify-content:center; text-align:center; font-size:9.5px; font-weight:700; padding:4px; box-shadow:0 6px 20px rgba(0,0,0,.3); transition:transform .25s, background .25s;}
+@media(min-width:640px){
+  .wheel-node{width:70px; height:70px; margin:-35px; font-size:10.5px;}
+}
+.wheel-node:active{transform:scale(.9);}
+.wheel-node.active{background:linear-gradient(135deg,var(--gold),var(--rose)); color:#1a1206;}
+.wheel-detail{margin-top:18px; font-size:14px; color:var(--text-dim); text-align:center; min-height:22px; padding:0 10px;}
+
+/* ============ CHECKLIST ============ */
+.check-grid{display:flex; flex-direction:column; gap:10px; margin-top:10px;}
+.check-item{display:flex; align-items:center; gap:14px; padding:15px 16px; cursor:pointer;}
+.check-box{width:24px; height:24px; border-radius:8px; border:2px solid var(--gold); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:14px; transition:.25s;}
+.check-item.done .check-box{background:var(--gold); color:#1a1206;}
+.check-item.done span.label{text-decoration:line-through; opacity:.55;}
+.check-item span.label{font-size:14.5px;}
+.check-summary{text-align:center; margin-top:20px; font-size:13.5px; color:var(--text-dim);}
+.check-summary b{color:var(--gold);}
+
+/* ============ SUCCESS VS FAILURE ============ */
+.sw-toggle{display:flex; background:var(--panel); border:1px solid var(--panel-brd); border-radius:100px; padding:4px; margin-bottom:20px; width:fit-content;}
+.sw-toggle button{border:none; background:none; padding:10px 22px; border-radius:100px; font-size:13.5px; font-weight:700; color:var(--text-dim);}
+.sw-toggle button.active{background:linear-gradient(120deg,var(--gold),var(--rose)); color:#1a1206;}
+.sw-list{display:flex; flex-direction:column; gap:10px;}
+.sw-item{padding:14px 18px; font-size:14.5px; display:flex; align-items:center; gap:12px; opacity:0; transform:translateX(20px); transition:opacity .4s, transform .4s;}
+.sw-item.in{opacity:1; transform:translateX(0);}
+
+/* ============ DAILY TIMELINE ============ */
+.day-block{margin-bottom:26px;}
+.day-label{font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--teal); margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+.day-items{display:flex; flex-direction:column; gap:8px;}
+.day-item{padding:13px 16px; font-size:14px;}
+
+/* ============ SUMMARY ============ */
+.summary-card{padding:34px 26px; font-size:16px; line-height:1.8;}
+.summary-card .s-sentence{opacity:0; transition:opacity .6s ease;}
+.summary-card .s-sentence.in{opacity:1;}
+
+/* ============ FINAL ============ */
+#final{text-align:center; padding-bottom:120px;}
+.final-line{font-family:var(--serif); font-size:clamp(18px,5vw,24px); margin:16px 0; opacity:0; transform:translateY(16px); transition:opacity .6s, transform .6s;}
+.final-line.in{opacity:1; transform:translateY(0);}
+.badge{width:170px; height:170px; margin:44px auto 20px; border-radius:50%; background:radial-gradient(circle at 35% 30%, var(--gold-2), var(--gold) 55%, var(--rose) 100%); display:flex; align-items:center; justify-content:center; text-align:center; font-family:var(--serif); font-weight:700; font-size:15px; color:#1a1206; padding:20px; box-shadow:0 0 60px rgba(212,166,87,.45); position:relative;}
+.badge::before{content:''; position:absolute; inset:-10px; border-radius:50%; border:2px dashed rgba(212,166,87,.5); animation:spin 30s linear infinite;}
+
+/* counters */
+.counter-row{display:flex; justify-content:space-around; margin:30px 0; text-align:center;}
+.counter-num{font-family:var(--serif); font-size:clamp(26px,7vw,38px); color:var(--gold); font-weight:700;}
+.counter-lbl{font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--text-dim); margin-top:4px;}
+
+footer{text-align:center; padding:30px 20px 90px; font-size:12px; color:var(--text-dim); position:relative; z-index:2;}
+
+/* confetti */
+.confetti-piece{position:fixed; top:-10px; z-index:2000; pointer-events:none; border-radius:2px;}
+
+/* focus visibility */
+button:focus-visible, .tl-card:focus-visible, .check-item:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+</style>
+</head>
+<body data-theme="dark">
+
+<canvas id="particles"></canvas>
+<div class="grain"></div>
+<div id="progressbar"></div>
+
+<div class="topbar">
+  <button class="iconbtn" id="themeToggle" aria-label="Toggle dark/light mode">🌙</button>
+</div>
+
+<div class="dotsnav" id="dotsnav"></div>
+
+<button class="fab" id="fabTip" aria-label="Daily success tip">💡</button>
+<button class="totop" id="toTop" aria-label="Back to top">↑</button>
+
+<!-- ============ HERO ============ -->
+<section id="hero" data-nav="Start">
+  <div class="hero-badge">Interactive Book Summary</div>
+  <div class="orb-wrap">
+    <div class="orb"></div>
+    <div class="orb-core">YOU<br>CAN<br>WIN</div>
+  </div>
+  <h1 class="hero-title">YOU CAN WIN</h1>
+  <p class="hero-sub">A Step-by-Step Tool for Top Achievers</p>
+  <div class="hero-author">Shiv Khera</div>
+  <button class="startbtn" id="startBtn">Start Journey →</button>
+  <div class="scrollcue">Scroll to Explore</div>
+</section>
+
+<div class="container">
+
+  <!-- ============ SECTION 1 CORE IDEA ============ -->
+  <section id="s1" data-nav="Core Idea">
+    <div class="reveal">
+      <div class="eyebrow">Section 01</div>
+      <h2 class="sec-title">The Core Idea</h2>
+      <p class="sec-sub">Winning is not about beating others — it's a decision made daily, built from the inside out.</p>
+    </div>
+    <div class="keyword-row reveal" id="kwRow">
+      <span class="kw-chip">Attitude</span>
+      <span class="kw-chip">Values</span>
+      <span class="kw-chip">Habits</span>
+      <span class="kw-chip">Discipline</span>
+      <span class="kw-chip">Self Improvement</span>
+      <span class="kw-chip">Success</span>
+    </div>
+    <div class="glass quotebox reveal">
+      "Success is a <span>journey</span> built on character, positive thinking, discipline, and action."
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2 PYRAMID ============ -->
+  <section id="s2" data-nav="Pyramid">
+    <div class="reveal">
+      <div class="eyebrow">Section 02</div>
+      <h2 class="sec-title">The Success Pyramid</h2>
+      <p class="sec-sub">Every level rests on the one below it. Tap a block to see how it fits.</p>
+    </div>
+    <div class="pyramid reveal">
+      <div class="pyr-row"><div class="pyr-block pyr-top" data-k="top">SUCCESS</div></div>
+      <div class="pyr-row">
+        <div class="pyr-block pyr-mid" data-k="goals">Goals</div>
+        <div class="pyr-block pyr-mid" data-k="habits">Habits</div>
+      </div>
+      <div class="pyr-row">
+        <div class="pyr-block pyr-mid" data-k="discipline">Discipline</div>
+        <div class="pyr-block pyr-mid" data-k="confidence">Confidence</div>
+      </div>
+      <div class="pyr-row">
+        <div class="pyr-block pyr-bot" data-k="character">Character</div>
+        <div class="pyr-block pyr-bot" data-k="values2">Values</div>
+        <div class="pyr-block pyr-bot" data-k="attitude2">Attitude</div>
+      </div>
+      <div class="glass pyr-explain" id="pyrExplain"></div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 3 LESSONS ============ -->
+  <section id="s3" data-nav="Lessons">
+    <div class="reveal">
+      <div class="eyebrow">Section 03</div>
+      <h2 class="sec-title">10 Key Lessons</h2>
+      <p class="sec-sub">Tap each lesson to unfold it. Mark your favorites as you go.</p>
+    </div>
+    <div class="timeline reveal" id="timeline"></div>
+  </section>
+
+  <!-- ============ SECTION 4 QUOTES ============ -->
+  <section id="s4" data-nav="Quotes">
+    <div class="reveal">
+      <div class="eyebrow">Section 04</div>
+      <h2 class="sec-title">Memorable Lines</h2>
+      <p class="sec-sub">Swipe through. Tap the star to bookmark a line that hits home.</p>
+    </div>
+    <div class="quote-scroll reveal" id="quoteScroll"></div>
+    <div class="dots-indicator" id="quoteDots"></div>
+    <div style="text-align:center;">
+      <button class="randbtn" id="randQuoteBtn">✨ Random Motivational Quote</button>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 5 GALAXY ============ -->
+  <section id="s5" data-nav="Keywords">
+    <div class="reveal">
+      <div class="eyebrow">Section 05</div>
+      <h2 class="sec-title">Keyword Galaxy</h2>
+      <p class="sec-sub">A constellation of the ideas that hold the book together. Touch one.</p>
+    </div>
+    <div class="glass galaxy reveal" id="galaxy"></div>
+    <div class="galaxy-meaning" id="galaxyMeaning">Tap a floating word to see what it means</div>
+  </section>
+
+  <!-- ============ SECTION 6 WHEEL ============ -->
+  <section id="s6" data-nav="Wheel">
+    <div class="reveal">
+      <div class="eyebrow">Section 06</div>
+      <h2 class="sec-title">The Success Wheel</h2>
+      <p class="sec-sub">Eight forces circle one center. Tap any node to reveal its role.</p>
+    </div>
+    <div class="wheel-wrap reveal" id="wheelWrap">
+      <div class="wheel-ring"></div>
+      <div class="wheel-center">YOU<br>CAN<br>WIN</div>
+    </div>
+    <div class="wheel-detail reveal" id="wheelDetail">Tap a node around the wheel</div>
+  </section>
+
+  <!-- ============ SECTION 7 CHECKLIST ============ -->
+  <section id="s7" data-nav="Checklist">
+    <div class="reveal">
+      <div class="eyebrow">Section 07</div>
+      <h2 class="sec-title">Practical Takeaways</h2>
+      <p class="sec-sub">Turn the ideas into action. Your progress is saved automatically.</p>
+    </div>
+    <div class="check-grid reveal" id="checkGrid"></div>
+    <div class="check-summary reveal" id="checkSummary"></div>
+  </section>
+
+  <!-- ============ SECTION 8 SUCCESS VS FAILURE ============ -->
+  <section id="s8" data-nav="Compare">
+    <div class="reveal">
+      <div class="eyebrow">Section 08</div>
+      <h2 class="sec-title">Success vs. Failure</h2>
+      <p class="sec-sub">Two paths, same starting point. The difference is which one you feed.</p>
+    </div>
+    <div class="sw-toggle reveal">
+      <button class="active" id="btnSuccess">Success</button>
+      <button id="btnFailure">Failure</button>
+    </div>
+    <div class="sw-list reveal" id="swList"></div>
+  </section>
+
+  <!-- ============ SECTION 9 DAILY HABITS ============ -->
+  <section id="s9" data-nav="Daily">
+    <div class="reveal">
+      <div class="eyebrow">Section 09</div>
+      <h2 class="sec-title">Daily Success Habits</h2>
+      <p class="sec-sub">Winning is a rhythm — morning, afternoon, and night.</p>
+    </div>
+    <div id="dayTimeline"></div>
+  </section>
+
+  <!-- ============ SECTION 10 SUMMARY ============ -->
+  <section id="s10" data-nav="Summary">
+    <div class="reveal">
+      <div class="eyebrow">Section 10</div>
+      <h2 class="sec-title">In One Paragraph</h2>
+    </div>
+    <div class="glass summary-card reveal" id="summaryCard"></div>
+    <div class="counter-row reveal">
+      <div><div class="counter-num" data-target="10">0</div><div class="counter-lbl">Lessons</div></div>
+      <div><div class="counter-num" data-target="20">0</div><div class="counter-lbl">Keywords</div></div>
+      <div><div class="counter-num" data-target="10">0</div><div class="counter-lbl">Habits</div></div>
+      <div><div class="counter-num" data-target="1">0</div><div class="counter-lbl">You</div></div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL ============ -->
+  <section id="final" data-nav="Finish">
+    <div class="final-line">Success starts with your attitude.</div>
+    <div class="final-line">Character builds trust.</div>
+    <div class="final-line">Habits shape destiny.</div>
+    <div class="final-line">Discipline creates freedom.</div>
+    <div class="final-line">Never stop learning.</div>
+    <div class="final-line">Take responsibility.</div>
+    <div class="final-line">Keep moving forward.</div>
+    <div class="badge">Keep Growing<br>Every Day</div>
+  </section>
+
+</div>
+
+<footer>You Can Win — Interactive Summary · Inspired by Shiv Khera's book</footer>
+
+<script>
+(function(){
+'use strict';
+
+/* ================= DATA ================= */
+const lessons = [
+  {icon:'☀️', title:'Attitude Determines Success', text:'Positive thinking creates opportunities. Your attitude influences results more than circumstances.', pct:70},
+  {icon:'🛡️', title:'Build Strong Character', text:'Honesty, Integrity, Responsibility, Respect — the four pillars of a character people can trust.', pct:75},
+  {icon:'💪', title:'Self Confidence', text:'Believe in yourself. Confidence grows through preparation and action, not luck.', pct:60},
+  {icon:'🎯', title:'Set Clear Goals', text:'Write your goals down. Break them into smaller steps. Review them regularly.', pct:80},
+  {icon:'🔁', title:'Develop Good Habits', text:'Small daily habits shape your future. Replace negative habits one at a time.', pct:65},
+  {icon:'📚', title:'Learn Continuously', text:'Read books. Improve skills. Never stop learning — growth is a lifelong habit.', pct:55},
+  {icon:'💬', title:'Effective Communication', text:'Listen actively. Speak respectfully. Build trust through honest dialogue.', pct:60},
+  {icon:'⏳', title:'Time Management', text:'Prioritize. Avoid procrastination. Focus on the work that truly matters.', pct:70},
+  {icon:'🌱', title:'Handle Failure Positively', text:'Failure is feedback. Learn. Improve. Try again — every setback carries a lesson.', pct:65},
+  {icon:'🧭', title:'Responsibility', text:'Stop blaming others. Take ownership of your choices and their outcomes.', pct:85},
+];
+
+const quotes = [
+  "Winners don't do different things; they do things differently.",
+  "Success is a journey, not a destination.",
+  "Your attitude determines your altitude.",
+  "Positive thinking without action is meaningless.",
+  "Character is built by doing the right thing even when no one is watching.",
+  "Every problem carries an opportunity to learn.",
+  "Excellence is a habit, not an accident.",
+  "The greatest investment you can make is in yourself.",
+  "Discipline today creates freedom tomorrow.",
+  "Confidence comes from preparation and practice."
+];
+
+const keywordsMeaning = {
+  "Success":"Reaching goals you set with purpose.",
+  "Positive Attitude":"Choosing hope and effort over doubt.",
+  "Character":"Who you are when no one is watching.",
+  "Integrity":"Being consistent in word and action.",
+  "Self Confidence":"Trust in your own ability to act.",
+  "Goal Setting":"Turning dreams into written targets.",
+  "Discipline":"Doing what's needed, not just what's easy.",
+  "Habits":"Small repeated actions that compound.",
+  "Motivation":"The inner spark that starts momentum.",
+  "Responsibility":"Owning your outcomes, good or bad.",
+  "Communication":"Exchanging ideas with clarity and respect.",
+  "Leadership":"Influencing others through example.",
+  "Time Management":"Spending hours on what matters most.",
+  "Teamwork":"Achieving more together than alone.",
+  "Perseverance":"Continuing despite difficulty.",
+  "Learning":"Staying curious and improving always.",
+  "Self Improvement":"The lifelong project of becoming better.",
+  "Values":"The principles that guide your choices.",
+  "Decision Making":"Choosing wisely under uncertainty.",
+  "Excellence":"A standard you hold even unseen."
+};
+
+const wheelNodes = [
+  {label:'Attitude', detail:'The lens through which you see every situation.'},
+  {label:'Goals', detail:'Clear direction turns effort into progress.'},
+  {label:'Habits', detail:'What you repeat, you eventually become.'},
+  {label:'Learning', detail:'Growth never stops for those who win.'},
+  {label:'Discipline', detail:'The bridge between goals and achievement.'},
+  {label:'Character', detail:'The foundation that holds everything else up.'},
+  {label:'Responsibility', detail:'Ownership turns setbacks into comebacks.'},
+  {label:'Confidence', detail:'Built through preparation, not chance.'},
+];
+
+const checklist = [
+  "Start each day positively","Write your goals","Read daily","Build habits","Keep promises",
+  "Accept mistakes","Improve daily","Respect others","Stay persistent","Think long term"
+];
+
+const successList = ["Positive attitude","Discipline","Responsibility","Learning","Persistence","Integrity"];
+const failureList = ["Negative mindset","Excuses","Procrastination","Blaming others","Giving up","Poor habits"];
+
+const dayPlan = [
+  {label:'Morning', icon:'🌅', items:['Positive mindset','Goal review','Planning']},
+  {label:'Afternoon', icon:'☀️', items:['Focused work','Learning','Communication']},
+  {label:'Evening', icon:'🌙', items:['Reflection','Reading','Improvement']}
+];
+
+const summarySentences = [
+  "You Can Win teaches that success is not a matter of chance, talent, or luck — it is a decision, renewed every day.",
+  "It begins with attitude: the way you interpret challenges shapes the outcomes you create.",
+  "From attitude grows character — the quiet discipline of doing right even when no one is watching.",
+  "Character, paired with clear goals and consistent habits, builds unstoppable momentum over time.",
+  "Confidence follows preparation, and responsibility replaces the habit of blaming others.",
+  "Communication and time management turn good intentions into real results.",
+  "Failure, reframed as feedback, becomes fuel rather than a stopping point.",
+  "In the end, winning is simply the daily practice of becoming a little better than yesterday."
+];
+
+const pyramidInfo = {
+  top:"Success sits at the peak — the visible result of everything built beneath it.",
+  goals:"Clear, written goals turn ambition into a roadmap you can follow daily.",
+  habits:"Daily habits are the small bricks that quietly build a big future.",
+  discipline:"Discipline is choosing between what you want now and what you want most.",
+  confidence:"Confidence is earned through preparation, not given by chance.",
+  character:"Character is the bedrock — who you are when no one is watching.",
+  values2:"Values are the compass that decides which choices are truly worth making.",
+  attitude2:"Attitude is the first domino — it determines how every other layer is built."
+};
+
+const dailyTips = [
+  "Write down one goal before you check your phone this morning.",
+  "Replace one negative thought with a positive action today.",
+  "Read 10 pages of something that grows you.",
+  "Say thank you to someone who helped you recently.",
+  "Do the hardest task first — before anything else.",
+  "Forgive a mistake you made and move forward.",
+  "Spend 5 minutes reviewing your long-term goals.",
+  "Keep one promise you made to yourself today.",
+  "Ask one clarifying question before assuming.",
+  "Choose progress over perfection — take one step."
+];
+
+/* ================= UTIL ================= */
+function ripple(e, el){
+  const r = document.createElement('span');
+  r.className='ripple';
+  const rect = el.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  r.style.width = r.style.height = size+'px';
+  const x = (e.touches? e.touches[0].clientX : e.clientX) - rect.left - size/2;
+  const y = (e.touches? e.touches[0].clientY : e.clientY) - rect.top - size/2;
+  r.style.left = x+'px'; r.style.top = y+'px';
+  el.style.position = el.style.position || 'relative';
+  el.style.overflow = el.style.overflow || 'hidden';
+  el.appendChild(r);
+  setTimeout(()=>r.remove(),650);
+}
+document.addEventListener('pointerdown', function(e){
+  const t = e.target.closest('button, .pyr-block, .tl-card, .check-item, .wheel-node, .galaxy-kw');
+  if(t) ripple(e, t);
+});
+
+function ls(key, fallback){
+  try{ const v = localStorage.getItem(key); return v!==null ? JSON.parse(v) : fallback; }catch(e){ return fallback; }
+}
+function lsSet(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
+
+/* ================= PARTICLES BACKGROUND ================= */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W,H,particles=[];
+function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+function initParticles(){
+  particles = [];
+  const count = window.innerWidth < 640 ? 34 : 60;
+  for(let i=0;i<count;i++){
+    particles.push({
+      x: Math.random()*W, y: Math.random()*H,
+      r: Math.random()*1.8+0.6,
+      vx: (Math.random()-0.5)*0.15, vy: (Math.random()-0.5)*0.15,
+      hue: Math.random()>0.5 ? '212,166,87' : '45,212,191',
+      a: Math.random()*0.5+0.15
+    });
+  }
+}
+initParticles();
+function loop(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{
+    p.x += p.vx; p.y += p.vy;
+    if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle = `rgba(${p.hue},${p.a})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(loop);
+}
+loop();
+
+/* ================= PROGRESS BAR + SCROLLSPY ================= */
+const progressbar = document.getElementById('progressbar');
+const sections = Array.from(document.querySelectorAll('section[data-nav]'));
+const dotsnav = document.getElementById('dotsnav');
+sections.forEach((s,i)=>{
+  const d = document.createElement('span');
+  d.title = s.dataset.nav;
+  dotsnav.appendChild(d);
+});
+const dotEls = Array.from(dotsnav.children);
+const toTopBtn = document.getElementById('toTop');
+
+function onScroll(){
+  const doc = document.documentElement;
+  const scrollTop = doc.scrollTop || document.body.scrollTop;
+  const scrollH = doc.scrollHeight - doc.clientHeight;
+  const pct = scrollH>0 ? (scrollTop/scrollH)*100 : 0;
+  progressbar.style.width = pct+'%';
+  toTopBtn.classList.toggle('show', scrollTop>500);
+
+  let activeIdx = 0;
+  const mid = window.innerHeight*0.4;
+  sections.forEach((s,i)=>{
+    const rect = s.getBoundingClientRect();
+    if(rect.top <= mid) activeIdx = i;
+  });
+  dotEls.forEach((d,i)=>d.classList.toggle('active', i===activeIdx));
+
+  if(pct > 97 && !window.__confettiFired){
+    window.__confettiFired = true;
+    fireConfetti();
+  }
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+toTopBtn.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+document.getElementById('startBtn').addEventListener('click', ()=>{
+  document.getElementById('s1').scrollIntoView({behavior:'smooth'});
+});
+
+/* ================= REVEAL ON SCROLL ================= */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); } });
+}, {threshold:0.15});
+revealEls.forEach(el=>io.observe(el));
+
+/* keyword chips stagger */
+const kwRow = document.getElementById('kwRow');
+const kwIO = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      Array.from(kwRow.children).forEach((c,i)=>setTimeout(()=>c.classList.add('in'), i*140));
+      kwIO.disconnect();
+    }
+  });
+},{threshold:0.4});
+kwIO.observe(kwRow);
+
+/* ================= THEME TOGGLE ================= */
+const themeToggle = document.getElementById('themeToggle');
+function applyTheme(t){
+  document.body.setAttribute('data-theme', t);
+  themeToggle.textContent = t==='dark' ? '🌙' : '☀️';
+  lsSet('ycw_theme', t);
+}
+applyTheme(ls('ycw_theme','dark'));
+themeToggle.addEventListener('click', ()=>{
+  applyTheme(document.body.getAttribute('data-theme')==='dark' ? 'light' : 'dark');
+});
+
+/* ================= PYRAMID ================= */
+const pyrExplain = document.getElementById('pyrExplain');
+document.querySelectorAll('.pyr-block').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    const key = b.dataset.k;
+    pyrExplain.textContent = pyramidInfo[key];
+    pyrExplain.classList.toggle('open', true);
+  });
+});
+
+/* ================= LESSONS TIMELINE ================= */
+const timelineEl = document.getElementById('timeline');
+const favLessons = ls('ycw_favlessons', []);
+lessons.forEach((les,i)=>{
+  const item = document.createElement('div');
+  item.className='tl-item';
+  item.innerHTML = `
+    <div class="tl-dot">${i+1}</div>
+    <div class="glass tl-card" tabindex="0" style="--pct:${les.pct}%">
+      <div class="tl-head">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="tl-icon">${les.icon}</span>
+          <h3>${les.title}</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button class="tl-fav ${favLessons.includes(i)?'active':''}" data-i="${i}" aria-label="Favorite lesson">★</button>
+          <span class="tl-arrow">▾</span>
+        </div>
+      </div>
+      <div class="tl-body"><div class="tl-body-in">${les.text}</div></div>
+      <div class="tl-progress"><i></i></div>
+    </div>`;
+  timelineEl.appendChild(item);
+});
+timelineEl.addEventListener('click', (e)=>{
+  const favBtn = e.target.closest('.tl-fav');
+  if(favBtn){
+    e.stopPropagation();
+    const i = +favBtn.dataset.i;
+    const list = ls('ycw_favlessons', []);
+    const idx = list.indexOf(i);
+    if(idx>-1) list.splice(idx,1); else list.push(i);
+    lsSet('ycw_favlessons', list);
+    favBtn.classList.toggle('active');
+    return;
+  }
+  const card = e.target.closest('.tl-card');
+  if(card) card.classList.toggle('open');
+});
+
+/* ================= QUOTES SWIPE ================= */
+const quoteScroll = document.getElementById('quoteScroll');
+const quoteDots = document.getElementById('quoteDots');
+const favQuotes = ls('ycw_favquotes', []);
+quotes.forEach((q,i)=>{
+  const card = document.createElement('div');
+  card.className='glass qcard';
+  card.innerHTML = `<p>"${q}"</p>
+    <div class="qcard-foot">
+      <span>Line ${i+1} / ${quotes.length}</span>
+      <button class="bookmark-btn ${favQuotes.includes(i)?'active':''}" data-i="${i}" aria-label="Bookmark quote">★</button>
+    </div>`;
+  quoteScroll.appendChild(card);
+  const dot = document.createElement('span');
+  quoteDots.appendChild(dot);
+});
+quoteDots.children[0].classList.add('active');
+quoteScroll.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.bookmark-btn');
+  if(!btn) return;
+  const i = +btn.dataset.i;
+  const list = ls('ycw_favquotes', []);
+  const idx = list.indexOf(i);
+  if(idx>-1) list.splice(idx,1); else list.push(i);
+  lsSet('ycw_favquotes', list);
+  btn.classList.toggle('active');
+});
+quoteScroll.addEventListener('scroll', ()=>{
+  const idx = Math.round(quoteScroll.scrollLeft / quoteScroll.children[0].offsetWidth);
+  Array.from(quoteDots.children).forEach((d,i)=>d.classList.toggle('active', i===idx));
+}, {passive:true});
+document.getElementById('randQuoteBtn').addEventListener('click', ()=>{
+  const i = Math.floor(Math.random()*quotes.length);
+  const card = quoteScroll.children[i];
+  card.scrollIntoView({behavior:'smooth', inline:'center'});
+  card.classList.add('shine');
+  setTimeout(()=>card.classList.remove('shine'), 900);
+});
+
+/* ================= GALAXY ================= */
+const galaxy = document.getElementById('galaxy');
+const galaxyMeaning = document.getElementById('galaxyMeaning');
+const kwList = Object.keys(keywordsMeaning);
+function layoutGalaxy(){
+  galaxy.innerHTML='';
+  const w = galaxy.clientWidth, h = galaxy.clientHeight;
+  kwList.forEach((k,i)=>{
+    const el = document.createElement('div');
+    el.className='galaxy-kw';
+    el.textContent = k;
+    const x = Math.random()*Math.max(20, w-140)+10;
+    const y = Math.random()*(h-40)+10;
+    el.style.left = x+'px';
+    el.style.top = y+'px';
+    el.style.animationDelay = (Math.random()*4)+'s';
+    el.addEventListener('click', ()=>{
+      document.querySelectorAll('.galaxy-kw').forEach(n=>n.classList.remove('active'));
+      el.classList.add('active');
+      galaxyMeaning.textContent = keywordsMeaning[k];
+    });
+    galaxy.appendChild(el);
+  });
+}
+const galaxyIO = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ layoutGalaxy(); galaxyIO.disconnect(); } });
+},{threshold:0.2});
+galaxyIO.observe(galaxy);
+
+/* ================= WHEEL ================= */
+const wheelWrap = document.getElementById('wheelWrap');
+const wheelDetail = document.getElementById('wheelDetail');
+function layoutWheel(){
+  const size = wheelWrap.clientWidth;
+  const radius = size*0.38;
+  wheelNodes.forEach((n,i)=>{
+    const angle = (i / wheelNodes.length) * 2*Math.PI - Math.PI/2;
+    const x = size/2 + radius*Math.cos(angle);
+    const y = size/2 + radius*Math.sin(angle);
+    const el = document.createElement('div');
+    el.className='wheel-node';
+    el.textContent = n.label;
+    el.style.left = x+'px';
+    el.style.top = y+'px';
+    el.addEventListener('click', ()=>{
+      document.querySelectorAll('.wheel-node').forEach(w=>w.classList.remove('active'));
+      el.classList.add('active');
+      wheelDetail.textContent = n.label+': '+n.detail;
+    });
+    wheelWrap.appendChild(el);
+  });
+}
+const wheelIO = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ layoutWheel(); wheelIO.disconnect(); } });
+},{threshold:0.2});
+wheelIO.observe(wheelWrap);
+
+/* ================= CHECKLIST ================= */
+const checkGrid = document.getElementById('checkGrid');
+const checkSummary = document.getElementById('checkSummary');
+let doneList = ls('ycw_checklist', []);
+function renderChecklist(){
+  checkGrid.innerHTML='';
+  checklist.forEach((c,i)=>{
+    const done = doneList.includes(i);
+    const item = document.createElement('div');
+    item.className = 'glass check-item'+(done?' done':'');
+    item.tabIndex = 0;
+    item.dataset.i = i;
+    item.innerHTML = `<div class="check-box">${done?'✓':''}</div><span class="label">${c}</span>`;
+    checkGrid.appendChild(item);
+  });
+  checkSummary.innerHTML = `<b>${doneList.length}</b> / ${checklist.length} habits committed to`;
+}
+renderChecklist();
+checkGrid.addEventListener('click', (e)=>{
+  const item = e.target.closest('.check-item');
+  if(!item) return;
+  const i = +item.dataset.i;
+  const idx = doneList.indexOf(i);
+  if(idx>-1) doneList.splice(idx,1); else doneList.push(i);
+  lsSet('ycw_checklist', doneList);
+  renderChecklist();
+});
+
+/* ================= SUCCESS VS FAILURE ================= */
+const swList = document.getElementById('swList');
+const btnSuccess = document.getElementById('btnSuccess');
+const btnFailure = document.getElementById('btnFailure');
+function renderSW(mode){
+  const list = mode==='success' ? successList : failureList;
+  const icon = mode==='success' ? '✔' : '✕';
+  swList.innerHTML='';
+  list.forEach((t,i)=>{
+    const el = document.createElement('div');
+    el.className='glass sw-item';
+    el.style.color = mode==='success' ? 'var(--teal)' : 'var(--rose)';
+    el.innerHTML = `<span>${icon}</span><span style="color:var(--text)">${t}</span>`;
+    swList.appendChild(el);
+    setTimeout(()=>el.classList.add('in'), i*90);
+  });
+}
+btnSuccess.addEventListener('click', ()=>{ btnSuccess.classList.add('active'); btnFailure.classList.remove('active'); renderSW('success'); });
+btnFailure.addEventListener('click', ()=>{ btnFailure.classList.add('active'); btnSuccess.classList.remove('active'); renderSW('failure'); });
+const swIO = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ renderSW('success'); swIO.disconnect(); } });
+},{threshold:0.2});
+swIO.observe(swList);
+
+/* ================= DAILY TIMELINE ================= */
+const dayTimelineEl = document.getElementById('dayTimeline');
+dayPlan.forEach(d=>{
+  const block = document.createElement('div');
+  block.className='day-block reveal';
+  block.innerHTML = `<div class="day-label">${d.icon} ${d.label}</div>
+    <div class="day-items">${d.items.map(it=>`<div class="glass day-item">${it}</div>`).join('')}</div>`;
+  dayTimelineEl.appendChild(block);
+  io.observe(block);
+});
+
+/* ================= SUMMARY SENTENCE BY SENTENCE ================= */
+const summaryCard = document.getElementById('summaryCard');
+summarySentences.forEach(s=>{
+  const span = document.createElement('span');
+  span.className='s-sentence';
+  span.textContent = s+' ';
+  summaryCard.appendChild(span);
+});
+const summaryIO = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      Array.from(summaryCard.children).forEach((s,i)=>setTimeout(()=>s.classList.add('in'), i*450));
+      summaryIO.disconnect();
+    }
+  });
+},{threshold:0.3});
+summaryIO.observe(summaryCard);
+
+/* ================= COUNTERS ================= */
+const counters = document.querySelectorAll('.counter-num');
+const counterIO = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      const el = en.target;
+      const target = +el.dataset.target;
+      let cur = 0;
+      const step = Math.max(1, Math.ceil(target/30));
+      const t = setInterval(()=>{
+        cur += step;
+        if(cur>=target){ cur=target; clearInterval(t); }
+        el.textContent = cur;
+      }, 40);
+      counterIO.unobserve(el);
+    }
+  });
+},{threshold:0.5});
+counters.forEach(c=>counterIO.observe(c));
+
+/* ================= FINAL LINES ================= */
+const finalLines = document.querySelectorAll('.final-line');
+const finalIO = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); } });
+},{threshold:0.5});
+finalLines.forEach(f=>finalIO.observe(f));
+
+/* ================= DAILY TIP FAB ================= */
+document.getElementById('fabTip').addEventListener('click', ()=>{
+  const tip = dailyTips[Math.floor(Math.random()*dailyTips.length)];
+  showToast('💡 '+tip);
+});
+
+function showToast(msg){
+  let toast = document.getElementById('__toast');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.id='__toast';
+    toast.style.cssText = `position:fixed; left:50%; bottom:90px; transform:translateX(-50%) translateY(20px);
+      background:var(--panel); border:1px solid var(--panel-brd); backdrop-filter:blur(16px); color:var(--text);
+      padding:14px 20px; border-radius:16px; font-size:13.5px; max-width:80vw; text-align:center; z-index:3000;
+      box-shadow:var(--shadow); opacity:0; transition:opacity .35s, transform .35s;`;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  requestAnimationFrame(()=>{
+    toast.style.opacity='1';
+    toast.style.transform='translateX(-50%) translateY(0)';
+  });
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=>{
+    toast.style.opacity='0';
+    toast.style.transform='translateX(-50%) translateY(20px)';
+  }, 3200);
+}
+
+/* ================= CONFETTI ================= */
+function fireConfetti(){
+  const colors = ['#d4a657','#f0cf8c','#2dd4bf','#e0725c'];
+  for(let i=0;i<80;i++){
+    const el = document.createElement('div');
+    el.className='confetti-piece';
+    const size = Math.random()*8+5;
+    el.style.width = size+'px';
+    el.style.height = (size*0.4)+'px';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.left = Math.random()*100+'vw';
+    const dur = Math.random()*2+2.5;
+    const rot = Math.random()*360;
+    el.style.transform = `rotate(${rot}deg)`;
+    el.style.transition = `transform ${dur}s linear, top ${dur}s cubic-bezier(.4,0,.6,1)`;
+    document.body.appendChild(el);
+    requestAnimationFrame(()=>{
+      el.style.top = '110vh';
+      el.style.transform = `rotate(${rot+720}deg)`;
+    });
+    setTimeout(()=>el.remove(), dur*1000+200);
+  }
+  showToast('🎉 You finished the journey. Keep growing every day!');
+}
+
+})();
+</script>
+<script src="../assets/library-core.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>
