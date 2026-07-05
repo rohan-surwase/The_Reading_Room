@@ -1,7 +1,7 @@
 window.Library = (function () {
   const CONFIG = {
     githubUser: "rohan-surwase",
-    githubRepo: "The-Reading-Room",
+    githubRepo: "The_Reading_Room",
     booksPath: "books",
     cacheKey: "library:catalog:v1",
     cacheTTL: 15 * 60 * 1000,
