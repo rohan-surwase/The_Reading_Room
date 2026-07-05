@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Power of Your Subconscious Mind — The Garden Below</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EFF3EE;
+    --surface:#E4EBE1;
+    --surface2:#D5E0D0;
+    --ink:#1E2B22;
+    --ink-soft:#4B5C4F;
+    --leaf:#3E7A4F;
+    --bloom:#B4633B;
+    --rule:#B9CBB4;
+    --water:#2E5C6E;
+    --shadow: 0 1px 0 rgba(30,43,34,.12);
+    --grain: radial-gradient(rgba(30,43,34,.03) 1px, transparent 1px);
+  }
+  html.dark{
+    --bg:#0E1712;
+    --surface:#182219;
+    --surface2:#20301F;
+    --ink:#E4ECDF;
+    --ink-soft:#A8BCA5;
+    --leaf:#6FBE84;
+    --bloom:#E08A5C;
+    --rule:#2E4030;
+    --water:#4F94AC;
+    --shadow: 0 1px 0 rgba(0,0,0,.4);
+    --grain: radial-gradient(rgba(255,255,255,.02) 1px, transparent 1px);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    background-image: var(--grain);
+    background-size:6px 6px;
+    color:var(--ink);
+    font-family:"Source Serif 4", Georgia, serif;
+    line-height:1.6;
+    transition: background-color .5s ease, color .5s ease;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+  }
+  h1,h2,h3,.display{ font-family:"Fraunces", serif; font-weight:700; letter-spacing:-0.01em; color:var(--ink); }
+  .mono{ font-family:"IBM Plex Mono", monospace; }
+  a{ color:var(--leaf); }
+  .wrap{ max-width:1040px; margin:0 auto; padding:0 24px; }
+
+  /* HEADER */
+  header.top{
+    position:sticky; top:0; z-index:50;
+    background:var(--bg); border-bottom:1px solid var(--rule);
+    transition: background-color .5s ease, border-color .5s ease;
+  }
+  .top-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px; max-width:1040px; margin:0 auto;
+  }
+  .brand{ font-family:"Fraunces", serif; font-weight:700; font-size:1.02rem; text-transform:uppercase; letter-spacing:0.02em; }
+  .brand span{ color:var(--leaf); }
+  .toggle{
+    display:flex; align-items:center; gap:10px;
+    background:none; border:1px solid var(--rule); border-radius:999px;
+    padding:6px 14px 6px 8px; cursor:pointer; color:var(--ink);
+    font-family:"IBM Plex Mono", monospace; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase;
+    transition: background-color .3s ease, border-color .3s ease;
+  }
+  .toggle:hover{ background:var(--surface); }
+  .toggle svg{ width:22px; height:22px; display:block; }
+
+  /* HERO with iceberg */
+  .hero{
+    padding:70px 24px 40px; max-width:1040px; margin:0 auto;
+    display:grid; grid-template-columns:1.3fr 1fr; gap:48px; align-items:center;
+  }
+  .eyebrow{ font-family:"IBM Plex Mono", monospace; font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--leaf); margin:0 0 14px; }
+  .hero h1{ font-size:clamp(2.2rem,4.6vw,3.3rem); line-height:1.05; margin:0 0 16px; }
+  .hero .author{ font-style:italic; color:var(--ink-soft); margin:0 0 20px; font-size:1.03rem; }
+  .hero p.lede{ font-size:1.05rem; color:var(--ink-soft); max-width:520px; margin:0 0 24px; }
+  .formula{
+    display:inline-flex; flex-wrap:wrap; gap:8px; align-items:center;
+    font-family:"IBM Plex Mono", monospace; font-size:0.76rem;
+    background:var(--surface); border:1px solid var(--rule); border-radius:10px;
+    padding:12px 16px; color:var(--ink-soft);
+  }
+  .formula b{ color:var(--ink); font-weight:600; }
+  .formula .arrow{ color:var(--leaf); }
+
+  .iceberg-frame{ display:flex; flex-direction:column; align-items:center; }
+  .iceberg-svg{ width:100%; max-width:280px; height:auto; }
+  .iceberg-label{ font-family:"IBM Plex Mono", monospace; font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); text-align:center; margin-top:10px; }
+  .wave{ animation: bob 5s ease-in-out infinite; transform-origin:center; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(3px); } }
+
+  section{ padding:52px 24px; max-width:1040px; margin:0 auto; }
+  .section-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:8px; border-bottom:1px solid var(--rule); padding-bottom:14px; }
+  .section-num{ font-family:"IBM Plex Mono", monospace; color:var(--leaf); font-size:0.85rem; }
+  .section-head h2{ font-size:1.55rem; margin:0; }
+  .section-sub{ color:var(--ink-soft); margin:14px 0 32px; max-width:620px; }
+
+  /* PRINCIPLE CARDS (flip) */
+  .card-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(210px,1fr)); gap:16px; }
+  .flip-card{ perspective:1000px; height:180px; cursor:pointer; border-radius:6px; }
+  .flip-card:focus-visible{ outline:2px solid var(--leaf); outline-offset:3px; }
+  .flip-inner{ position:relative; width:100%; height:100%; transition:transform .55s cubic-bezier(.4,.2,.2,1); transform-style:preserve-3d; }
+  .flip-card.flipped .flip-inner{ transform:rotateY(180deg); }
+  .flip-face{ position:absolute; inset:0; backface-visibility:hidden; border:1px solid var(--rule); border-radius:6px; padding:16px; display:flex; flex-direction:column; box-shadow:var(--shadow); }
+  .flip-front{ background:var(--surface); justify-content:space-between; }
+  .flip-front .num{ font-family:"IBM Plex Mono", monospace; color:var(--leaf); font-size:0.76rem; }
+  .flip-front .name{ font-family:"Fraunces", serif; font-weight:600; font-size:1.08rem; line-height:1.18; }
+  .flip-front .hint{ font-family:"IBM Plex Mono", monospace; font-size:0.6rem; color:var(--ink-soft); letter-spacing:0.06em; text-transform:uppercase; }
+  .flip-back{ background:var(--leaf); color:#F2F8EE; transform:rotateY(180deg); justify-content:center; font-size:0.88rem; }
+
+  /* GARDEN GAME */
+  .game-panel{
+    display:grid; grid-template-columns:1fr 260px; gap:32px;
+    background:var(--surface); border:1px solid var(--rule); border-radius:10px;
+    padding:28px; align-items:center;
+  }
+  .lesson-list{ list-style:none; margin:0; padding:0; display:grid; gap:9px; }
+  .lesson-list li{ display:flex; align-items:flex-start; gap:10px; font-size:0.94rem; color:var(--ink-soft); }
+  .lesson-list input[type="checkbox"]{ width:17px; height:17px; margin-top:3px; accent-color:var(--leaf); cursor:pointer; flex-shrink:0; }
+  .lesson-list label{ cursor:pointer; }
+  .lesson-list li.done label{ color:var(--ink); }
+  .garden-col{ display:flex; flex-direction:column; align-items:center; gap:10px; }
+  .garden-svg{ width:140px; height:150px; }
+  .garden-pct{ font-family:"IBM Plex Mono", monospace; font-size:1.05rem; }
+  .garden-caption{ font-family:"IBM Plex Mono", monospace; font-size:0.66rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); text-align:center; min-height:2.4em; }
+  .stamp{
+    margin-top:2px; font-family:"IBM Plex Mono", monospace; font-size:0.66rem;
+    border:2px solid var(--bloom); color:var(--bloom); border-radius:4px; padding:4px 8px;
+    letter-spacing:0.1em; text-transform:uppercase; opacity:0; transform:scale(1.4) rotate(-6deg);
+    transition: opacity .4s ease, transform .4s ease; text-align:center;
+  }
+  .stamp.show{ opacity:1; transform:scale(1) rotate(-6deg); }
+  .stem{ transition: stroke-dashoffset .5s ease; }
+  .petal, .leaf-shape{ transition: opacity .4s ease, transform .4s ease; transform-origin:center; }
+
+  /* QUOTES */
+  .quote-stage{ position:relative; min-height:150px; display:flex; align-items:center; background:var(--surface); border:1px solid var(--rule); border-radius:8px; padding:32px 40px; }
+  .quote-card{ display:none; text-align:center; width:100%; }
+  .quote-card.active{ display:block; }
+  .quote-card blockquote{ font-family:"Fraunces", serif; font-style:italic; font-weight:500; font-size:1.28rem; margin:0 0 10px; }
+  .quote-card cite{ font-family:"IBM Plex Mono", monospace; font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
+  .quote-nav{ display:flex; justify-content:center; gap:8px; margin-top:16px; }
+  .quote-dot{ width:8px; height:8px; border-radius:50%; border:1px solid var(--leaf); background:transparent; cursor:pointer; padding:0; }
+  .quote-dot.active{ background:var(--leaf); }
+
+  /* KEYWORDS */
+  .chip-cloud{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{ font-family:"IBM Plex Mono", monospace; font-size:0.73rem; border:1px solid var(--rule); color:var(--ink-soft); padding:6px 12px; border-radius:3px; background:var(--surface); }
+
+  /* BANNER */
+  .banner{ text-align:center; padding:48px 24px; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); background:var(--surface2); }
+  .banner p{ font-family:"Fraunces", serif; font-weight:600; font-size:clamp(1.25rem,2.8vw,1.8rem); max-width:760px; margin:0 auto; line-height:1.32; }
+
+  .note{ border-left:3px solid var(--leaf); padding:16px 20px; background:var(--surface); border-radius:0 6px 6px 0; color:var(--ink-soft); font-size:0.93rem; }
+
+  footer{ text-align:center; padding:36px 24px; color:var(--ink-soft); font-family:"IBM Plex Mono", monospace; font-size:0.7rem; letter-spacing:0.05em; }
+
+  @media (max-width:720px){
+    .hero{ grid-template-columns:1fr; }
+    .iceberg-frame{ order:-1; }
+    .game-panel{ grid-template-columns:1fr; }
+    .garden-col{ flex-direction:row; justify-content:center; gap:16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">The Subconscious <span>Mind</span></div>
+    <button class="toggle" id="themeToggle" aria-label="Toggle day and night theme">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="4.2" stroke="var(--bloom)" stroke-width="1.3"/>
+        <path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6L18 18M6 18l1.4-1.4M16.6 7.4L18 6" stroke="var(--bloom)" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      <span id="themeLabel">Go beneath the surface</span>
+    </button>
+  </div>
+</header>
+
+<div class="hero">
+  <div>
+    <p class="eyebrow">Key Summary · Joseph Murphy, 1963</p>
+    <h1>The Power of Your Subconscious Mind</h1>
+    <p class="author">A field guide to the mind beneath the mind.</p>
+    <p class="lede">Your subconscious mind quietly shapes your thoughts, habits, emotions, and actions. Murphy's central claim: feed it repeated, positive beliefs and clear goals, and it will steadily reshape your behavior — and your odds of a better outcome.</p>
+    <div class="formula mono">
+      <b>Repeated Thought</b><span class="arrow">→</span><b>Belief</b><span class="arrow">→</span><b>Habit</b><span class="arrow">→</span><b>Action</b><span class="arrow">→</span><b>Your Life</b>
+    </div>
+  </div>
+  <div class="iceberg-frame">
+    <svg class="iceberg-svg" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- water -->
+      <rect x="0" y="95" width="200" height="125" fill="var(--water)" opacity="0.28"/>
+      <!-- above-water tip: conscious -->
+      <polygon points="100,20 128,95 72,95" fill="var(--surface2)" stroke="var(--rule)"/>
+      <text x="100" y="72" text-anchor="middle" class="mono" font-size="9" fill="var(--ink-soft)">CONSCIOUS</text>
+      <!-- below-water mass: subconscious -->
+      <polygon points="72,95 128,95 172,190 30,190" fill="var(--surface)" stroke="var(--rule)" opacity="0.95"/>
+      <text x="100" y="150" text-anchor="middle" class="mono" font-size="10" fill="var(--leaf)" font-weight="600">SUBCONSCIOUS</text>
+      <!-- waterline -->
+      <g class="wave">
+        <path d="M0 95 Q 25 88, 50 95 T 100 95 T 150 95 T 200 95" stroke="var(--water)" stroke-width="2.5" fill="none" opacity="0.7"/>
+      </g>
+    </svg>
+    <p class="iceberg-label">Most of your mind works<br>beneath the waterline</p>
+  </div>
+</div>
+
+<section id="principles">
+  <div class="section-head">
+    <span class="section-num mono">01</span>
+    <h2>Core Principles</h2>
+  </div>
+  <p class="section-sub">Murphy's ten ideas for working with — rather than against — your subconscious. Tap a card to turn it over.</p>
+  <div class="card-grid" id="cardGrid"></div>
+</section>
+
+<section id="garden-game">
+  <div class="section-head">
+    <span class="section-num mono">02</span>
+    <h2>Plant the Seeds Below</h2>
+  </div>
+  <p class="section-sub">Check off each one-line lesson as you practice it. Every seed you plant helps the garden bloom.</p>
+  <div class="game-panel">
+    <ul class="lesson-list" id="lessonList"></ul>
+    <div class="garden-col">
+      <svg class="garden-svg" viewBox="0 0 140 150" id="gardenSvg">
+        <ellipse cx="70" cy="138" rx="55" ry="8" fill="var(--surface2)"/>
+        <line class="stem" id="stem" x1="70" y1="130" x2="70" y2="130" stroke="var(--leaf)" stroke-width="4" stroke-linecap="round"
+              stroke-dasharray="90" stroke-dashoffset="90"/>
+        <g id="leaves" opacity="0">
+          <ellipse class="leaf-shape" cx="58" cy="95" rx="14" ry="7" fill="var(--leaf)" transform="rotate(-25 58 95)"/>
+          <ellipse class="leaf-shape" cx="82" cy="80" rx="14" ry="7" fill="var(--leaf)" transform="rotate(25 82 80)"/>
+        </g>
+        <g id="bloom" opacity="0" transform="translate(70,50)">
+          <circle class="petal" r="9" cx="0" cy="-14" fill="var(--bloom)"/>
+          <circle class="petal" r="9" cx="12" cy="-6" fill="var(--bloom)"/>
+          <circle class="petal" r="9" cx="8" cy="9" fill="var(--bloom)"/>
+          <circle class="petal" r="9" cx="-8" cy="9" fill="var(--bloom)"/>
+          <circle class="petal" r="9" cx="-12" cy="-6" fill="var(--bloom)"/>
+          <circle r="7" cy="0" cx="0" fill="#F4D35E"/>
+        </g>
+      </svg>
+      <div class="garden-pct mono" id="gardenPct">0%</div>
+      <div class="garden-caption mono" id="gardenCaption">Soil is bare</div>
+      <div class="stamp" id="stamp">In Full<br>Bloom</div>
+    </div>
+  </div>
+</section>
+
+<section id="quotes">
+  <div class="section-head">
+    <span class="section-num mono">03</span>
+    <h2>Memorable Quotes</h2>
+  </div>
+  <p class="section-sub">Five lines from the book, worth returning to.</p>
+  <div class="quote-stage">
+    <div class="quote-card active">
+      <blockquote>&ldquo;Change your thoughts, and you change your destiny.&rdquo;</blockquote>
+      <cite>— Joseph Murphy</cite>
+    </div>
+    <div class="quote-card">
+      <blockquote>&ldquo;The law of life is the law of belief.&rdquo;</blockquote>
+      <cite>— Joseph Murphy</cite>
+    </div>
+    <div class="quote-card">
+      <blockquote>&ldquo;What you impress on your subconscious mind is expressed in your life.&rdquo;</blockquote>
+      <cite>— Joseph Murphy</cite>
+    </div>
+    <div class="quote-card">
+      <blockquote>&ldquo;The treasure house is within you.&rdquo;</blockquote>
+      <cite>— Joseph Murphy</cite>
+    </div>
+    <div class="quote-card">
+      <blockquote>&ldquo;Imagine the end and the means will come.&rdquo;</blockquote>
+      <cite>— Joseph Murphy</cite>
+    </div>
+  </div>
+  <div class="quote-nav" id="quoteNav"></div>
+</section>
+
+<section id="keywords">
+  <div class="section-head">
+    <span class="section-num mono">04</span>
+    <h2>Important Keywords</h2>
+  </div>
+  <p class="section-sub">The vocabulary Murphy returns to again and again.</p>
+  <div class="chip-cloud" id="chipCloud"></div>
+</section>
+
+<div class="banner">
+  <p class="eyebrow mono" style="text-align:center;">The Book in One Sentence</p>
+  <p>Your repeated thoughts influence your habits, and your habits shape your actions and, over time, your life.</p>
+</div>
+
+<section id="note">
+  <div class="note">
+    <strong>A note on the science:</strong> many ideas here — affirmations, visualization — are widely used in self-help, and positive thinking alone isn't scientifically proven to produce success. But evidence does support that clear goals, consistent practice, effective habits, and persistent action can improve performance and outcomes.
+  </div>
+</section>
+
+<footer>
+  Summary companion for &ldquo;The Power of Your Subconscious Mind&rdquo; by Joseph Murphy · For study and reflection
+</footer>
+
+<script>
+  // THEME
+  const themeToggle = document.getElementById('themeToggle');
+  const themeLabel = document.getElementById('themeLabel');
+  let isDark = false;
+  function setTheme(dark){
+    document.documentElement.classList.toggle('dark', dark);
+    themeLabel.textContent = dark ? 'Rise to the surface' : 'Go beneath the surface';
+  }
+  setTheme(isDark);
+  themeToggle.addEventListener('click', () => { isDark = !isDark; setTheme(isDark); });
+
+  // PRINCIPLES
+  const principles = [
+    ["Repeated Beliefs", "Thoughts you repeat often can become deeply ingrained habits."],
+    ["Positive Thinking", "A constructive mindset can encourage productive actions."],
+    ["Visualization", "Mentally rehearsing success may improve confidence and preparation."],
+    ["Affirmations", "Repeating positive statements can help reinforce desired attitudes."],
+    ["Faith", "Confidence in yourself supports persistence and resilience."],
+    ["Forgiveness", "Letting go of resentment can reduce emotional burdens."],
+    ["Gratitude", "Appreciating what you have encourages a positive outlook."],
+    ["Habit Formation", "Small, repeated actions shape long-term behavior."],
+    ["Goal Focus", "Keep your attention on the outcome you want to achieve."],
+    ["Take Action", "Thoughts are most effective when paired with consistent action."]
+  ];
+  const cardGrid = document.getElementById('cardGrid');
+  principles.forEach((p,i) => {
+    const card = document.createElement('div');
+    card.className = 'flip-card';
+    card.tabIndex = 0;
+    card.setAttribute('role','button');
+    card.setAttribute('aria-label', `Principle ${i+1}: ${p[0]}. Press to reveal description.`);
+    card.innerHTML = `
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <span class="num">${String(i+1).padStart(2,'0')}</span>
+          <span class="name">${p[0]}</span>
+          <span class="hint">Tap to open</span>
+        </div>
+        <div class="flip-face flip-back">${p[1]}</div>
+      </div>`;
+    const flip = () => card.classList.toggle('flipped');
+    card.addEventListener('click', flip);
+    card.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); flip(); } });
+    cardGrid.appendChild(card);
+  });
+
+  // GARDEN GAME
+  const lessons = [
+    "Watch your daily thoughts.",
+    "Replace negative self-talk with constructive beliefs.",
+    "Visualize your goals regularly.",
+    "Practice gratitude every day.",
+    "Forgive others and yourself.",
+    "Build positive habits through repetition.",
+    "Focus on solutions, not problems.",
+    "Believe in your ability to improve.",
+    "Stay consistent even when progress is slow.",
+    "Pair positive thinking with action."
+  ];
+  const lessonList = document.getElementById('lessonList');
+  lessons.forEach((text,i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<input type="checkbox" id="lesson${i}"><label for="lesson${i}">${text}</label>`;
+    lessonList.appendChild(li);
+  });
+
+  const captions = [
+    "Soil is bare",
+    "A seed goes in",
+    "First roots take hold",
+    "A shoot breaks the surface",
+    "Stem is rising",
+    "Leaves are unfurling",
+    "Buds are forming",
+    "Almost ready to bloom",
+    "A bud opens",
+    "Color is showing",
+    "In full bloom"
+  ];
+
+  const gardenPct = document.getElementById('gardenPct');
+  const gardenCaption = document.getElementById('gardenCaption');
+  const stamp = document.getElementById('stamp');
+  const stem = document.getElementById('stem');
+  const leaves = document.getElementById('leaves');
+  const bloom = document.getElementById('bloom');
+
+  function updateGarden(){
+    const boxes = lessonList.querySelectorAll('input[type="checkbox"]');
+    let checked = 0;
+    boxes.forEach(b => { b.closest('li').classList.toggle('done', b.checked); if(b.checked) checked++; });
+    const total = boxes.length;
+    const pct = Math.round((checked/total)*100);
+    gardenPct.textContent = pct + '%';
+    gardenCaption.textContent = captions[checked];
+
+    // stem grows from y=130 up to y=50 as checked goes 0 -> total
+    const growthRatio = checked / total;
+    const stemTopY = 130 - growthRatio * 80; // 130 -> 50
+    stem.setAttribute('y2', stemTopY.toFixed(1));
+    stem.setAttribute('stroke-dashoffset', (90 - growthRatio*90).toFixed(1));
+
+    leaves.style.opacity = checked >= 4 ? 1 : 0;
+    leaves.style.transform = checked >= 4 ? 'translateY(0)' : 'translateY(6px)';
+    bloom.style.opacity = checked >= 8 ? 1 : (checked >= 6 ? 0.4 : 0);
+    bloom.style.transform = checked >= 8 ? 'translate(70px,50px) scale(1)' : 'translate(70px,50px) scale(0.6)';
+
+    stamp.classList.toggle('show', checked === total);
+  }
+  lessonList.addEventListener('change', updateGarden);
+  updateGarden();
+
+  // QUOTES
+  const quoteCards = document.querySelectorAll('.quote-card');
+  const quoteNav = document.getElementById('quoteNav');
+  let quoteIndex = 0;
+  quoteCards.forEach((_,i) => {
+    const dot = document.createElement('button');
+    dot.className = 'quote-dot' + (i===0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Show quote ' + (i+1));
+    dot.addEventListener('click', () => showQuote(i));
+    quoteNav.appendChild(dot);
+  });
+  const dots = quoteNav.querySelectorAll('.quote-dot');
+  function showQuote(i){
+    quoteCards.forEach(c => c.classList.remove('active'));
+    dots.forEach(d => d.classList.remove('active'));
+    quoteCards[i].classList.add('active');
+    dots[i].classList.add('active');
+    quoteIndex = i;
+  }
+  let quoteTimer = setInterval(() => showQuote((quoteIndex+1) % quoteCards.length), 6000);
+  quoteNav.addEventListener('click', () => clearInterval(quoteTimer));
+
+  // KEYWORDS
+  const keywords = [
+    "Subconscious Mind","Conscious Mind","Belief","Faith","Visualization","Affirmations",
+    "Habit","Gratitude","Forgiveness","Imagination","Success","Prosperity","Confidence",
+    "Positive Thinking","Action","Goal","Mindset","Persistence"
+  ];
+  const chipCloud = document.getElementById('chipCloud');
+  keywords.forEach(k => {
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.textContent = k;
+    chipCloud.appendChild(chip);
+  });
+</script>
+
+<script src="../assets/library-core.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>
