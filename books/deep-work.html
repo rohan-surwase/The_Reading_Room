@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Work — Cal Newport | Interactive Summary</title>
+<meta name="description" content="An interactive, distraction-free summary of Deep Work by Cal Newport — the ten core lessons, a working focus timer, and tools to build your own deep work practice.">
+<style>
+:root{
+  --bg:#0E1116;
+  --bg-2:#141922;
+  --surface:rgba(232,228,218,0.045);
+  --surface-strong:rgba(232,228,218,0.08);
+  --border:rgba(232,228,218,0.10);
+  --ink:#EDEAE2;
+  --ink-dim:#9CA5B3;
+  --ink-faint:#616B7A;
+  --amber:#E8A33D;
+  --amber-soft:rgba(232,163,61,0.16);
+  --teal:#4E8B8F;
+  --teal-soft:rgba(78,139,143,0.18);
+  --danger:#C96A5A;
+  --radius:18px;
+  --radius-sm:10px;
+  --serif:'Fraunces', Georgia, serif;
+  --sans:'IBM Plex Sans', -apple-system, sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, monospace;
+  --ease:cubic-bezier(.22,.9,.3,1);
+}
+:root[data-theme="light"]{
+  --bg:#F2EEE4;
+  --bg-2:#EAE4D4;
+  --surface:rgba(20,20,18,0.04);
+  --surface-strong:rgba(20,20,18,0.07);
+  --border:rgba(20,20,18,0.10);
+  --ink:#1B1D1A;
+  --ink-dim:#5C5F56;
+  --ink-faint:#8A8D82;
+  --amber:#B5731A;
+  --amber-soft:rgba(181,115,26,0.14);
+  --teal:#2E6669;
+  --teal-soft:rgba(46,102,105,0.14);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.6;
+  overflow-x:hidden;
+  transition:background .5s var(--ease),color .5s var(--ease);
+}
+::selection{background:var(--amber-soft);color:var(--ink);}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-0.01em;}
+a{color:inherit;}
+img,svg{display:block;}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:4px;}
+
+/* ---------- Loader ---------- */
+#loader{
+  position:fixed;inset:0;z-index:9999;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .7s var(--ease), visibility .7s var(--ease);
+}
+#loader.hide{opacity:0;visibility:hidden;}
+.loader-iris{position:relative;width:64px;height:64px;}
+.loader-iris span{
+  position:absolute;inset:0;border-radius:50%;
+  border:2px solid var(--ink-faint);
+  border-top-color:var(--amber);
+  animation:spin 1.1s linear infinite;
+}
+.loader-iris span:nth-child(2){inset:10px;border-top-color:var(--teal);animation-duration:1.6s;animation-direction:reverse;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ---------- Background atmosphere ---------- */
+.atmosphere{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.35;}
+.blob-1{width:46vw;height:46vw;background:radial-gradient(circle,var(--teal),transparent 70%);top:-15%;left:-10%;animation:drift1 26s ease-in-out infinite;}
+.blob-2{width:38vw;height:38vw;background:radial-gradient(circle,var(--amber),transparent 70%);bottom:-10%;right:-8%;opacity:.18;animation:drift2 32s ease-in-out infinite;}
+@keyframes drift1{0%,100%{transform:translate(0,0);}50%{transform:translate(6%,8%);}}
+@keyframes drift2{0%,100%{transform:translate(0,0);}50%{transform:translate(-7%,-6%);}}
+.particle{position:absolute;border-radius:50%;background:var(--ink-faint);opacity:.25;}
+
+/* ---------- Scroll progress ---------- */
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--amber));z-index:1002;width:0%;transition:width .1s linear;}
+
+/* ---------- Nav ---------- */
+header{
+  position:sticky;top:0;z-index:1000;
+  backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+  background:color-mix(in srgb, var(--bg) 78%, transparent);
+  border-bottom:1px solid var(--border);
+}
+nav{max-width:1160px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.05rem;font-weight:600;white-space:nowrap;}
+.brand-mark{width:22px;height:22px;border-radius:50%;border:2px solid var(--amber);position:relative;flex:none;}
+.brand-mark::after{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--amber);}
+.nav-links{display:flex;gap:4px;list-style:none;overflow-x:auto;scrollbar-width:none;}
+.nav-links::-webkit-scrollbar{display:none;}
+.nav-links a{
+  font-size:.82rem;padding:8px 12px;border-radius:100px;white-space:nowrap;
+  color:var(--ink-dim);text-decoration:none;transition:.25s var(--ease);
+}
+.nav-links a:hover{color:var(--ink);background:var(--surface);}
+#theme-toggle{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--border);
+  background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  flex:none;transition:.3s var(--ease);color:var(--ink);
+}
+#theme-toggle:hover{background:var(--surface-strong);transform:rotate(20deg);}
+#theme-toggle svg{width:17px;height:17px;}
+.icon-moon{display:none;}
+[data-theme="light"] .icon-sun{display:none;}
+[data-theme="light"] .icon-moon{display:block;}
+
+/* ---------- Layout helpers ---------- */
+main{position:relative;z-index:1;}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px;}
+section{padding:110px 0;position:relative;}
+.eyebrow{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--amber);display:flex;align-items:center;gap:10px;margin-bottom:16px;
+}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--amber);}
+.section-title{font-size:clamp(1.6rem,3.4vw,2.4rem);margin-bottom:14px;}
+.section-lede{color:var(--ink-dim);max-width:640px;font-size:1.02rem;margin-bottom:52px;}
+
+/* reveal-on-scroll */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* glass card */
+.glass{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  transition:transform .4s var(--ease), border-color .4s var(--ease), background .4s var(--ease);
+}
+
+/* ---------- Hero ---------- */
+.hero{min-height:92vh;display:flex;align-items:center;padding-top:70px;}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:center;width:100%;}
+.hero-eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:22px;}
+.hero h1{font-size:clamp(3rem,8vw,5.4rem);line-height:.98;letter-spacing:-.02em;}
+.hero h1 .line2{
+  display:block;background:linear-gradient(100deg,var(--amber),var(--teal) 65%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:200% auto;animation:sheen 6s linear infinite;
+}
+@keyframes sheen{to{background-position:200% center;}}
+.hero-sub{font-size:1.2rem;color:var(--ink-dim);margin:22px 0 6px;max-width:480px;}
+.hero-author{font-family:var(--mono);font-size:.85rem;color:var(--ink-faint);margin-bottom:26px;}
+.hero-author span{color:var(--ink);}
+.hero-intro{color:var(--ink-dim);max-width:520px;margin-bottom:34px;font-size:1rem;}
+.btn{
+  font-family:var(--sans);font-weight:600;font-size:.92rem;border:none;cursor:pointer;
+  padding:15px 28px;border-radius:100px;display:inline-flex;align-items:center;gap:10px;
+  position:relative;overflow:hidden;transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.btn-primary{background:var(--amber);color:#1B1305;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px -10px var(--amber-soft);}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--ink);}
+.btn-ghost:hover{background:var(--surface);}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:ripple .6s var(--ease);pointer-events:none;}
+@keyframes ripple{to{transform:scale(3.2);opacity:0;}}
+
+/* aperture — signature element */
+.aperture-wrap{display:flex;align-items:center;justify-content:center;position:relative;}
+.aperture{position:relative;width:min(360px,80vw);aspect-ratio:1;}
+.aperture-ring{position:absolute;inset:0;border-radius:50%;border:1px solid var(--border);}
+.aperture-ring.r2{inset:9%;}
+.aperture-ring.r3{inset:18%;}
+.blade{
+  position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from calc(var(--i)*36deg), var(--teal-soft) 0deg, transparent 30deg);
+  transform-origin:center;
+  animation:rotate-blade 40s linear infinite;
+}
+@keyframes rotate-blade{to{transform:rotate(360deg);}}
+.aperture-core{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:34%;height:34%;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--amber), var(--teal) 120%);
+  box-shadow:0 0 60px -6px var(--amber-soft);
+  animation:breathe 5s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{width:34%;height:34%;}50%{width:26%;height:26%;}}
+.aperture-label{
+  position:absolute;bottom:-38px;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  white-space:nowrap;
+}
+
+/* ---------- Core idea ---------- */
+.core-card{padding:52px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+.core-card p{font-size:1.15rem;color:var(--ink-dim);}
+.focus-illustration{position:relative;width:100%;aspect-ratio:1/.8;}
+.beam{position:absolute;height:2px;background:linear-gradient(90deg,transparent,var(--amber),transparent);width:80%;left:10%;animation:sweep 3.5s var(--ease) infinite;}
+.beam:nth-child(1){top:20%;animation-delay:0s;}
+.beam:nth-child(2){top:50%;animation-delay:.5s;width:60%;left:20%;}
+.beam:nth-child(3){top:78%;animation-delay:1s;width:70%;left:15%;}
+@keyframes sweep{0%{opacity:0;transform:scaleX(.3);}40%{opacity:1;transform:scaleX(1);}100%{opacity:0;transform:scaleX(1.05);}}
+.focus-dot{position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--amber);box-shadow:0 0 40px 10px var(--amber-soft);}
+.focus-ring{position:absolute;left:50%;top:50%;border:1px solid var(--teal);border-radius:50%;transform:translate(-50%,-50%);opacity:.5;animation:ring-out 4s ease-out infinite;}
+.focus-ring:nth-child(5){animation-delay:1.3s;}
+.focus-ring:nth-child(6){animation-delay:2.6s;}
+@keyframes ring-out{0%{width:16px;height:16px;opacity:.7;}100%{width:220px;height:220px;opacity:0;}}
+
+/* ---------- Lesson cards ---------- */
+.lessons-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+.lesson-card{padding:30px 26px;cursor:default;}
+.lesson-card:hover{transform:translateY(-6px);border-color:var(--amber);}
+.lesson-num{font-family:var(--mono);color:var(--amber);font-size:.8rem;letter-spacing:.1em;margin-bottom:14px;display:block;}
+.lesson-card h3{font-size:1.14rem;margin-bottom:10px;}
+.lesson-card p{color:var(--ink-dim);font-size:.92rem;}
+.lesson-card ul{margin-top:10px;padding-left:18px;color:var(--ink-dim);font-size:.9rem;}
+.lesson-card li{margin-bottom:4px;}
+.lesson-formula{font-family:var(--mono);color:var(--teal);font-size:1rem;margin-top:10px;letter-spacing:.02em;}
+
+/* ---------- Quotes ---------- */
+.quotes-track{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
+.quote-card{padding:34px 30px;position:relative;overflow:hidden;}
+.quote-mark{font-family:var(--serif);font-size:3.4rem;color:var(--amber-soft);position:absolute;top:6px;left:16px;line-height:1;}
+.quote-card blockquote{font-family:var(--serif);font-size:1.18rem;line-height:1.45;position:relative;z-index:1;padding-top:14px;}
+
+/* ---------- Pills ---------- */
+.pill-cloud{display:flex;flex-wrap:wrap;gap:12px;}
+.pill{
+  padding:12px 20px;border-radius:100px;border:1px solid var(--border);background:var(--surface);
+  font-size:.88rem;color:var(--ink-dim);transition:.35s var(--ease);
+}
+.pill:hover{background:var(--teal-soft);color:var(--ink);border-color:var(--teal);transform:translateY(-3px);}
+
+/* ---------- Keywords ---------- */
+.kw-search{
+  width:100%;max-width:420px;padding:13px 18px;border-radius:100px;border:1px solid var(--border);
+  background:var(--surface);color:var(--ink);font-family:var(--sans);font-size:.92rem;margin-bottom:30px;
+}
+.kw-search::placeholder{color:var(--ink-faint);}
+.kw-cloud{display:flex;flex-wrap:wrap;gap:10px;}
+.chip{
+  padding:9px 16px;border-radius:8px;background:var(--surface);border:1px solid var(--border);
+  font-size:.84rem;color:var(--ink-dim);transition:.3s var(--ease);
+}
+.chip.match{background:var(--amber-soft);border-color:var(--amber);color:var(--ink);transform:scale(1.06);}
+.chip.dim{opacity:.25;}
+
+/* ---------- Checklist ---------- */
+.checklist-panel{padding:40px;}
+.checklist-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;gap:20px;flex-wrap:wrap;}
+.checklist-progress-track{flex:1;min-width:160px;height:8px;background:var(--surface-strong);border-radius:10px;overflow:hidden;}
+.checklist-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--teal),var(--amber));transition:width .5s var(--ease);border-radius:10px;}
+.checklist-pct{font-family:var(--mono);font-size:.85rem;color:var(--amber);white-space:nowrap;}
+.check-item{
+  display:flex;align-items:center;gap:16px;padding:15px 6px;border-bottom:1px solid var(--border);cursor:pointer;
+}
+.check-item:last-child{border-bottom:none;}
+.checkbox{
+  width:24px;height:24px;border-radius:7px;border:1.5px solid var(--ink-faint);flex:none;
+  display:flex;align-items:center;justify-content:center;transition:.25s var(--ease);
+}
+.checkbox svg{width:14px;height:14px;opacity:0;transform:scale(.5);transition:.25s var(--ease);stroke:#1B1305;}
+.check-item.checked .checkbox{background:var(--amber);border-color:var(--amber);}
+.check-item.checked .checkbox svg{opacity:1;transform:scale(1);}
+.check-item.checked span.label{color:var(--ink-faint);text-decoration:line-through;}
+.check-item .label{font-size:.98rem;}
+
+/* ---------- Timer ---------- */
+.timer-panel{padding:48px;display:grid;grid-template-columns:auto 1fr;gap:56px;align-items:center;}
+.timer-ring-wrap{position:relative;width:260px;height:260px;flex:none;}
+.timer-ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg);}
+.timer-ring-bg{fill:none;stroke:var(--surface-strong);stroke-width:6;}
+.timer-ring-fg{fill:none;stroke:var(--amber);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1s linear;}
+.timer-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.timer-display{font-family:var(--mono);font-size:2.6rem;letter-spacing:-0.02em;}
+.timer-state{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:6px;}
+.timer-presets{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
+.preset-btn{
+  padding:10px 18px;border-radius:100px;border:1px solid var(--border);background:var(--surface);
+  color:var(--ink-dim);cursor:pointer;font-family:var(--sans);font-size:.85rem;transition:.25s var(--ease);
+}
+.preset-btn.active,.preset-btn:hover{background:var(--amber-soft);border-color:var(--amber);color:var(--ink);}
+.custom-timer{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.custom-timer input{
+  width:80px;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);
+  color:var(--ink);font-family:var(--mono);
+}
+.timer-controls{display:flex;gap:12px;flex-wrap:wrap;}
+
+/* ---------- Stats ---------- */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;}
+.stat-card{padding:30px;text-align:left;}
+.stat-value{font-family:var(--serif);font-size:2.6rem;color:var(--amber);}
+.stat-label{color:var(--ink-dim);font-size:.85rem;margin-top:6px;}
+
+/* ---------- Calculator ---------- */
+.calc-panel{padding:44px;}
+.calc-row{margin-bottom:26px;}
+.calc-row label{display:flex;justify-content:space-between;font-size:.92rem;margin-bottom:10px;color:var(--ink-dim);}
+.calc-row label b{color:var(--ink);font-family:var(--mono);}
+input[type="range"]{
+  width:100%;-webkit-appearance:none;height:5px;border-radius:10px;background:var(--surface-strong);outline:none;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--amber);cursor:pointer;
+  box-shadow:0 0 0 4px var(--amber-soft);
+}
+input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--amber);border:none;cursor:pointer;}
+.calc-result{display:flex;align-items:center;gap:36px;margin-top:36px;flex-wrap:wrap;}
+.score-ring-wrap{position:relative;width:150px;height:150px;flex:none;}
+.score-ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg);}
+.score-ring-bg{fill:none;stroke:var(--surface-strong);stroke-width:8;}
+.score-ring-fg{fill:none;stroke:var(--teal);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .6s var(--ease), stroke .6s var(--ease);}
+.score-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.9rem;}
+.score-verdict{font-size:1.1rem;font-family:var(--serif);}
+.score-note{color:var(--ink-dim);font-size:.9rem;margin-top:4px;}
+
+/* ---------- Final ---------- */
+.final-card{padding:64px 52px;text-align:center;}
+.final-card p{font-size:1.2rem;color:var(--ink-dim);max-width:640px;margin:0 auto 34px;}
+
+/* ---------- Footer ---------- */
+footer{padding:50px 24px;text-align:center;color:var(--ink-faint);font-size:.85rem;border-top:1px solid var(--border);}
+footer .heart{color:var(--danger);}
+
+/* ---------- Confetti ---------- */
+#confetti-canvas{position:fixed;inset:0;z-index:2000;pointer-events:none;}
+
+@media(max-width:860px){
+  .hero-grid{grid-template-columns:1fr;text-align:left;}
+  .aperture-wrap{margin-top:20px;}
+  .core-card{grid-template-columns:1fr;padding:32px;}
+  .timer-panel{grid-template-columns:1fr;padding:32px;text-align:center;}
+  .timer-ring-wrap{margin:0 auto;}
+  .timer-presets,.timer-controls{justify-content:center;}
+  section{padding:74px 0;}
+  .nav-links{max-width:100%;}
+}
+</style>
+</head>
+<body>
+
+<div id="loader" aria-hidden="true">
+  <div class="loader-iris"><span></span><span></span></div>
+</div>
+
+<div class="atmosphere" id="atmosphere">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+</div>
+
+<div id="progress"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<header>
+  <nav>
+    <div class="brand"><span class="brand-mark"></span>Deep Work</div>
+    <ul class="nav-links">
+      <li><a href="#summary">Idea</a></li>
+      <li><a href="#lessons">Lessons</a></li>
+      <li><a href="#quotes">Quotes</a></li>
+      <li><a href="#rules">Rules</a></li>
+      <li><a href="#timer">Timer</a></li>
+      <li><a href="#score">Score</a></li>
+    </ul>
+    <button id="theme-toggle" aria-label="Toggle dark and light mode">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.5M12 19v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.5 12H5M19 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/></svg>
+    </button>
+  </nav>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-eyebrow">A field guide to concentration</div>
+      <h1>Deep<span class="line2">Work</span></h1>
+      <p class="hero-sub">Master the ability to focus without distraction</p>
+      <p class="hero-author">by <span>Cal Newport</span></p>
+      <p class="hero-intro">Deep Work is the ability to focus without distraction on cognitively demanding tasks. It is becoming increasingly rare but increasingly valuable. Mastering this skill leads to exceptional productivity, faster learning, and meaningful success.</p>
+      <a href="#summary" class="btn btn-primary" id="start-btn">
+        Start Learning
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+    </div>
+    <div class="aperture-wrap">
+      <div class="aperture" aria-hidden="true">
+        <div class="blade" style="--i:0"></div>
+        <div class="aperture-ring"></div>
+        <div class="aperture-ring r2"></div>
+        <div class="aperture-ring r3"></div>
+        <div class="aperture-core"></div>
+        <span class="aperture-label">attention, narrowed</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CORE IDEA -->
+<section id="summary">
+  <div class="wrap">
+    <div class="eyebrow">The Core Idea</div>
+    <h2 class="section-title reveal">What deep work actually means</h2>
+    <div class="glass core-card reveal">
+      <p>Deep Work is the ability to focus without distraction on cognitively demanding tasks. It is becoming increasingly rare in today's distracted world, but it is also one of the most valuable skills for producing exceptional results, learning quickly, and advancing your career.</p>
+      <div class="focus-illustration" aria-hidden="true">
+        <div class="beam"></div><div class="beam"></div><div class="beam"></div>
+        <div class="focus-ring"></div><div class="focus-ring"></div>
+        <div class="focus-dot"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LESSONS -->
+<section id="lessons">
+  <div class="wrap">
+    <div class="eyebrow">Key Lessons</div>
+    <h2 class="section-title reveal">Ten ideas worth building a practice around</h2>
+    <p class="section-lede reveal">Each one is a lever. Pull enough of them and shallow habits give way to real, compounding output.</p>
+    <div class="lessons-grid" id="lessons-grid"></div>
+  </div>
+</section>
+
+<!-- QUOTES -->
+<section id="quotes">
+  <div class="wrap">
+    <div class="eyebrow">In His Words</div>
+    <h2 class="section-title reveal">The most important quotes</h2>
+    <div class="quotes-track" id="quotes-track"></div>
+  </div>
+</section>
+
+<!-- TAKEAWAYS -->
+<section id="takeaways">
+  <div class="wrap">
+    <div class="eyebrow">Distilled</div>
+    <h2 class="section-title reveal">Powerful one-line takeaways</h2>
+    <div class="pill-cloud reveal" id="pill-cloud"></div>
+  </div>
+</section>
+
+<!-- KEYWORDS -->
+<section id="keywords">
+  <div class="wrap">
+    <div class="eyebrow">Vocabulary</div>
+    <h2 class="section-title reveal">Keywords of the book</h2>
+    <p class="section-lede reveal">Type to search — matching terms light up, the rest fade back.</p>
+    <input type="text" class="kw-search reveal" id="kw-search" placeholder="Search keywords, e.g. 'focus'…" aria-label="Search keywords">
+    <div class="kw-cloud" id="kw-cloud"></div>
+  </div>
+</section>
+
+<!-- RULES / CHECKLIST -->
+<section id="rules">
+  <div class="wrap">
+    <div class="eyebrow">Put It Into Practice</div>
+    <h2 class="section-title reveal">Practical daily rules</h2>
+    <p class="section-lede reveal">Check items off as you go. Your progress is saved on this device.</p>
+    <div class="glass checklist-panel reveal">
+      <div class="checklist-head">
+        <div class="checklist-progress-track"><div class="checklist-progress-fill" id="checklist-fill"></div></div>
+        <span class="checklist-pct" id="checklist-pct">0%</span>
+      </div>
+      <div id="checklist"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMER -->
+<section id="timer">
+  <div class="wrap">
+    <div class="eyebrow">Deep Work Timer</div>
+    <h2 class="section-title reveal">Do the work, right now</h2>
+    <p class="section-lede reveal">Pick a length, remove your phone from reach, and begin.</p>
+    <div class="glass timer-panel reveal">
+      <div class="timer-ring-wrap">
+        <svg viewBox="0 0 200 200">
+          <circle class="timer-ring-bg" cx="100" cy="100" r="90"/>
+          <circle class="timer-ring-fg" id="timer-ring" cx="100" cy="100" r="90" stroke-dasharray="565.5" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-center">
+          <div class="timer-display" id="timer-display">25:00</div>
+          <div class="timer-state" id="timer-state">Ready</div>
+        </div>
+      </div>
+      <div>
+        <div class="timer-presets">
+          <button class="preset-btn active" data-mins="25">25 min</button>
+          <button class="preset-btn" data-mins="50">50 min</button>
+          <button class="preset-btn" data-mins="90">90 min</button>
+        </div>
+        <div class="custom-timer">
+          <input type="number" id="custom-mins" min="1" max="240" placeholder="Custom">
+          <button class="btn btn-ghost" id="custom-set">Set</button>
+          <span style="color:var(--ink-faint);font-size:.85rem;">minutes</span>
+        </div>
+        <div class="timer-controls">
+          <button class="btn btn-primary" id="timer-start">Start</button>
+          <button class="btn btn-ghost" id="timer-pause">Pause</button>
+          <button class="btn btn-ghost" id="timer-reset">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="wrap">
+    <div class="eyebrow">Your Record</div>
+    <h2 class="section-title reveal">Focus statistics</h2>
+    <div class="stats-grid">
+      <div class="glass stat-card reveal"><div class="stat-value" data-count="0" id="stat-minutes">0</div><div class="stat-label">Minutes focused</div></div>
+      <div class="glass stat-card reveal"><div class="stat-value" data-count="0" id="stat-sessions">0</div><div class="stat-label">Sessions completed</div></div>
+      <div class="glass stat-card reveal"><div class="stat-value" data-count="0" id="stat-streak">0</div><div class="stat-label">Day streak</div></div>
+      <div class="glass stat-card reveal"><div class="stat-value" data-count="0" id="stat-hours">0</div><div class="stat-label">Deep work hours</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section id="score">
+  <div class="wrap">
+    <div class="eyebrow">Self-Assessment</div>
+    <h2 class="section-title reveal">Focus score calculator</h2>
+    <p class="section-lede reveal">Move the sliders honestly. There's no one watching but you.</p>
+    <div class="glass calc-panel reveal">
+      <div class="calc-row">
+        <label>Phone distractions during work <b id="v-phone">5</b>/10</label>
+        <input type="range" min="0" max="10" value="5" id="c-phone">
+      </div>
+      <div class="calc-row">
+        <label>Social media usage <b id="v-social">5</b>/10</label>
+        <input type="range" min="0" max="10" value="5" id="c-social">
+      </div>
+      <div class="calc-row">
+        <label>Sleep quality <b id="v-sleep">5</b>/10</label>
+        <input type="range" min="0" max="10" value="5" id="c-sleep">
+      </div>
+      <div class="calc-row">
+        <label>Hours of deep work per day <b id="v-hours">2</b> hrs</label>
+        <input type="range" min="0" max="8" value="2" id="c-hours">
+      </div>
+      <div class="calc-row">
+        <label>Daily planning consistency <b id="v-plan">5</b>/10</label>
+        <input type="range" min="0" max="10" value="5" id="c-plan">
+      </div>
+      <div class="calc-result">
+        <div class="score-ring-wrap">
+          <svg viewBox="0 0 120 120">
+            <circle class="score-ring-bg" cx="60" cy="60" r="50"/>
+            <circle class="score-ring-fg" id="score-ring" cx="60" cy="60" r="50" stroke-dasharray="314.2" stroke-dashoffset="314.2"/>
+          </svg>
+          <div class="score-num" id="score-num">0</div>
+        </div>
+        <div>
+          <div class="score-verdict" id="score-verdict">—</div>
+          <div class="score-note" id="score-note">Adjust the sliders to see your score.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section id="final">
+  <div class="wrap">
+    <div class="glass final-card reveal">
+      <h2 class="section-title">Working with complete focus</h2>
+      <p>Deep Work isn't about working harder — it is about working with complete focus. In a world full of distractions, the ability to concentrate deeply becomes a superpower that leads to faster learning, better results, and long-term success.</p>
+      <a href="#timer" class="btn btn-primary">Start Your Deep Work Journey Today</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Made with <span class="heart">♥</span> for lifelong learners — inspired by <em>Deep Work</em> by Cal Newport.
+  <br>© <span id="year"></span>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Loader ---------- */
+window.addEventListener('load',()=>{
+  setTimeout(()=>document.getElementById('loader').classList.add('hide'),350);
+});
+
+/* ---------- Year ---------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---------- Theme ---------- */
+const root = document.documentElement;
+const savedTheme = localStorage.getItem('dw_theme');
+if(savedTheme) root.setAttribute('data-theme', savedTheme);
+document.getElementById('theme-toggle').addEventListener('click',()=>{
+  const next = root.getAttribute('data-theme')==='light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  localStorage.setItem('dw_theme', next);
+});
+
+/* ---------- Scroll progress ---------- */
+const progressBar = document.getElementById('progress');
+window.addEventListener('scroll',()=>{
+  const h = document.documentElement;
+  const scrolled = (h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  progressBar.style.width = scrolled + '%';
+},{passive:true});
+
+/* ---------- Particles ---------- */
+const atmosphere = document.getElementById('atmosphere');
+const pcount = window.innerWidth < 700 ? 14 : 28;
+for(let i=0;i<pcount;i++){
+  const p = document.createElement('div');
+  p.className='particle';
+  const size = 2 + Math.random()*3;
+  p.style.width = size+'px';
+  p.style.height = size+'px';
+  p.style.left = Math.random()*100+'%';
+  p.style.top = Math.random()*100+'%';
+  p.style.animation = `floaty ${14+Math.random()*16}s ease-in-out ${-Math.random()*20}s infinite`;
+  atmosphere.appendChild(p);
+}
+const styleTag = document.createElement('style');
+styleTag.textContent = `@keyframes floaty{0%,100%{transform:translate(0,0);}33%{transform:translate(${8}px,-${18}px);}66%{transform:translate(-${10}px,${14}px);}}`;
+document.head.appendChild(styleTag);
+
+/* ---------- Ripple on buttons ---------- */
+document.querySelectorAll('.btn').forEach(btn=>{
+  btn.addEventListener('click',function(e){
+    const r = document.createElement('span');
+    r.className='ripple';
+    const rect = this.getBoundingClientRect();
+    r.style.left = (e.clientX-rect.left)+'px';
+    r.style.top = (e.clientY-rect.top)+'px';
+    this.appendChild(r);
+    setTimeout(()=>r.remove(),650);
+  });
+});
+
+/* ---------- Reveal on scroll ---------- */
+const revealTargets = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+  });
+},{threshold:0.15});
+revealTargets.forEach(t=>io.observe(t));
+
+/* ---------- Data: Lessons ---------- */
+const lessons = [
+  {t:"Deep Work Creates Exceptional Results", body:"Focused work produces higher-quality outcomes. Concentration beats multitasking. The best professionals spend significant time in uninterrupted work."},
+  {t:"Shallow Work Has Low Value", body:"Checking emails constantly, endless meetings, social media, and busywork create the illusion of productivity without meaningful progress."},
+  {t:"Attention Is Like a Muscle", body:"The more you practice focusing, the stronger your concentration becomes. Frequent distractions weaken your ability to think deeply."},
+  {t:"Eliminate Distractions", body:"Turn off notifications. Block distracting websites. Keep your phone away. Work in a quiet environment."},
+  {t:"Schedule Deep Work", body:"Don't wait for motivation. Plan focused work sessions on your calendar just like important meetings."},
+  {t:"Embrace Boredom", body:"Don't reach for your phone every free moment. Learning to tolerate boredom strengthens your focus."},
+  {t:"Work With Intensity", body:"A short session of complete concentration is often more productive than many hours of distracted work."},
+  {t:"Quit Social Media That Doesn't Add Value", body:"Use tools intentionally. If an app doesn't significantly improve your life or work, reduce or eliminate it."},
+  {t:"Finish Your Day Completely", body:"Create a shutdown routine: review completed work, plan tomorrow, and stop thinking about work after hours. This helps your brain recover."},
+  {t:"Produce More, Not Just Work More", body:"Success comes from Quality × Intensity of Focus × Time — not from spending the most hours working.", formula:"High-Quality Work = Time Spent × Intensity of Focus"}
+];
+const lessonsGrid = document.getElementById('lessons-grid');
+lessons.forEach((l,i)=>{
+  const card = document.createElement('div');
+  card.className='glass lesson-card reveal';
+  card.innerHTML = `<span class="lesson-num">0${i+1}</span><h3>${l.t}</h3><p>${l.body}</p>${l.formula?`<div class="lesson-formula">${l.formula}</div>`:''}`;
+  lessonsGrid.appendChild(card);
+  io.observe(card);
+});
+
+/* ---------- Data: Quotes ---------- */
+const quotes = [
+  "Clarity about what matters provides clarity about what does not.",
+  "A deep life is a good life.",
+  "Who you are, what you think, feel, and do depends on what you focus on.",
+  "If you don't produce, you won't thrive.",
+  "The ability to perform deep work is becoming increasingly rare and increasingly valuable.",
+  "Human beings are not wired to be constantly distracted."
+];
+const quotesTrack = document.getElementById('quotes-track');
+quotes.forEach(q=>{
+  const card = document.createElement('div');
+  card.className='glass quote-card reveal';
+  card.innerHTML = `<span class="quote-mark">&ldquo;</span><blockquote>${q}</blockquote>`;
+  quotesTrack.appendChild(card);
+  io.observe(card);
+});
+
+/* ---------- Data: Takeaways ---------- */
+const takeaways = [
+  "Focus is your greatest competitive advantage.",
+  "Deep work beats long work hours.",
+  "Multitasking reduces performance.",
+  "Protect your attention like a valuable asset.",
+  "Every distraction has a hidden cost.",
+  "Boredom trains concentration.",
+  "Schedule focus; don't hope for it.",
+  "Less social media, more meaningful work.",
+  "Master difficult things by working deeply.",
+  "Quality work comes from uninterrupted attention."
+];
+const pillCloud = document.getElementById('pill-cloud');
+takeaways.forEach(t=>{
+  const p = document.createElement('span');
+  p.className='pill';
+  p.textContent = t;
+  pillCloud.appendChild(p);
+});
+
+/* ---------- Data: Keywords ---------- */
+const keywords = ["Deep Work","Focus","Concentration","Productivity","Flow State","Cognitive Performance","Time Blocking","Attention","Learning","Skill Development","Deliberate Practice","Shallow Work","Digital Minimalism","Distraction","High Performance","Efficiency","Time Management","Discipline","Knowledge Work","Success","Consistency","Mindfulness","Habit Building","Peak Performance","Professional Growth"];
+const kwCloud = document.getElementById('kw-cloud');
+keywords.forEach(k=>{
+  const c = document.createElement('span');
+  c.className='chip';
+  c.textContent = k;
+  c.dataset.kw = k.toLowerCase();
+  kwCloud.appendChild(c);
+});
+document.getElementById('kw-search').addEventListener('input',(e)=>{
+  const q = e.target.value.trim().toLowerCase();
+  document.querySelectorAll('#kw-cloud .chip').forEach(chip=>{
+    if(!q){ chip.classList.remove('match','dim'); return; }
+    if(chip.dataset.kw.includes(q)){ chip.classList.add('match'); chip.classList.remove('dim'); }
+    else { chip.classList.add('dim'); chip.classList.remove('match'); }
+  });
+});
+
+/* ---------- Checklist ---------- */
+const rules = [
+  "🎯 Set one high-priority task each day.",
+  "⏰ Block 60–90 minutes for uninterrupted work.",
+  "📱 Keep your phone away during focus sessions.",
+  "🔕 Disable unnecessary notifications.",
+  "📝 Plan tomorrow before ending today.",
+  "📚 Read and learn without distractions.",
+  "😴 Get enough rest to maintain focus.",
+  "📈 Track hours of deep work, not just tasks completed."
+];
+const checklistEl = document.getElementById('checklist');
+let checkedState = {};
+try{ checkedState = JSON.parse(localStorage.getItem('dw_checklist')||'{}'); }catch(e){ checkedState = {}; }
+
+function renderChecklist(){
+  checklistEl.innerHTML='';
+  rules.forEach((r,i)=>{
+    const item = document.createElement('div');
+    item.className='check-item' + (checkedState[i]?' checked':'');
+    item.setAttribute('role','checkbox');
+    item.setAttribute('aria-checked', checkedState[i]?'true':'false');
+    item.tabIndex = 0;
+    item.innerHTML = `<span class="checkbox"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span><span class="label">${r}</span>`;
+    const toggle = ()=>{
+      checkedState[i] = !checkedState[i];
+      localStorage.setItem('dw_checklist', JSON.stringify(checkedState));
+      renderChecklist();
+    };
+    item.addEventListener('click', toggle);
+    item.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }});
+    checklistEl.appendChild(item);
+  });
+  const total = rules.length;
+  const done = Object.values(checkedState).filter(Boolean).length;
+  const pct = Math.round((done/total)*100);
+  document.getElementById('checklist-fill').style.width = pct+'%';
+  document.getElementById('checklist-pct').textContent = pct+'%';
+  if(pct===100) launchConfetti();
+}
+renderChecklist();
+
+/* ---------- Timer ---------- */
+const ring = document.getElementById('timer-ring');
+const RING_CIRC = 2*Math.PI*90;
+ring.style.strokeDasharray = RING_CIRC;
+const display = document.getElementById('timer-display');
+const stateLabel = document.getElementById('timer-state');
+let totalSeconds = 25*60;
+let remaining = totalSeconds;
+let timerInterval = null;
+let isRunning = false;
+
+function fmt(s){
+  const m = Math.floor(s/60).toString().padStart(2,'0');
+  const sec = (s%60).toString().padStart(2,'0');
+  return `${m}:${sec}`;
+}
+function updateRing(){
+  const frac = remaining/totalSeconds;
+  ring.style.strokeDashoffset = RING_CIRC*(1-frac);
+}
+function renderTimer(){
+  display.textContent = fmt(remaining);
+  updateRing();
+}
+renderTimer();
+
+document.querySelectorAll('.preset-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    totalSeconds = parseInt(btn.dataset.mins)*60;
+    remaining = totalSeconds;
+    pauseTimer();
+    renderTimer();
+    stateLabel.textContent='Ready';
+  });
+});
+document.getElementById('custom-set').addEventListener('click',()=>{
+  const val = parseInt(document.getElementById('custom-mins').value);
+  if(val && val>0){
+    document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+    totalSeconds = val*60;
+    remaining = totalSeconds;
+    pauseTimer();
+    renderTimer();
+    stateLabel.textContent='Ready';
+  }
+});
+
+function beep(){
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type='sine'; o.frequency.value=880;
+    o.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0.0001, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+0.9);
+    o.start(); o.stop(ctx.currentTime+0.95);
+  }catch(e){}
+}
+
+function startTimer(){
+  if(isRunning) return;
+  isRunning = true;
+  stateLabel.textContent='Focusing…';
+  timerInterval = setInterval(()=>{
+    remaining--;
+    renderTimer();
+    if(remaining<=0){
+      clearInterval(timerInterval);
+      isRunning=false;
+      stateLabel.textContent='Complete';
+      beep();
+      recordSession(totalSeconds/60);
+      launchConfetti();
+    }
+  },1000);
+}
+function pauseTimer(){
+  isRunning=false;
+  clearInterval(timerInterval);
+  if(remaining>0 && remaining<totalSeconds) stateLabel.textContent='Paused';
+}
+function resetTimer(){
+  pauseTimer();
+  remaining = totalSeconds;
+  renderTimer();
+  stateLabel.textContent='Ready';
+}
+document.getElementById('timer-start').addEventListener('click', startTimer);
+document.getElementById('timer-pause').addEventListener('click', pauseTimer);
+document.getElementById('timer-reset').addEventListener('click', resetTimer);
+
+/* ---------- Stats ---------- */
+let stats = {minutes:0, sessions:0, streak:0, lastDate:null};
+try{ stats = Object.assign(stats, JSON.parse(localStorage.getItem('dw_stats')||'{}')); }catch(e){}
+
+function recordSession(mins){
+  stats.minutes += mins;
+  stats.sessions += 1;
+  const today = new Date().toDateString();
+  if(stats.lastDate !== today){
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    stats.streak = (stats.lastDate === yesterday) ? stats.streak+1 : 1;
+    stats.lastDate = today;
+  }
+  localStorage.setItem('dw_stats', JSON.stringify(stats));
+  renderStats();
+}
+function animateCount(el, to){
+  const from = 0;
+  const dur = 900;
+  const start = performance.now();
+  function step(now){
+    const p = Math.min((now-start)/dur,1);
+    const eased = 1-Math.pow(1-p,3);
+    el.textContent = Math.round(from + (to-from)*eased);
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function renderStats(){
+  animateCount(document.getElementById('stat-minutes'), Math.round(stats.minutes));
+  animateCount(document.getElementById('stat-sessions'), stats.sessions);
+  animateCount(document.getElementById('stat-streak'), stats.streak);
+  animateCount(document.getElementById('stat-hours'), Math.round(stats.minutes/60*10)/10);
+}
+const statsSection = document.getElementById('stats');
+const statsIO = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ renderStats(); statsIO.unobserve(en.target);} });
+},{threshold:0.3});
+statsIO.observe(statsSection);
+
+/* ---------- Focus score calculator ---------- */
+const sliders = ['phone','social','sleep','hours','plan'];
+function updateCalc(){
+  const phone = +document.getElementById('c-phone').value;
+  const social = +document.getElementById('c-social').value;
+  const sleep = +document.getElementById('c-sleep').value;
+  const hours = +document.getElementById('c-hours').value;
+  const plan = +document.getElementById('c-plan').value;
+  sliders.forEach(id=>{});
+  document.getElementById('v-phone').textContent = phone;
+  document.getElementById('v-social').textContent = social;
+  document.getElementById('v-sleep').textContent = sleep;
+  document.getElementById('v-hours').textContent = hours;
+  document.getElementById('v-plan').textContent = plan;
+
+  // lower phone/social distraction is better -> invert
+  const score = Math.round(
+    ((10-phone)/10)*20 +
+    ((10-social)/10)*20 +
+    (sleep/10)*20 +
+    (Math.min(hours,8)/8)*25 +
+    (plan/10)*15
+  );
+  const clamped = Math.max(0,Math.min(100,score));
+  const circ = 2*Math.PI*50;
+  const ring2 = document.getElementById('score-ring');
+  ring2.style.strokeDasharray = circ;
+  ring2.style.strokeDashoffset = circ*(1-clamped/100);
+  document.getElementById('score-num').textContent = clamped;
+  const verdictEl = document.getElementById('score-verdict');
+  const noteEl = document.getElementById('score-note');
+  if(clamped>=75){ verdictEl.textContent='Excellent'; noteEl.textContent='Your habits strongly support deep work. Keep protecting this.'; ring2.style.stroke='var(--teal)'; }
+  else if(clamped>=45){ verdictEl.textContent='Good'; noteEl.textContent='A solid foundation — a few adjustments will compound quickly.'; ring2.style.stroke='var(--amber)'; }
+  else { verdictEl.textContent='Needs Improvement'; noteEl.textContent='Start small: one scheduled deep work block, one fewer distraction.'; ring2.style.stroke='var(--danger)'; }
+}
+['c-phone','c-social','c-sleep','c-hours','c-plan'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', updateCalc);
+});
+updateCalc();
+
+/* ---------- Confetti ---------- */
+const canvas = document.getElementById('confetti-canvas');
+const ctx2d = canvas.getContext('2d');
+function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+let confettiPieces = [];
+const confettiColors = ['#E8A33D','#4E8B8F','#EDEAE2','#C96A5A'];
+function launchConfetti(){
+  confettiPieces = [];
+  for(let i=0;i<120;i++){
+    confettiPieces.push({
+      x: Math.random()*canvas.width,
+      y: -20 - Math.random()*canvas.height*0.3,
+      vx: (Math.random()-0.5)*3,
+      vy: 2+Math.random()*3,
+      size: 4+Math.random()*5,
+      color: confettiColors[Math.floor(Math.random()*confettiColors.length)],
+      rot: Math.random()*360,
+      vr: (Math.random()-0.5)*10
+    });
+  }
+  requestAnimationFrame(animConfetti);
+}
+let confettiFrames = 0;
+function animConfetti(){
+  ctx2d.clearRect(0,0,canvas.width,canvas.height);
+  confettiFrames++;
+  let alive = false;
+  confettiPieces.forEach(p=>{
+    p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+    if(p.y < canvas.height+20) alive = true;
+    ctx2d.save();
+    ctx2d.translate(p.x,p.y);
+    ctx2d.rotate(p.rot*Math.PI/180);
+    ctx2d.fillStyle = p.color;
+    ctx2d.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+    ctx2d.restore();
+  });
+  if(alive && confettiFrames < 400){ requestAnimationFrame(animConfetti); }
+  else { ctx2d.clearRect(0,0,canvas.width,canvas.height); confettiFrames=0; }
+}
+
+})();
+</script>
+<script src="../assets/library-core.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>
