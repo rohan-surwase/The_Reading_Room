@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Psychology of Money — An Interactive Field Guide</title>
+<meta name="description" content="An interactive summary of The Psychology of Money by Morgan Housel — ten lessons, quotes, keywords, and habits for a calmer relationship with money.">
+<meta name="keywords" content="Psychology of Money, Morgan Housel, financial behavior, wealth, saving, investing, compounding">
+<meta property="og:title" content="The Psychology of Money — An Interactive Field Guide">
+<meta property="og:description" content="Financial success depends more on behavior than intelligence.">
+<meta name="theme-color" content="#0B3D2E">
+<meta name="book:tagline" content="Ten lessons on how behavior, not intelligence, builds lasting wealth.">
+<meta name="book:date" content="2026-07-10">
+<meta name="book:accent" content="#146B4F">
+<style>
+  :root{
+    --emerald-900:#0B3D2E;
+    --emerald-800:#0E4A38;
+    --emerald-600:#146B4F;
+    --emerald-500:#1B8563;
+    --gold:#C9A227;
+    --gold-soft:#E4C765;
+    --cream:#F6F3EA;
+    --cream-2:#EFEAD9;
+    --ink:#181D1A;
+    --ink-soft:#454B47;
+    --white:#FFFFFF;
+    --line: rgba(24,29,26,0.10);
+    --shadow: 0 20px 50px -20px rgba(11,61,46,0.35);
+    --shadow-sm: 0 8px 24px -12px rgba(11,61,46,0.25);
+    --radius: 18px;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --bg: var(--cream);
+    --bg-2: var(--cream-2);
+    --surface: rgba(255,255,255,0.6);
+    --surface-solid: #FFFFFF;
+    --text: var(--ink);
+    --text-soft: var(--ink-soft);
+    --border: var(--line);
+    --nav-bg: rgba(246,243,234,0.78);
+  }
+  html[data-theme="dark"]{
+    --bg: #0B2119;
+    --bg-2: #0E2A20;
+    --surface: rgba(20,45,36,0.55);
+    --surface-solid: #12291F;
+    --text: #F2EFE4;
+    --text-soft: #C4CFC7;
+    --border: rgba(242,239,228,0.12);
+    --nav-bg: rgba(11,33,25,0.78);
+    --shadow: 0 20px 50px -20px rgba(0,0,0,0.6);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background: radial-gradient(1200px 600px at 10% -10%, var(--bg-2), transparent),
+                var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    transition:background .4s ease, color .4s ease;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--gold); color:var(--emerald-900);}
+  a{color:inherit;}
+  img,svg{display:block;max-width:100%;}
+  h1,h2,h3,h4{font-family:var(--serif); margin:0; letter-spacing:-0.01em;}
+  p{margin:0;}
+  button{font-family:var(--sans); cursor:pointer;}
+  :focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+
+  /* ---------- progress bar ---------- */
+  #progress-bar{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:linear-gradient(90deg, var(--gold), var(--emerald-500));
+    z-index:1000; transition:width .1s linear;
+  }
+
+  /* ---------- nav ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:900;
+    backdrop-filter:blur(14px) saturate(140%);
+    background:var(--nav-bg);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    max-width:1120px; margin:0 auto; padding:14px 22px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:var(--serif); font-size:1.05rem; font-weight:700;}
+  .brand .coin{
+    width:26px; height:26px; border-radius:50%;
+    background:conic-gradient(from 220deg, var(--gold), var(--gold-soft), var(--gold));
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,0.15), 0 2px 6px rgba(0,0,0,0.25);
+    flex-shrink:0;
+  }
+  nav.links{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none;}
+  nav.links::-webkit-scrollbar{display:none;}
+  nav.links a{
+    white-space:nowrap; font-size:0.82rem; padding:8px 12px; border-radius:999px;
+    color:var(--text-soft); text-decoration:none; transition:all .25s ease;
+  }
+  nav.links a.active, nav.links a:hover{background:var(--emerald-900); color:var(--cream);}
+  html[data-theme="dark"] nav.links a.active, html[data-theme="dark"] nav.links a:hover{background:var(--gold); color:var(--emerald-900);}
+  .nav-actions{display:flex; align-items:center; gap:10px;}
+  .icon-btn{
+    width:38px; height:38px; border-radius:50%; border:1px solid var(--border);
+    background:var(--surface-solid); display:flex; align-items:center; justify-content:center;
+    font-size:1rem; transition:transform .25s ease, background .25s ease;
+  }
+  .icon-btn:hover{transform:translateY(-2px) rotate(-6deg);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    max-width:1120px; margin:0 auto; padding:64px 22px 40px;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--emerald-600); font-weight:700; margin-bottom:18px;
+  }
+  html[data-theme="dark"] .eyebrow{color:var(--gold-soft);}
+  .eyebrow::before{content:""; width:22px; height:1px; background:currentColor;}
+  h1.title{font-size:clamp(2.4rem, 5.2vw, 4rem); line-height:1.02; font-weight:700;}
+  h1.title em{font-style:normal; color:var(--emerald-600); position:relative;}
+  html[data-theme="dark"] h1.title em{color:var(--gold-soft);}
+  .author-line{margin-top:16px; font-size:1.02rem; color:var(--text-soft); font-family:var(--serif); font-style:italic;}
+  .subtitle{
+    margin-top:22px; font-size:1.18rem; max-width:46ch; color:var(--text);
+    padding-left:16px; border-left:3px solid var(--gold);
+  }
+  .hero-meta{display:flex; gap:22px; margin-top:30px; flex-wrap:wrap;}
+  .meta-chip{font-size:0.8rem; color:var(--text-soft); display:flex; align-items:center; gap:6px;}
+  .cta-row{display:flex; gap:12px; margin-top:32px; flex-wrap:wrap;}
+  .btn{
+    border:none; border-radius:999px; padding:13px 24px; font-size:0.9rem; font-weight:600;
+    display:inline-flex; align-items:center; gap:8px; transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .btn-primary{background:var(--emerald-900); color:var(--cream); box-shadow:var(--shadow-sm);}
+  html[data-theme="dark"] .btn-primary{background:var(--gold); color:var(--emerald-900);}
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:var(--shadow);}
+  .btn-ghost{background:transparent; border:1px solid var(--border); color:var(--text);}
+  .btn-ghost:hover{background:var(--surface-solid);}
+
+  /* ---------- hero illustration: the compounding jar ---------- */
+  .jar-wrap{position:relative; display:flex; align-items:flex-end; justify-content:center; height:340px;}
+  .jar{
+    position:relative; width:190px; height:250px; border-radius:14px 14px 30px 30px;
+    border:3px solid var(--emerald-900); border-top:none;
+    background:linear-gradient(180deg, transparent 0%, rgba(20,107,79,0.06) 100%);
+    overflow:hidden;
+    box-shadow: 0 30px 60px -25px rgba(11,61,46,0.5);
+  }
+  html[data-theme="dark"] .jar{border-color:var(--gold-soft);}
+  .jar::before{ /* neck */
+    content:""; position:absolute; top:-22px; left:50%; transform:translateX(-50%);
+    width:80px; height:22px; border-radius:6px 6px 0 0; border:3px solid var(--emerald-900); border-bottom:none;
+    background:var(--bg);
+  }
+  html[data-theme="dark"] .jar::before{border-color:var(--gold-soft);}
+  .fill{
+    position:absolute; left:0; right:0; bottom:0; height:8%;
+    background:linear-gradient(180deg, var(--gold-soft), var(--gold));
+    animation:fillJar 6s ease-in-out infinite;
+  }
+  .fill::after{
+    content:""; position:absolute; top:-6px; left:0; right:0; height:12px;
+    background:repeating-linear-gradient(90deg, var(--gold) 0 10px, var(--gold-soft) 10px 20px);
+    opacity:.6; border-radius:50%;
+  }
+  @keyframes fillJar{
+    0%{height:10%;} 50%{height:78%;} 100%{height:10%;}
+  }
+  .coin-drop{
+    position:absolute; top:-30px; left:50%; width:26px; height:26px; border-radius:50%;
+    background:conic-gradient(from 220deg, var(--gold), var(--gold-soft), var(--gold));
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,0.15);
+    animation:drop 3s cubic-bezier(.6,0,.9,1) infinite;
+  }
+  .coin-drop:nth-child(2){animation-delay:1s; left:42%;}
+  .coin-drop:nth-child(3){animation-delay:2s; left:58%;}
+  @keyframes drop{
+    0%{transform:translate(-50%,-20px) rotate(0deg); opacity:0;}
+    8%{opacity:1;}
+    70%{transform:translate(-50%, 190px) rotate(360deg); opacity:1;}
+    78%{opacity:0;}
+    100%{opacity:0; transform:translate(-50%,190px);}
+  }
+  .jar-label{
+    position:absolute; bottom:-34px; left:50%; transform:translateX(-50%);
+    font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-soft);
+  }
+  .sparkline{position:absolute; right:-10px; top:6px; width:120px; opacity:.9;}
+
+  /* ---------- section shell ---------- */
+  section{max-width:1120px; margin:0 auto; padding:70px 22px;}
+  .section-head{margin-bottom:34px; max-width:640px;}
+  .section-num{font-family:var(--serif); font-style:italic; color:var(--gold); font-size:0.95rem;}
+  html[data-theme="dark"] .section-num{color:var(--gold-soft);}
+  h2.section-title{font-size:clamp(1.7rem,3.4vw,2.4rem); margin-top:6px;}
+  .section-sub{margin-top:10px; color:var(--text-soft);}
+
+  .reveal{opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- core idea ---------- */
+  .core-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:38px; backdrop-filter:blur(10px); box-shadow:var(--shadow-sm);
+    position:relative; overflow:hidden;
+  }
+  .core-card::before{
+    content:"“"; position:absolute; top:-30px; right:10px; font-family:var(--serif);
+    font-size:11rem; color:var(--gold); opacity:.15; line-height:1;
+  }
+  .core-card p{font-size:1.12rem; position:relative; z-index:1;}
+
+  /* ---------- lessons accordion ---------- */
+  .lesson{
+    border:1px solid var(--border); border-radius:var(--radius); margin-bottom:14px;
+    background:var(--surface-solid); overflow:hidden; box-shadow:var(--shadow-sm);
+    transition:box-shadow .3s ease;
+  }
+  .lesson-head{
+    width:100%; background:none; border:none; padding:20px 22px; text-align:left;
+    display:flex; align-items:center; gap:16px; color:var(--text); font-size:1.02rem; font-weight:600;
+  }
+  .lesson-num{
+    font-family:var(--serif); font-style:italic; color:var(--gold-soft); background:var(--emerald-900);
+    width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:0.95rem; flex-shrink:0;
+  }
+  html[data-theme="dark"] .lesson-num{background:var(--gold); color:var(--emerald-900);}
+  .lesson-head .chev{margin-left:auto; transition:transform .35s ease; color:var(--gold); font-size:1.1rem;}
+  .lesson[data-open="true"] .chev{transform:rotate(180deg);}
+  .lesson-body{
+    max-height:0; overflow:hidden; transition:max-height .45s ease, padding .45s ease;
+    padding:0 22px;
+  }
+  .lesson[data-open="true"] .lesson-body{max-height:900px; padding:0 22px 24px;}
+  .lesson-body ul{margin:14px 0; padding-left:20px;}
+  .lesson-body li{margin-bottom:8px; color:var(--text-soft);}
+  .takeaway{
+    margin-top:14px; padding:14px 16px; border-radius:12px; font-size:0.92rem;
+    background:linear-gradient(120deg, rgba(201,162,39,0.16), rgba(20,107,79,0.1));
+    border-left:3px solid var(--gold); font-weight:600;
+  }
+
+  /* ---------- quotes ---------- */
+  .quote-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:18px;}
+  .quote-card{
+    background:var(--emerald-900); color:var(--cream); border-radius:var(--radius);
+    padding:26px 22px; position:relative; box-shadow:var(--shadow-sm); min-height:180px;
+    display:flex; flex-direction:column; justify-content:space-between; gap:16px;
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .quote-card:hover{transform:translateY(-6px); box-shadow:var(--shadow);}
+  .quote-mark{font-family:var(--serif); font-size:2.4rem; color:var(--gold-soft); line-height:1;}
+  .quote-text{font-family:var(--serif); font-size:1.02rem; line-height:1.45;}
+  .quote-foot{display:flex; align-items:center; justify-content:space-between;}
+  .quote-copy{
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:var(--cream);
+    border-radius:999px; padding:7px 14px; font-size:0.76rem; display:flex; align-items:center; gap:6px;
+  }
+  .quote-copy:hover{background:var(--gold); color:var(--emerald-900); border-color:var(--gold);}
+  .quote-copy.copied{background:var(--gold-soft); color:var(--emerald-900);}
+
+  /* ---------- keywords ---------- */
+  .kw-search{
+    width:100%; max-width:380px; padding:12px 16px; border-radius:999px; border:1px solid var(--border);
+    background:var(--surface-solid); color:var(--text); font-size:0.9rem; margin-bottom:22px;
+  }
+  .kw-cloud{display:flex; flex-wrap:wrap; gap:10px;}
+  .chip{
+    padding:9px 16px; border-radius:999px; font-size:0.84rem; border:1px solid var(--border);
+    background:var(--surface-solid); color:var(--text-soft); transition:all .3s cubic-bezier(.34,1.56,.64,1);
+    animation:pop .5s ease both;
+  }
+  .chip:hover{background:var(--emerald-900); color:var(--cream); transform:translateY(-3px) scale(1.05); border-color:var(--emerald-900);}
+  html[data-theme="dark"] .chip:hover{background:var(--gold); color:var(--emerald-900); border-color:var(--gold);}
+  .chip.hide{display:none;}
+  @keyframes pop{from{opacity:0; transform:scale(.7);} to{opacity:1; transform:scale(1);}}
+  .kw-empty{color:var(--text-soft); font-size:0.9rem; display:none;}
+
+  /* ---------- habits ---------- */
+  .habit-progress-wrap{
+    display:flex; align-items:center; gap:14px; margin-bottom:24px; max-width:420px;
+  }
+  .habit-progress-track{flex:1; height:8px; border-radius:999px; background:var(--bg-2); overflow:hidden; border:1px solid var(--border);}
+  .habit-progress-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--emerald-600),var(--gold)); transition:width .5s ease;}
+  #habit-count{font-size:0.85rem; color:var(--text-soft); white-space:nowrap;}
+  .habit-list{list-style:none; margin:0; padding:0; display:grid; gap:10px;}
+  .habit-item{
+    display:flex; align-items:center; gap:14px; padding:16px 18px; border-radius:14px;
+    border:1px solid var(--border); background:var(--surface-solid); cursor:pointer;
+    transition:background .3s ease, transform .2s ease;
+  }
+  .habit-item:hover{transform:translateX(4px);}
+  .habit-item.done{background:linear-gradient(90deg, rgba(20,107,79,0.12), rgba(201,162,39,0.1));}
+  .habit-box{
+    width:24px; height:24px; border-radius:7px; border:2px solid var(--emerald-600); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:0.85rem; color:transparent;
+    transition:all .25s ease;
+  }
+  .habit-item.done .habit-box{background:var(--emerald-600); color:var(--cream); transform:scale(1.05);}
+  html[data-theme="dark"] .habit-box{border-color:var(--gold-soft);}
+  html[data-theme="dark"] .habit-item.done .habit-box{background:var(--gold); color:var(--emerald-900);}
+  .habit-text{font-size:0.95rem;}
+  .habit-item.done .habit-text{text-decoration:line-through; color:var(--text-soft);}
+
+  /* ---------- summary ---------- */
+  .summary-card{
+    background:linear-gradient(135deg, var(--emerald-900), var(--emerald-600));
+    color:var(--cream); border-radius:24px; padding:48px 36px; text-align:center;
+    box-shadow:var(--shadow); position:relative; overflow:hidden;
+  }
+  .summary-card::after{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(600px 200px at 80% 0%, rgba(201,162,39,0.25), transparent);
+  }
+  .summary-card p{font-family:var(--serif); font-size:clamp(1.1rem,2.4vw,1.5rem); line-height:1.5; position:relative; z-index:1; max-width:820px; margin:0 auto;}
+  .summary-tag{position:relative; z-index:1; display:inline-block; margin-top:20px; font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold-soft);}
+
+  /* ---------- footer ---------- */
+  footer{text-align:center; padding:50px 22px 80px; color:var(--text-soft); font-size:0.85rem;}
+  footer .heart{color:var(--gold); animation:beat 1.6s ease-in-out infinite;}
+  @keyframes beat{0%,100%{transform:scale(1);} 50%{transform:scale(1.25);}}
+
+  /* ---------- floating buttons ---------- */
+  .fab-stack{position:fixed; right:22px; bottom:26px; display:flex; flex-direction:column; gap:12px; z-index:800;}
+  .fab{
+    width:50px; height:50px; border-radius:50%; border:none; background:var(--emerald-900); color:var(--cream);
+    box-shadow:var(--shadow-sm); font-size:1.2rem; display:flex; align-items:center; justify-content:center;
+    opacity:0; transform:translateY(20px) scale(.7); pointer-events:none; transition:all .3s ease;
+  }
+  html[data-theme="dark"] .fab{background:var(--gold); color:var(--emerald-900);}
+  .fab.show{opacity:1; transform:translateY(0) scale(1); pointer-events:auto;}
+  .fab:hover{transform:translateY(-4px) scale(1.05);}
+  .fab-main{background:var(--gold); color:var(--emerald-900); opacity:1; pointer-events:auto; transform:none;}
+
+  /* ---------- confetti ---------- */
+  .confetti{position:fixed; top:-10px; width:8px; height:14px; z-index:1200; pointer-events:none; border-radius:2px;}
+
+  /* ---------- toast ---------- */
+  #toast{
+    position:fixed; left:50%; bottom:26px; transform:translate(-50%,20px); background:var(--emerald-900); color:var(--cream);
+    padding:12px 22px; border-radius:999px; font-size:0.85rem; z-index:1300; opacity:0; transition:all .35s ease; pointer-events:none;
+    box-shadow:var(--shadow-sm);
+  }
+  #toast.show{opacity:1; transform:translate(-50%,0);}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr; padding-top:36px;}
+    .jar-wrap{order:-1; height:220px;}
+    section{padding:52px 18px;}
+  }
+  @media print{
+    header.nav, .fab-stack, #progress-bar, #toast{display:none !important;}
+    .lesson-body{max-height:none !important; padding:0 22px 20px !important;}
+    body{background:#fff; color:#000;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001s !important; transition-duration:0.001s !important;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="coin"></span> Psychology of Money</div>
+    <nav class="links" id="floating-nav" aria-label="Section navigation">
+      <a href="#core" data-target="core">Core Idea</a>
+      <a href="#lessons" data-target="lessons">Lessons</a>
+      <a href="#quotes" data-target="quotes">Quotes</a>
+      <a href="#keywords" data-target="keywords">Keywords</a>
+      <a href="#habits" data-target="habits">Habits</a>
+      <a href="#summary" data-target="summary">Summary</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="print-btn" title="Print-friendly view" aria-label="Print this page">🖨️</button>
+      <button class="icon-btn" id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark and light mode">🌙</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Field guide · Book summary</div>
+      <h1 class="title">The Psychology<br>of <em>Money</em></h1>
+      <p class="author-line">by Morgan Housel</p>
+      <p class="subtitle">"Financial success depends more on behavior than intelligence."</p>
+      <div class="hero-meta">
+        <span class="meta-chip">⏱️ <span id="reading-time">7 min read</span></span>
+        <span class="meta-chip">📖 10 lessons</span>
+        <span class="meta-chip">💬 10 quotes</span>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" id="start-reading">Begin reading ↓</button>
+        <button class="btn btn-ghost" id="bookmark-btn">🔖 Bookmark my spot</button>
+      </div>
+    </div>
+    <div class="jar-wrap" aria-hidden="true">
+      <div class="jar">
+        <div class="fill"></div>
+        <div class="coin-drop"></div>
+        <div class="coin-drop"></div>
+        <div class="coin-drop"></div>
+      </div>
+      <div class="jar-label">Patience, compounding</div>
+    </div>
+  </section>
+
+  <section id="core">
+    <div class="section-head reveal">
+      <div class="section-num">Foundation</div>
+      <h2 class="section-title">The Core Idea</h2>
+    </div>
+    <div class="core-card reveal">
+      <p>Financial success is not determined primarily by intelligence or technical knowledge. It is driven by behavior, patience, emotional control, and consistent decision-making. Wealth is built through good habits, long-term thinking, and understanding that money is a tool to buy freedom — not status.</p>
+    </div>
+  </section>
+
+  <section id="lessons">
+    <div class="section-head reveal">
+      <div class="section-num">Ten ideas</div>
+      <h2 class="section-title">Key Lessons</h2>
+      <p class="section-sub">Tap a lesson to expand it.</p>
+    </div>
+    <div id="lesson-list"></div>
+  </section>
+
+  <section id="quotes">
+    <div class="section-head reveal">
+      <div class="section-num">In his words</div>
+      <h2 class="section-title">Quotes Worth Keeping</h2>
+      <p class="section-sub">Tap "Copy" to save any line.</p>
+    </div>
+    <div class="quote-grid" id="quote-grid"></div>
+  </section>
+
+  <section id="keywords">
+    <div class="section-head reveal">
+      <div class="section-num">Vocabulary</div>
+      <h2 class="section-title">Keywords</h2>
+    </div>
+    <input type="text" class="kw-search" id="kw-search" placeholder="Search keywords… e.g. patience" aria-label="Search keywords">
+    <div class="kw-cloud" id="kw-cloud"></div>
+    <p class="kw-empty" id="kw-empty">No keywords match that search.</p>
+  </section>
+
+  <section id="habits">
+    <div class="section-head reveal">
+      <div class="section-num">Practice</div>
+      <h2 class="section-title">Actionable Habits</h2>
+      <p class="section-sub">Your progress is saved on this device.</p>
+    </div>
+    <div class="habit-progress-wrap">
+      <div class="habit-progress-track"><div class="habit-progress-fill" id="habit-fill"></div></div>
+      <span id="habit-count">0 / 10</span>
+    </div>
+    <ul class="habit-list" id="habit-list"></ul>
+  </section>
+
+  <section id="summary">
+    <div class="section-head reveal">
+      <div class="section-num">In one line</div>
+      <h2 class="section-title">The Takeaway</h2>
+    </div>
+    <div class="summary-card reveal">
+      <p>"The Psychology of Money teaches that lasting wealth comes from disciplined behavior, patience, consistent investing, and using money to gain freedom rather than to impress others."</p>
+      <span class="summary-tag">— A field guide, not a formula</span>
+    </div>
+  </section>
+</main>
+
+<footer>Made with <span class="heart">❤️</span> for lifelong learners</footer>
+
+<div class="fab-stack">
+  <button class="fab" id="scroll-top" aria-label="Scroll to top" title="Back to top">↑</button>
+  <button class="fab fab-main" id="fab-random-quote" aria-label="Show a random quote" title="Random quote">🎲</button>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- DATA ---------------- */
+  const lessons = [
+    {
+      title:"Money Is About Behavior, Not Knowledge",
+      body:"Doing well with money isn't about how smart you are — it's about how you behave. A modest earner with humility and discipline often ends up wealthier than a brilliant analyst who can't control their emotions.",
+      points:[
+        "Financial outcomes are driven more by mindset than by formulas.",
+        "Emotional discipline outperforms raw intelligence over time.",
+        "Humility about what you don't know protects you from big mistakes."
+      ],
+      takeaway:"Behaving reasonably and consistently beats being technically right once."
+    },
+    {
+      title:"Wealth Is What You Don't See",
+      body:"Spending money to show people you have money is the fastest way to have less of it. Real wealth is the accumulated, unspent assets sitting quietly out of view — not the car in the driveway.",
+      points:[
+        "Visible spending signals income, not wealth.",
+        "Wealth is the option not to spend — it's hidden by definition.",
+        "Restraint today is what funds freedom tomorrow."
+      ],
+      takeaway:"Wealth is an unseen number, not a visible lifestyle."
+    },
+    {
+      title:"The Power of Compounding",
+      body:"Small, consistent gains, given enough time, produce astonishing results — but compounding is unintuitive because its biggest returns happen late, after years of unremarkable-looking growth.",
+      points:[
+        "Time in the market matters more than timing the market.",
+        "Most of the value of compounding arrives in the final stretch.",
+        "Interruptions — panic-selling, debt, lifestyle creep — reset the clock."
+      ],
+      takeaway:"Compounding rewards the investor who simply doesn't stop."
+    },
+    {
+      title:"Save Without a Specific Goal",
+      body:"You don't need a defined reason to save. Savings that aren't earmarked for a particular purchase give you flexibility to handle surprises and seize opportunities life didn't warn you about.",
+      points:[
+        "A general savings habit builds optionality, not just a target fund.",
+        "Unplanned savings absorb shocks that a rigid budget cannot.",
+        "The value of savings rises with unpredictability, not with certainty."
+      ],
+      takeaway:"Save for the version of life you can't yet predict."
+    },
+    {
+      title:"Freedom Is the Highest Dividend",
+      body:"The highest dividend money pays isn't a bigger house — it's control over your own time. Being able to wake up and decide how to spend your day is the ultimate return on financial discipline.",
+      points:[
+        "Autonomy over your schedule is a form of wealth few price correctly.",
+        "Money's best use is buying the ability to say no.",
+        "Time-affluence tends to predict happiness better than income does."
+      ],
+      takeaway:"Money's greatest power is the independence it buys you."
+    },
+    {
+      title:"Risk and Luck Matter",
+      body:"Every outcome — success or failure — is shaped partly by forces outside anyone's control. Crediting all success to skill, or all failure to error, ignores the quiet hand of luck and risk in every story.",
+      points:[
+        "Extreme outcomes, good or bad, usually involve extreme luck or extreme risk.",
+        "Judge decisions by process, not only by results.",
+        "Be slow to worship success and quick to extend grace to failure."
+      ],
+      takeaway:"Respect luck and risk equally — neither is fully controllable."
+    },
+    {
+      title:"Margin of Safety",
+      body:"Plans rarely survive contact with reality exactly as drawn. Building room for error — extra savings, conservative assumptions, flexible timelines — lets you stay in the game when the unexpected happens.",
+      points:[
+        "A margin of safety lets you be wrong without being ruined.",
+        "Overconfidence in a single forecast is a common financial trap.",
+        "Surviving is the prerequisite for eventually compounding."
+      ],
+      takeaway:"Room for error is not pessimism — it's what lets you keep playing."
+    },
+    {
+      title:"Long-Term Thinking Wins",
+      body:"Short-term noise — daily headlines, market swings, quarterly results — tempts constant reaction. Investors who anchor to decades instead of days tend to make calmer, better decisions.",
+      points:[
+        "Volatility is the price of admission for long-term returns.",
+        "Reacting to short-term noise erodes long-term gains.",
+        "A long time horizon turns market chaos into background noise."
+      ],
+      takeaway:"The market rewards patience far more often than prediction."
+    },
+    {
+      title:"Enough Is Powerful",
+      body:"Without a sense of 'enough', ambition can chase ever-moving goalposts, risking everything already earned for something you didn't need. Knowing your enough protects both your wealth and your peace.",
+      points:[
+        "The hardest financial skill is getting the goalpost to stop moving.",
+        "Social comparison is a goalpost that never stays still.",
+        "Contentment is a financial strategy, not just a mood."
+      ],
+      takeaway:"Define 'enough' before the market — or your ego — defines it for you."
+    },
+    {
+      title:"Financial Independence Is the Goal",
+      body:"The point of accumulating money isn't a number on a screen — it's the independence to make choices on your own terms: what to work on, where to live, how to spend your days.",
+      points:[
+        "Independence is the finish line behind every good financial habit.",
+        "Small, boring, consistent choices compound into real freedom.",
+        "The goal is control over your life, not a specific net worth."
+      ],
+      takeaway:"Every habit in this book points toward one destination: independence."
+    }
+  ];
+
+  const quotes = [
+    "Doing well with money has little to do with how smart you are and a lot to do with how you behave.",
+    "Wealth is what you don't see.",
+    "The highest form of wealth is the ability to wake up every morning and say, 'I can do whatever I want today.'",
+    "The hardest financial skill is getting the goalpost to stop moving.",
+    "Compounding works best when you give it time.",
+    "Reasonable beats rational.",
+    "Room for error is one of the most important parts of every plan.",
+    "Money's greatest intrinsic value is its ability to give you control over your time.",
+    "The ability to stick with a plan is more important than finding the perfect plan.",
+    "Enough is never too little."
+  ];
+
+  const keywords = ["Financial Behavior","Wealth","Saving","Investing","Compounding","Patience","Long-Term Thinking","Freedom","Financial Independence","Risk","Luck","Margin of Safety","Emotional Control","Discipline","Delayed Gratification","Consistency","Humility","Simplicity","Flexibility","Time","Lifestyle Inflation","Decision Making","Resilience","Security","Independence"];
+
+  const habits = [
+    "Save a portion of every income.",
+    "Invest consistently for the long term.",
+    "Avoid unnecessary debt.",
+    "Build an emergency fund.",
+    "Ignore short-term market fluctuations.",
+    "Live below your means.",
+    "Be patient with investments.",
+    "Focus on increasing income and keeping expenses low.",
+    "Avoid comparing your lifestyle with others.",
+    "Remember that freedom is more valuable than luxury."
+  ];
+
+  /* ---------------- RENDER: lessons ---------------- */
+  const lessonList = document.getElementById("lesson-list");
+  lessons.forEach((l, i) => {
+    const el = document.createElement("div");
+    el.className = "lesson";
+    el.dataset.open = "false";
+    const bodyId = "lesson-body-" + i;
+    el.innerHTML = `
+      <button class="lesson-head" aria-expanded="false" aria-controls="${bodyId}">
+        <span class="lesson-num">${i+1}</span>
+        <span>${l.title}</span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="lesson-body" id="${bodyId}">
+        <p>${l.body}</p>
+        <ul>${l.points.map(p => `<li>${p}</li>`).join("")}</ul>
+        <div class="takeaway">✦ Key takeaway: ${l.takeaway}</div>
+      </div>`;
+    const head = el.querySelector(".lesson-head");
+    head.addEventListener("click", () => {
+      const open = el.dataset.open === "true";
+      el.dataset.open = open ? "false" : "true";
+      head.setAttribute("aria-expanded", String(!open));
+    });
+    lessonList.appendChild(el);
+  });
+
+  /* ---------------- RENDER: quotes ---------------- */
+  const quoteGrid = document.getElementById("quote-grid");
+  quotes.forEach((q, i) => {
+    const card = document.createElement("div");
+    card.className = "quote-card";
+    card.innerHTML = `
+      <div>
+        <div class="quote-mark">“</div>
+        <p class="quote-text">${q}</p>
+      </div>
+      <div class="quote-foot">
+        <span style="font-size:0.72rem;opacity:.7;">Morgan Housel</span>
+        <button class="quote-copy" data-index="${i}">📋 Copy</button>
+      </div>`;
+    quoteGrid.appendChild(card);
+  });
+  quoteGrid.addEventListener("click", (e) => {
+    const btn = e.target.closest(".quote-copy");
+    if(!btn) return;
+    const text = quotes[+btn.dataset.index];
+    copyText(text, btn);
+  });
+
+  function copyText(text, btn){
+    const done = () => {
+      if(btn){
+        const old = btn.textContent;
+        btn.textContent = "✓ Copied";
+        btn.classList.add("copied");
+        setTimeout(() => { btn.textContent = old; btn.classList.remove("copied"); }, 1600);
+      }
+      showToast("Quote copied to clipboard");
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+    } else {
+      fallbackCopy(text, done);
+    }
+  }
+  function fallbackCopy(text, cb){
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); }catch(e){}
+    document.body.removeChild(ta);
+    cb();
+  }
+
+  document.getElementById("fab-random-quote").addEventListener("click", () => {
+    const i = Math.floor(Math.random() * quotes.length);
+    showToast("“" + quotes[i] + "”");
+    document.getElementById("quotes").scrollIntoView({behavior:"smooth", block:"start"});
+  });
+
+  /* ---------------- RENDER: keywords ---------------- */
+  const kwCloud = document.getElementById("kw-cloud");
+  keywords.forEach((k, i) => {
+    const chip = document.createElement("span");
+    chip.className = "chip";
+    chip.textContent = k;
+    chip.style.animationDelay = (i * 0.03) + "s";
+    kwCloud.appendChild(chip);
+  });
+  const kwSearch = document.getElementById("kw-search");
+  const kwEmpty = document.getElementById("kw-empty");
+  kwSearch.addEventListener("input", () => {
+    const term = kwSearch.value.trim().toLowerCase();
+    let visible = 0;
+    [...kwCloud.children].forEach(chip => {
+      const match = chip.textContent.toLowerCase().includes(term);
+      chip.classList.toggle("hide", !match);
+      if(match) visible++;
+    });
+    kwEmpty.style.display = visible === 0 ? "block" : "none";
+  });
+
+  /* ---------------- RENDER: habits + localStorage ---------------- */
+  const habitList = document.getElementById("habit-list");
+  const HABIT_KEY = "pom_habits_done_v1";
+  let habitState = [];
+  try{ habitState = JSON.parse(localStorage.getItem(HABIT_KEY)) || []; }catch(e){ habitState = []; }
+  if(!Array.isArray(habitState) || habitState.length !== habits.length){
+    habitState = habits.map(() => false);
+  }
+
+  habits.forEach((h, i) => {
+    const li = document.createElement("li");
+    li.className = "habit-item" + (habitState[i] ? " done" : "");
+    li.setAttribute("role","checkbox");
+    li.setAttribute("tabindex","0");
+    li.setAttribute("aria-checked", String(!!habitState[i]));
+    li.innerHTML = `<span class="habit-box">${habitState[i] ? "✓" : ""}</span><span class="habit-text">${h}</span>`;
+    const toggle = () => {
+      habitState[i] = !habitState[i];
+      li.classList.toggle("done", habitState[i]);
+      li.setAttribute("aria-checked", String(habitState[i]));
+      li.querySelector(".habit-box").textContent = habitState[i] ? "✓" : "";
+      localStorage.setItem(HABIT_KEY, JSON.stringify(habitState));
+      updateHabitProgress();
+    };
+    li.addEventListener("click", toggle);
+    li.addEventListener("keydown", (e) => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); } });
+    habitList.appendChild(li);
+  });
+
+  const habitFill = document.getElementById("habit-fill");
+  const habitCount = document.getElementById("habit-count");
+  function updateHabitProgress(){
+    const done = habitState.filter(Boolean).length;
+    habitFill.style.width = (done / habits.length * 100) + "%";
+    habitCount.textContent = done + " / " + habits.length;
+    if(done === habits.length){
+      launchConfetti();
+      showToast("All habits complete — well played.");
+    }
+  }
+  updateHabitProgress();
+
+  /* ---------------- confetti ---------------- */
+  function launchConfetti(){
+    const colors = ["#C9A227","#E4C765","#146B4F","#1B8563","#F6F3EA"];
+    for(let i=0;i<60;i++){
+      const c = document.createElement("div");
+      c.className = "confetti";
+      c.style.left = Math.random()*100 + "vw";
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.transform = `rotate(${Math.random()*360}deg)`;
+      const duration = 2.4 + Math.random()*1.6;
+      c.style.transition = `transform ${duration}s cubic-bezier(.2,.6,.3,1), top ${duration}s cubic-bezier(.2,.6,.3,1), opacity ${duration}s ease`;
+      document.body.appendChild(c);
+      requestAnimationFrame(() => {
+        c.style.top = "104vh";
+        c.style.transform = `translateX(${(Math.random()-0.5)*160}px) rotate(${720 + Math.random()*360}deg)`;
+        c.style.opacity = "0.15";
+      });
+      setTimeout(() => c.remove(), duration*1000 + 200);
+    }
+  }
+
+  /* ---------------- theme toggle ---------------- */
+  const THEME_KEY = "pom_theme_v1";
+  const root = document.documentElement;
+  const themeBtn = document.getElementById("theme-toggle");
+  function applyTheme(t){
+    root.setAttribute("data-theme", t);
+    themeBtn.textContent = t === "dark" ? "☀️" : "🌙";
+    localStorage.setItem(THEME_KEY, t);
+  }
+  const savedTheme = localStorage.getItem(THEME_KEY) ||
+    (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  applyTheme(savedTheme);
+  themeBtn.addEventListener("click", () => {
+    applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+  });
+
+  /* ---------------- print ---------------- */
+  document.getElementById("print-btn").addEventListener("click", () => {
+    document.querySelectorAll(".lesson").forEach(l => l.dataset.open = "true");
+    setTimeout(() => window.print(), 150);
+  });
+
+  /* ---------------- progress bar + reading time ---------------- */
+  const progressBar = document.getElementById("progress-bar");
+  function updateProgress(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + "%";
+  }
+  const wordCount = document.body.innerText.trim().split(/\s+/).length;
+  document.getElementById("reading-time").textContent = Math.max(1, Math.round(wordCount/200)) + " min read";
+
+  /* ---------------- scroll top + fab visibility ---------------- */
+  const scrollTopBtn = document.getElementById("scroll-top");
+  window.addEventListener("scroll", () => {
+    updateProgress();
+    scrollTopBtn.classList.toggle("show", window.scrollY > 500);
+    highlightNav();
+  }, {passive:true});
+  scrollTopBtn.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
+  document.getElementById("start-reading").addEventListener("click", () => {
+    document.getElementById("core").scrollIntoView({behavior:"smooth"});
+  });
+
+  /* ---------------- bookmark ---------------- */
+  const BOOKMARK_KEY = "pom_bookmark_v1";
+  document.getElementById("bookmark-btn").addEventListener("click", () => {
+    localStorage.setItem(BOOKMARK_KEY, String(window.scrollY));
+    showToast("Bookmarked your spot on this device");
+  });
+  window.addEventListener("load", () => {
+    const saved = localStorage.getItem(BOOKMARK_KEY);
+    if(saved && !location.hash){
+      const y = parseInt(saved, 10);
+      if(y > 200){
+        const banner = document.createElement("button");
+        banner.textContent = "↩ Resume where you left off";
+        banner.className = "btn btn-ghost";
+        banner.style.position = "fixed";
+        banner.style.left = "50%";
+        banner.style.top = "70px";
+        banner.style.transform = "translateX(-50%)";
+        banner.style.zIndex = "950";
+        banner.style.background = "var(--surface-solid)";
+        banner.addEventListener("click", () => {
+          window.scrollTo({top:y, behavior:"smooth"});
+          banner.remove();
+        });
+        document.body.appendChild(banner);
+        setTimeout(() => banner.remove(), 8000);
+      }
+    }
+  });
+
+  /* ---------------- floating nav active highlight ---------------- */
+  const navLinks = [...document.querySelectorAll("#floating-nav a")];
+  const sections = navLinks.map(a => document.getElementById(a.dataset.target)).filter(Boolean);
+  function highlightNav(){
+    let current = sections[0];
+    const y = window.scrollY + 140;
+    sections.forEach(sec => { if(sec.offsetTop <= y) current = sec; });
+    navLinks.forEach(a => a.classList.toggle("active", a.dataset.target === current.id));
+  }
+
+  /* ---------------- reveal on scroll ---------------- */
+  const revealEls = document.querySelectorAll(".reveal, .lesson, .quote-card, section > .section-head");
+  document.querySelectorAll(".lesson, .quote-card").forEach(el => el.classList.add("reveal"));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add("in");
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.12});
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+  updateProgress();
+  highlightNav();
+})();
+</script>
+<script src="../assets/library-core.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>
