@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The 7 Habits of Highly Effective People — Character-Based Success</title>
+<meta name="book:tagline" content="A practical guide to personal effectiveness through timeless principles and seven powerful habits.">
+<meta name="book:date" content="2026-07-11">
+<meta name="book:accent" content="#2E8B57">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="An interactive summary of The 7 Habits of Highly Effective People by Stephen R. Covey — habits, principles, quotes and a one-page summary.">
+<meta name="theme-color" content="#2E8B57">
+<style>
+  :root{
+    --accent:#2E8B57;
+    --accent-soft:#e6f3ec;
+    --accent-dark:#1f6b41;
+    --bg:#fbfaf7;
+    --bg-elevated:#ffffff;
+    --text:#1c1e1c;
+    --text-muted:#5a5f5a;
+    --border:#e7e5df;
+    --shadow:0 1px 2px rgba(20,20,20,0.04), 0 8px 24px rgba(20,20,20,0.06);
+    --shadow-hover:0 2px 6px rgba(20,20,20,0.06), 0 14px 34px rgba(20,20,20,0.09);
+    --radius:16px;
+    --serif:'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
+    --sans:-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif;
+    --maxw:760px;
+  }
+  [data-theme="dark"]{
+    --bg:#14161a;
+    --bg-elevated:#1c1f24;
+    --text:#eceeec;
+    --text-muted:#9aa09c;
+    --border:#2b2f35;
+    --accent:#4fb27e;
+    --accent-soft:#1c2c24;
+    --accent-dark:#7bd6a3;
+    --shadow:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    --shadow-hover:0 2px 6px rgba(0,0,0,0.35), 0 14px 34px rgba(0,0,0,0.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    transition:background .3s ease, color .3s ease;
+  }
+  ::selection{background:var(--accent); color:#fff;}
+
+  a{color:var(--accent-dark); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  /* Progress bar */
+  #progress-bar{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:linear-gradient(90deg, var(--accent), var(--accent-dark));
+    z-index:1000; transition:width .1s ease-out;
+  }
+
+  /* Top nav */
+  header.site-nav{
+    position:sticky; top:0; z-index:900;
+    backdrop-filter:blur(12px) saturate(160%);
+    background:color-mix(in srgb, var(--bg) 82%, transparent);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    max-width:1100px; margin:0 auto; padding:12px 20px;
+    display:flex; align-items:center; gap:12px; justify-content:space-between;
+  }
+  .brand{
+    font-family:var(--serif); font-weight:700; font-size:1rem; letter-spacing:.2px;
+    display:flex; align-items:center; gap:8px; color:var(--text);
+  }
+  .brand svg{flex:none;}
+  .nav-actions{display:flex; align-items:center; gap:8px;}
+  .icon-btn{
+    border:1px solid var(--border); background:var(--bg-elevated); color:var(--text);
+    width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:box-shadow .2s, transform .2s, background .2s;
+    font-size:1rem;
+  }
+  .icon-btn:hover{box-shadow:var(--shadow-hover); transform:translateY(-1px);}
+  .icon-btn:active{transform:translateY(0);}
+  #search-input{
+    border:1px solid var(--border); background:var(--bg-elevated); color:var(--text);
+    border-radius:10px; padding:8px 12px; font-size:.9rem; width:0; opacity:0;
+    transition:width .25s ease, opacity .2s ease, padding .25s ease;
+  }
+  #search-input.open{width:180px; opacity:1; padding:8px 12px;}
+
+  main{max-width:var(--maxw); margin:0 auto; padding:0 20px 120px;}
+
+  /* Hero */
+  .hero{
+    max-width:var(--maxw); margin:0 auto; padding:64px 20px 40px; text-align:center;
+  }
+  .hero .kicker{
+    text-transform:uppercase; letter-spacing:2px; font-size:.75rem; color:var(--accent-dark);
+    font-weight:600; margin-bottom:18px;
+  }
+  .hero h1{
+    font-family:var(--serif); font-size:clamp(2.1rem, 5vw, 3.2rem); line-height:1.15; margin:0 0 18px;
+    font-weight:700;
+  }
+  .hero .tagline{
+    font-size:1.15rem; color:var(--text-muted); max-width:560px; margin:0 auto 28px; font-family:var(--serif); font-style:italic;
+  }
+  .hero .meta-row{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:34px;
+  }
+  .pill{
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--accent-soft); color:var(--accent-dark);
+    border-radius:999px; padding:6px 14px; font-size:.82rem; font-weight:600;
+  }
+  .hero-icon{
+    width:74px; height:74px; margin:0 auto 22px; border-radius:22px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-dark));
+    display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-hover);
+  }
+
+  /* Sections */
+  section.block{margin:56px 0;}
+  .section-title{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--serif); font-size:1.5rem; font-weight:700; margin:0 0 18px;
+    scroll-margin-top:80px;
+  }
+  .section-title .icon{
+    width:34px; height:34px; border-radius:10px; background:var(--accent-soft); color:var(--accent-dark);
+    display:flex; align-items:center; justify-content:center; font-size:1rem; flex:none;
+  }
+  p{margin:0 0 16px; color:var(--text);}
+  .lead{color:var(--text-muted); font-size:1.05rem;}
+
+  .card{
+    background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius);
+    padding:22px 24px; box-shadow:var(--shadow); margin-bottom:16px;
+    transition:box-shadow .25s ease, transform .25s ease;
+  }
+  .card:hover{box-shadow:var(--shadow-hover);}
+
+  .author-card{display:flex; gap:18px; align-items:flex-start;}
+  .author-avatar{
+    flex:none; width:56px; height:56px; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), var(--accent-dark));
+    display:flex; align-items:center; justify-content:center; color:#fff; font-family:var(--serif); font-weight:700; font-size:1.3rem;
+  }
+
+  /* Collapsible */
+  details.collapsible{
+    background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius);
+    margin-bottom:14px; overflow:hidden; box-shadow:var(--shadow); transition:box-shadow .2s ease;
+  }
+  details.collapsible:hover{box-shadow:var(--shadow-hover);}
+  details.collapsible summary{
+    list-style:none; cursor:pointer; padding:18px 22px; display:flex; align-items:center; gap:14px;
+    font-weight:600; font-size:1.02rem; user-select:none;
+  }
+  details.collapsible summary::-webkit-details-marker{display:none;}
+  details.collapsible summary .num{
+    flex:none; width:34px; height:34px; border-radius:10px; background:var(--accent-soft); color:var(--accent-dark);
+    display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-weight:700;
+  }
+  details.collapsible summary .chev{margin-left:auto; transition:transform .25s ease; color:var(--text-muted);}
+  details.collapsible[open] summary .chev{transform:rotate(90deg);}
+  details.collapsible .habit-body{padding:0 22px 22px 70px; color:var(--text-muted);}
+  details.collapsible .habit-body p{color:var(--text);}
+  details.collapsible .habit-body .habit-label{
+    display:inline-block; font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:1px;
+    color:var(--accent-dark); background:var(--accent-soft); padding:3px 10px; border-radius:999px; margin-bottom:10px;
+  }
+
+  /* Matrix */
+  .matrix{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:20px 0;}
+  .matrix .q{
+    border-radius:14px; padding:18px; border:1px solid var(--border); background:var(--bg-elevated); box-shadow:var(--shadow);
+  }
+  .matrix .q h4{margin:0 0 8px; font-size:.95rem; display:flex; align-items:center; gap:8px;}
+  .matrix .q p{margin:0; font-size:.88rem; color:var(--text-muted);}
+  .matrix .q1{border-top:4px solid #d9534f;}
+  .matrix .q2{border-top:4px solid var(--accent);}
+  .matrix .q3{border-top:4px solid #e0a800;}
+  .matrix .q4{border-top:4px solid #6c757d;}
+
+  /* Quotes */
+  .quote-card{
+    position:relative; background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius);
+    padding:24px 26px; margin-bottom:16px; box-shadow:var(--shadow);
+  }
+  .quote-card blockquote{
+    margin:0 0 14px; font-family:var(--serif); font-size:1.15rem; line-height:1.6; font-style:italic;
+  }
+  .quote-card .quote-footer{display:flex; align-items:center; justify-content:space-between;}
+  .quote-card cite{font-style:normal; font-size:.85rem; color:var(--text-muted);}
+  .copy-btn{
+    border:1px solid var(--border); background:var(--bg); color:var(--text);
+    padding:6px 12px; border-radius:8px; font-size:.78rem; cursor:pointer; display:flex; align-items:center; gap:6px;
+    transition:background .2s, color .2s, border-color .2s;
+  }
+  .copy-btn:hover{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .copy-btn.copied{background:var(--accent-dark); color:#fff; border-color:var(--accent-dark);}
+
+  /* Keywords */
+  .keywords{display:flex; flex-wrap:wrap; gap:10px;}
+  .keyword-tag{
+    background:var(--accent-soft); color:var(--accent-dark); padding:7px 14px; border-radius:999px;
+    font-size:.85rem; font-weight:600;
+  }
+
+  ul.tick-list{list-style:none; margin:0; padding:0;}
+  ul.tick-list li{
+    display:flex; gap:10px; align-items:flex-start; margin-bottom:12px; color:var(--text);
+  }
+  ul.tick-list li .tick{flex:none; color:var(--accent-dark); font-weight:700; margin-top:2px;}
+
+  .takeaway-grid{display:grid; grid-template-columns:1fr; gap:14px;}
+  .takeaway-grid .card{display:flex; gap:14px; align-items:flex-start;}
+  .takeaway-grid .n{
+    font-family:var(--serif); font-weight:700; font-size:1.4rem; color:var(--accent); flex:none; width:32px;
+  }
+
+  /* TOC floating */
+  #toc-toggle{
+    position:fixed; right:22px; top:50%; transform:translateY(-50%);
+    z-index:850;
+  }
+  #toc-panel{
+    position:fixed; right:22px; top:50%; transform:translateY(-50%) translateX(20px);
+    width:230px; max-height:70vh; overflow-y:auto;
+    background:var(--bg-elevated); border:1px solid var(--border); border-radius:14px;
+    box-shadow:var(--shadow-hover); padding:16px; z-index:849;
+    opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+  }
+  #toc-panel.open{opacity:1; pointer-events:auto; transform:translateY(-50%) translateX(0);}
+  #toc-panel h5{margin:0 0 10px; font-size:.75rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted);}
+  #toc-panel a{
+    display:block; padding:6px 8px; border-radius:8px; font-size:.85rem; color:var(--text); margin-bottom:2px;
+  }
+  #toc-panel a:hover{background:var(--accent-soft); color:var(--accent-dark); text-decoration:none;}
+  #toc-panel a.active{background:var(--accent-soft); color:var(--accent-dark); font-weight:600;}
+
+  /* Back to top */
+  #back-to-top{
+    position:fixed; bottom:24px; right:22px; z-index:850;
+    width:46px; height:46px; border-radius:50%;
+    background:var(--accent); color:#fff; border:none; box-shadow:var(--shadow-hover);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    opacity:0; pointer-events:none; transform:translateY(10px); transition:opacity .25s, transform .25s;
+    font-size:1.1rem;
+  }
+  #back-to-top.show{opacity:1; pointer-events:auto; transform:translateY(0);}
+
+  /* Toolbar (expand/collapse all + search results) */
+  .toolbar{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:18px;
+  }
+  .toolbar button{
+    border:1px solid var(--border); background:var(--bg-elevated); color:var(--text);
+    padding:8px 14px; border-radius:10px; font-size:.85rem; cursor:pointer;
+  }
+  .toolbar button:hover{box-shadow:var(--shadow-hover);}
+  #search-status{font-size:.82rem; color:var(--text-muted);}
+
+  mark{background:var(--accent); color:#fff; border-radius:3px; padding:0 2px;}
+
+  .hidden-by-search{display:none !important;}
+
+  footer{
+    max-width:var(--maxw); margin:0 auto; padding:40px 20px 80px; text-align:center;
+    color:var(--text-muted); font-size:.85rem; border-top:1px solid var(--border);
+  }
+
+  @media (max-width:640px){
+    .matrix{grid-template-columns:1fr;}
+    #toc-toggle, #toc-panel{display:none;}
+    #search-input.open{width:130px;}
+  }
+
+  @media print{
+    header.site-nav, #progress-bar, #toc-toggle, #toc-panel, #back-to-top, .toolbar, #search-input{display:none !important;}
+    body{background:#fff; color:#000;}
+    .card, details.collapsible, .quote-card{box-shadow:none; border:1px solid #ccc; break-inside:avoid;}
+    a{color:#000; text-decoration:underline;}
+    details.collapsible{overflow:visible;}
+    details.collapsible > summary{cursor:default;}
+  }
+
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+    clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div id="progress-bar" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4.5C4 3.67 4.67 3 5.5 3H18a1 1 0 0 1 1 1v15.5a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M4 17.5A2 2 0 0 1 6 15.5h13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span>7 Habits</span>
+    </div>
+    <div class="nav-actions">
+      <input type="search" id="search-input" placeholder="Search keywords…" aria-label="Search page content">
+      <button class="icon-btn" id="search-toggle" aria-label="Toggle search" title="Search (/)">🔍</button>
+      <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme (T)">🌙</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" id="top">
+    <div class="hero-icon" aria-hidden="true">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="1.6"/></svg>
+    </div>
+    <div class="kicker">Book Summary &amp; Study Guide</div>
+    <h1>The 7 Habits of Highly Effective People</h1>
+    <p class="tagline">A practical guide to personal effectiveness through timeless principles and seven powerful habits.</p>
+    <div class="meta-row">
+      <span class="pill">👤 Stephen R. Covey</span>
+      <span class="pill">📅 First published 1989</span>
+      <span class="pill">⏱ <span id="read-time">—</span> min read</span>
+      <span class="pill">📚 Self-Improvement</span>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <button id="expand-all">⬇ Expand all habits</button>
+    <button id="collapse-all">⬆ Collapse all habits</button>
+    <span id="search-status" aria-live="polite"></span>
+  </div>
+
+  <section class="block" id="about-author">
+    <h2 class="section-title"><span class="icon">✒️</span> About the Author</h2>
+    <div class="card author-card">
+      <div class="author-avatar" aria-hidden="true">SC</div>
+      <div>
+        <p><strong>Stephen R. Covey</strong> (1932–2012) was an American educator, author, businessman, and keynote speaker whose work centered on leadership, family, and personal effectiveness. He held an MBA from Harvard Business School and a doctorate from Brigham Young University, where he later taught organizational behavior and business management.</p>
+        <p>Covey founded the Covey Leadership Center, which merged with Franklin Quest in 1997 to become FranklinCovey, a global professional-services firm. <em>The 7 Habits of Highly Effective People</em>, first published in 1989, became one of the best-selling business books in history, selling over 40 million copies in more than 40 languages. Covey's philosophy rests on the idea that lasting effectiveness is built on character and universal principles — not on quick-fix personality techniques.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="core-idea">
+    <h2 class="section-title"><span class="icon">💡</span> Core Idea</h2>
+    <p class="lead">Covey argues that true, lasting success comes from aligning your life with timeless, universal principles — such as fairness, integrity, honesty, and human dignity — rather than from surface-level techniques or personality tricks. He calls this the shift from a "Personality Ethic" to a "Character Ethic."</p>
+    <p>Effectiveness, in Covey's framework, is the balance between what he calls <strong>P</strong> (Production of desired results) and <strong>PC</strong> (Production Capability, the asset or capacity that produces those results) — a concept he illustrates with the fable of the goose that lays golden eggs. Focusing only on output (the eggs) while neglecting the asset that creates it (the goose) destroys long-term effectiveness. The 7 Habits are a step-by-step, integrated approach for developing both personal character and interpersonal effectiveness, moving a person from <strong>dependence</strong> to <strong>independence</strong> (Private Victory) and then to <strong>interdependence</strong> (Public Victory).</p>
+  </section>
+
+  <section class="block" id="seven-habits">
+    <h2 class="section-title"><span class="icon">🌱</span> The 7 Habits</h2>
+
+    <details class="collapsible" open>
+      <summary><span class="num">1</span> Be Proactive <span class="chev">›</span></summary>
+      <div class="habit-body">
+        <span class="habit-label">Principle of Personal Vision</span>
+        <p>Be Proactive is about taking responsibility for your own life. Proactive people recognize that they are responsible for their own choices and have the freedom to choose their responses based on values, rather than reacting based on feelings or circumstances. Covey contrasts this with reactive people, who are driven by conditions, moods, and the behavior of others.</p>
+        <p>Central to this habit is the distinction between the <strong>Circle of Concern</strong> (everything you care about) and the <strong>Circle of Influence</strong> (the things you can actually act on). Proactive people focus their energy on their Circle of Influence, which causes it to expand over time; reactive people focus on their Circle of Concern, which causes their Circle of Influence to shrink.</p>
+      </div>
+    </details>
+
+    <details class="collapsible">
+      <summary><span class="num">2</span> Begin with the End in Mind <span class="chev">›</span></summary>
+      <div class="habit-body">
+        <span class="habit-label">Principle of Personal Leadership</span>
+        <p>This habit is about defining a clear vision of your destination so that your present actions move you in the right direction. Covey encourages readers to mentally create everything twice: first a mental creation, then a physical creation. Without a clear mental picture of the end result, people risk climbing the ladder of success only to find it leaning against the wrong wall.</p>
+        <p>The practical tool for this habit is writing a <strong>personal mission statement</strong> — a personal constitution based on principles that defines what you want to be (character) and do (contributions and achievements), giving you a changeless core from which to make decisions amid change.</p>
+      </div>
+    </details>
+
+    <details class="collapsible">
+      <summary><span class="num">3</span> Put First Things First <span class="chev">›</span></summary>
+      <div class="habit-body">
+        <span class="habit-label">Principle of Personal Management</span>
+        <p>While Habits 1 and 2 are about imagination and conscience, Habit 3 is about execution and willpower. It is the practical fulfillment of the first two habits — organizing and executing around priorities. Covey introduces the <strong>Time Management Matrix</strong>, which sorts activities by urgency and importance, and argues that effective people spend the bulk of their time in Quadrant II: important but not urgent activities like planning, relationship-building, and prevention.</p>
+        <p>This habit asks us to move from managing time to managing ourselves, organizing life around roles and goals rather than a rigid to-do list, and having the discipline to say no to the merely urgent in favor of the genuinely important.</p>
+      </div>
+    </details>
+
+    <details class="collapsible">
+      <summary><span class="num">4</span> Think Win-Win <span class="chev">›</span></summary>
+      <div class="habit-body">
+        <span class="habit-label">Principle of Interpersonal Leadership</span>
+        <p>Think Win-Win is a habit of interpersonal leadership involving mutual benefit in all human interactions. It is a frame of mind that constantly seeks mutual benefit in all human interactions, rather than a competitive, win-lose mindset or a self-sacrificing lose-win mindset. When a true win-win cannot be reached, Covey suggests the option of "win-win or no deal," where both parties agree to disagree agreeably rather than force a compromise that leaves one side worse off.</p>
+        <p>Win-Win thinking requires an <strong>abundance mentality</strong> — the belief that there is plenty out there for everyone — as opposed to a <strong>scarcity mentality</strong>, which sees life as a zero-sum game where someone must lose for another to win.</p>
+      </div>
+    </details>
+
+    <details class="collapsible">
+      <summary><span class="num">5</span> Seek First to Understand, Then to Be Understood <span class="chev">›</span></summary>
+      <div class="habit-body">
+        <span class="habit-label">Principle of Empathic Communication</span>
+        <p>This habit is about the discipline of empathic listening — listening with the intent to genuinely understand another person's frame of reference and feelings, not merely to reply or reload with your own argument. Covey notes that most people listen with the intent to reply, filtering everything through their own autobiography (their own experiences and paradigms).</p>
+        <p>Once genuine understanding is established, you earn the right — and the ability — to be understood clearly and persuasively yourself. Diagnosing before prescribing builds trust and opens the door to creative problem-solving.</p>
+      </div>
+    </details>
+
+    <details class="collapsible">
+      <summary><span class="num">6</span> Synergize <span class="chev">›</span></summary>
+      <div class="habit-body">
+        <span class="habit-label">Principle of Creative Cooperation</span>
+        <p>Synergize is the habit of creative cooperation, where the combined output of a team is greater than the sum of the individual contributions — 1 + 1 equals 3, or more. It requires valuing and celebrating differences in perspective, personality, and approach rather than merely tolerating them, since those differences are the raw material of genuinely new, third-alternative solutions.</p>
+        <p>Synergy is the natural product of applying Habits 1 through 5 together: proactive people who begin with a clear end in mind, prioritize deliberately, seek mutual benefit, and listen empathically create the conditions where true synergy can emerge.</p>
+      </div>
+    </details>
+
+    <details class="collapsible">
+      <summary><span class="num">7</span> Sharpen the Saw <span class="chev">›</span></summary>
+      <div class="habit-body">
+        <span class="habit-label">Principle of Balanced Self-Renewal</span>
+        <p>Sharpen the Saw surrounds all the other habits because it is the habit that makes all of the others possible — it is about preserving and enhancing your greatest asset: yourself. Covey illustrates this with the parable of a woodcutter too busy sawing to stop and sharpen a dull saw.</p>
+        <p>Renewal should happen across four dimensions: <strong>physical</strong> (exercise, nutrition, rest), <strong>social/emotional</strong> (service, empathy, meaningful relationships), <strong>mental</strong> (reading, writing, learning), and <strong>spiritual</strong> (values clarification, meditation, connection to something larger than oneself). Consistent renewal in all four keeps the other six habits functioning at full capacity.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="block" id="important-lessons">
+    <h2 class="section-title"><span class="icon">📖</span> Important Lessons</h2>
+    <ul class="tick-list">
+      <li><span class="tick">✓</span> Effectiveness is a balance between the results you produce (P) and the capacity that produces them (PC) — neglect either one and you eventually lose both.</li>
+      <li><span class="tick">✓</span> Real change happens from the inside out: character before competence, private victory before public victory.</li>
+      <li><span class="tick">✓</span> Between stimulus and response lies the freedom to choose — this is the root of all proactivity.</li>
+      <li><span class="tick">✓</span> Paradigms shape perception; changing how you see a problem is often more powerful than changing your behavior alone.</li>
+      <li><span class="tick">✓</span> Trust is the foundation of all relationships, and it is built or depleted one small interaction — one deposit or withdrawal in the "Emotional Bank Account" — at a time.</li>
+    </ul>
+  </section>
+
+  <section class="block" id="private-victory">
+    <h2 class="section-title"><span class="icon">🌅</span> Private Victory</h2>
+    <p>The Private Victory is the foundation of the entire model, encompassing Habits 1–3: Be Proactive, Begin with the End in Mind, and Put First Things First. It represents the daily, internal victories of self-mastery and self-discipline that move a person from dependence toward independence.</p>
+    <p>Covey insists this order cannot be skipped — you cannot build effective relationships with others (Public Victory) until you have first achieved a measure of self-mastery and integrity within yourself. The Private Victory is where character is forged.</p>
+  </section>
+
+  <section class="block" id="public-victory">
+    <h2 class="section-title"><span class="icon">🤝</span> Public Victory</h2>
+    <p>The Public Victory covers Habits 4–6: Think Win-Win, Seek First to Understand Then to Be Understood, and Synergize. These habits govern how independent people build rich, cooperative, and productive relationships with others, moving from independence to interdependence.</p>
+    <p>Covey's central metaphor here is the <strong>Emotional Bank Account</strong> — the level of trust built up in any relationship. Keeping promises, being loyal to the absent, clarifying expectations, and offering sincere apologies are all deposits; broken promises, discourtesy, and betrayed trust are withdrawals. Only a relationship with a healthy trust balance can sustain honest feedback and true synergy.</p>
+  </section>
+
+  <section class="block" id="continuous-improvement">
+    <h2 class="section-title"><span class="icon">🔄</span> Continuous Improvement</h2>
+    <p>Habit 7, Sharpen the Saw, functions as the engine of continuous improvement that surrounds and renews all the other habits. Covey frames growth as an upward spiral: as you renew yourself physically, mentally, socially, and spiritually, you develop, learn, and recommit at ever higher levels, rather than staying static or regressing.</p>
+    <p>This spiral requires ongoing education (learning), conscience (committing to your own unique purpose), and consistent action (doing) — the three together keep the spiral moving upward instead of stagnating.</p>
+  </section>
+
+  <section class="block" id="time-matrix">
+    <h2 class="section-title"><span class="icon">🗓️</span> Time Management Matrix</h2>
+    <p>Covey's Time Management Matrix sorts all activities along two axes — urgency and importance — to reveal where your attention actually goes versus where it should go.</p>
+    <div class="matrix">
+      <div class="q q1">
+        <h4>🔥 Quadrant I — Urgent &amp; Important</h4>
+        <p>Crises, pressing problems, deadline-driven projects. Necessary, but living here constantly leads to stress and burnout.</p>
+      </div>
+      <div class="q q2">
+        <h4>🌿 Quadrant II — Not Urgent &amp; Important</h4>
+        <p>Planning, relationship-building, prevention, self-renewal, new opportunities. The quadrant of true effectiveness — Covey's central recommendation.</p>
+      </div>
+      <div class="q q3">
+        <h4>⚡ Quadrant III — Urgent &amp; Not Important</h4>
+        <p>Interruptions, some calls and emails, other people's minor priorities disguised as urgent. Feels productive but isn't.</p>
+      </div>
+      <div class="q q4">
+        <h4>🌀 Quadrant IV — Not Urgent &amp; Not Important</h4>
+        <p>Trivial busywork, time-wasters, excessive entertainment. Pure waste and a drain on effectiveness.</p>
+      </div>
+    </div>
+    <p>The goal is to deliberately shrink time spent in Quadrants III and IV and invest the freed-up time into Quadrant II, since strengthening that quadrant reduces the frequency of Quadrant I crises over time.</p>
+  </section>
+
+  <section class="block" id="daily-habits">
+    <h2 class="section-title"><span class="icon">✅</span> Actionable Daily Habits</h2>
+    <ul class="tick-list">
+      <li><span class="tick">✓</span> Start each day by pausing before reacting — choose your response rather than defaulting to it.</li>
+      <li><span class="tick">✓</span> Revisit your personal mission statement (or write one if you haven't yet) and check today's plan against it.</li>
+      <li><span class="tick">✓</span> Identify your "Big Rocks" for the day — the two or three Quadrant II priorities — and schedule them first.</li>
+      <li><span class="tick">✓</span> In every disagreement today, look for a genuine win-win outcome before settling for compromise.</li>
+      <li><span class="tick">✓</span> Practice one moment of empathic listening — fully understand someone before responding.</li>
+      <li><span class="tick">✓</span> Make one deliberate deposit into an Emotional Bank Account: a kept promise, a sincere thank-you, or a small kindness.</li>
+      <li><span class="tick">✓</span> Spend at least a few minutes on renewal — a walk, reading, quiet reflection, or connecting with someone you care about.</li>
+    </ul>
+  </section>
+
+  <section class="block" id="quotes">
+    <h2 class="section-title"><span class="icon">💬</span> Top Quotes</h2>
+
+    <div class="quote-card">
+      <blockquote>"Between stimulus and response there is a space. In that space is our power to choose our response. In our response lies our growth and our freedom."</blockquote>
+      <div class="quote-footer">
+        <cite>— Stephen R. Covey</cite>
+        <button class="copy-btn" data-quote="Between stimulus and response there is a space. In that space is our power to choose our response. In our response lies our growth and our freedom.">📋 Copy</button>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Begin with the end in mind means to start with a clear understanding of your destination."</blockquote>
+      <div class="quote-footer">
+        <cite>— Stephen R. Covey</cite>
+        <button class="copy-btn" data-quote="Begin with the end in mind means to start with a clear understanding of your destination.">📋 Copy</button>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"The main thing is to keep the main thing the main thing."</blockquote>
+      <div class="quote-footer">
+        <cite>— Stephen R. Covey</cite>
+        <button class="copy-btn" data-quote="The main thing is to keep the main thing the main thing.">📋 Copy</button>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Most people do not listen with the intent to understand; they listen with the intent to reply."</blockquote>
+      <div class="quote-footer">
+        <cite>— Stephen R. Covey</cite>
+        <button class="copy-btn" data-quote="Most people do not listen with the intent to understand; they listen with the intent to reply.">📋 Copy</button>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Strength lies in differences, not in similarities."</blockquote>
+      <div class="quote-footer">
+        <cite>— Stephen R. Covey</cite>
+        <button class="copy-btn" data-quote="Strength lies in differences, not in similarities.">📋 Copy</button>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Sow a thought, reap an action; sow an action, reap a habit; sow a habit, reap a character; sow a character, reap a destiny."</blockquote>
+      <div class="quote-footer">
+        <cite>— Stephen R. Covey</cite>
+        <button class="copy-btn" data-quote="Sow a thought, reap an action; sow an action, reap a habit; sow a habit, reap a character; sow a character, reap a destiny.">📋 Copy</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="keywords">
+    <h2 class="section-title"><span class="icon">🔑</span> Important Keywords</h2>
+    <div class="keywords">
+      <span class="keyword-tag">Proactivity</span>
+      <span class="keyword-tag">Character Ethic</span>
+      <span class="keyword-tag">Personality Ethic</span>
+      <span class="keyword-tag">Circle of Influence</span>
+      <span class="keyword-tag">Circle of Concern</span>
+      <span class="keyword-tag">Personal Mission Statement</span>
+      <span class="keyword-tag">Quadrant II</span>
+      <span class="keyword-tag">Win-Win</span>
+      <span class="keyword-tag">Abundance Mentality</span>
+      <span class="keyword-tag">Scarcity Mentality</span>
+      <span class="keyword-tag">Empathic Listening</span>
+      <span class="keyword-tag">Synergy</span>
+      <span class="keyword-tag">Emotional Bank Account</span>
+      <span class="keyword-tag">Sharpen the Saw</span>
+      <span class="keyword-tag">Private Victory</span>
+      <span class="keyword-tag">Public Victory</span>
+      <span class="keyword-tag">Paradigm Shift</span>
+      <span class="keyword-tag">P/PC Balance</span>
+      <span class="keyword-tag">Interdependence</span>
+      <span class="keyword-tag">Upward Spiral</span>
+    </div>
+  </section>
+
+  <section class="block" id="summary">
+    <h2 class="section-title"><span class="icon">📝</span> One Page Summary</h2>
+    <div class="card">
+      <p>Stephen Covey argues that lasting effectiveness comes from character, not technique. His model moves through three stages. First, the <strong>Private Victory</strong> — through <strong>Be Proactive</strong> (own your choices), <strong>Begin with the End in Mind</strong> (define your values and vision), and <strong>Put First Things First</strong> (execute around Quadrant II priorities) — builds self-mastery and moves a person from dependence to independence.</p>
+      <p>Second, the <strong>Public Victory</strong> — through <strong>Think Win-Win</strong> (seek mutual benefit), <strong>Seek First to Understand, Then to Be Understood</strong> (listen empathically before persuading), and <strong>Synergize</strong> (combine differences into better solutions) — builds trust and cooperative relationships, moving a person from independence to interdependence.</p>
+      <p>Third, <strong>Sharpen the Saw</strong> renews the whole person — physically, mentally, socially/emotionally, and spiritually — keeping the other six habits sustainable over a lifetime and creating an upward spiral of continuous growth. Together, the habits form an integrated, principle-centered approach to living and leading effectively.</p>
+    </div>
+  </section>
+
+  <section class="block" id="takeaways">
+    <h2 class="section-title"><span class="icon">🎯</span> Key Takeaways</h2>
+    <div class="takeaway-grid">
+      <div class="card"><span class="n">1</span><p>Real, durable change starts from the inside — with character — not from external technique or image management.</p></div>
+      <div class="card"><span class="n">2</span><p>You always have the freedom to choose your response, no matter the circumstance; that freedom is the seed of all effectiveness.</p></div>
+      <div class="card"><span class="n">3</span><p>A written personal mission statement gives you a stable center from which to navigate any change or crisis.</p></div>
+      <div class="card"><span class="n">4</span><p>Protect Quadrant II time — the important-but-not-urgent work is where effectiveness is actually built.</p></div>
+      <div class="card"><span class="n">5</span><p>Seek mutual benefit in every relationship; win-lose and lose-win both erode trust over time.</p></div>
+      <div class="card"><span class="n">6</span><p>Understanding must come before persuading — diagnose before you prescribe.</p></div>
+      <div class="card"><span class="n">7</span><p>Differences are assets, not obstacles — true synergy requires valuing them.</p></div>
+      <div class="card"><span class="n">8</span><p>Never stop renewing yourself across all four dimensions — the saw must stay sharp to keep cutting.</p></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Summary crafted for personal study and reflection. All quotes and ideas are attributed to Stephen R. Covey, <em>The 7 Habits of Highly Effective People</em> (1989).</p>
+</footer>
+
+<button id="toc-toggle" class="icon-btn" aria-label="Toggle table of contents" aria-expanded="false" title="Table of contents">☰</button>
+<nav id="toc-panel" aria-label="Table of contents">
+  <h5>On this page</h5>
+  <div id="toc-links"></div>
+</nav>
+
+<button id="back-to-top" aria-label="Back to top" title="Back to top">↑</button>
+
+<script src="../assets/library-core.js"></script>
+<script src="../assets/nav.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Theme ---------- */
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('theme-toggle');
+  function applyTheme(t){
+    root.setAttribute('data-theme', t);
+    localStorage.setItem('book-theme', t);
+    themeBtn.textContent = t === 'dark' ? '☀️' : '🌙';
+  }
+  var savedTheme = localStorage.getItem('book-theme') ||
+    (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  applyTheme(savedTheme);
+  themeBtn.addEventListener('click', function(){
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ---------- Reading progress ---------- */
+  var progressBar = document.getElementById('progress-bar');
+  function updateProgress(){
+    var scrollTop = window.scrollY;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + '%';
+    progressBar.setAttribute('aria-valuenow', Math.round(pct));
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  /* ---------- Estimated reading time ---------- */
+  var text = document.querySelector('main').innerText || '';
+  var words = text.trim().split(/\s+/).length;
+  var minutes = Math.max(1, Math.round(words / 220));
+  document.getElementById('read-time').textContent = minutes;
+
+  /* ---------- Back to top ---------- */
+  var backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 500){ backToTop.classList.add('show'); }
+    else { backToTop.classList.remove('show'); }
+  }, {passive:true});
+  backToTop.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  /* ---------- Copy quote ---------- */
+  document.querySelectorAll('.copy-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var q = btn.getAttribute('data-quote');
+      var full = '"' + q + '" — Stephen R. Covey';
+      function done(){
+        var original = btn.innerHTML;
+        btn.innerHTML = '✓ Copied';
+        btn.classList.add('copied');
+        setTimeout(function(){
+          btn.innerHTML = original;
+          btn.classList.remove('copied');
+        }, 1600);
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(full).then(done).catch(function(){
+          fallbackCopy(full); done();
+        });
+      } else {
+        fallbackCopy(full); done();
+      }
+    });
+  });
+  function fallbackCopy(str){
+    var ta = document.createElement('textarea');
+    ta.value = str;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  /* ---------- Expand / collapse all habits ---------- */
+  var habitDetails = document.querySelectorAll('#seven-habits details.collapsible');
+  document.getElementById('expand-all').addEventListener('click', function(){
+    habitDetails.forEach(function(d){ d.open = true; });
+  });
+  document.getElementById('collapse-all').addEventListener('click', function(){
+    habitDetails.forEach(function(d){ d.open = false; });
+  });
+
+  /* ---------- Search / filter ---------- */
+  var searchInput = document.getElementById('search-input');
+  var searchToggle = document.getElementById('search-toggle');
+  var searchStatus = document.getElementById('search-status');
+  var searchableBlocks = Array.prototype.slice.call(document.querySelectorAll('main section.block'));
+  var originalHTML = new Map();
+  searchableBlocks.forEach(function(b){ originalHTML.set(b, b.innerHTML); });
+
+  function openSearch(){
+    searchToggle.setAttribute('aria-expanded','true');
+    searchInput.classList.add('open');
+    searchInput.focus();
+  }
+  function closeSearch(){
+    searchInput.classList.remove('open');
+    searchInput.value = '';
+    clearHighlights();
+  }
+  searchToggle.addEventListener('click', function(){
+    if(searchInput.classList.contains('open')){ closeSearch(); } else { openSearch(); }
+  });
+
+  function clearHighlights(){
+    searchableBlocks.forEach(function(b){
+      b.innerHTML = originalHTML.get(b);
+      b.classList.remove('hidden-by-search');
+      b.querySelectorAll('details.collapsible').forEach(function(d){ d.classList.remove('hidden-by-search'); });
+    });
+    searchStatus.textContent = '';
+  }
+
+  function escapeRegex(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  function runSearch(query){
+    query = query.trim();
+    if(!query){ clearHighlights(); return; }
+    var re = new RegExp('(' + escapeRegex(query) + ')', 'gi');
+    var matchCount = 0;
+
+    searchableBlocks.forEach(function(block){
+      block.innerHTML = originalHTML.get(block);
+      var blockText = block.innerText.toLowerCase();
+      var blockMatches = blockText.indexOf(query.toLowerCase()) !== -1;
+
+      // handle collapsibles individually within block
+      var innerDetails = block.querySelectorAll('details.collapsible');
+      if(innerDetails.length){
+        var anyVisible = false;
+        innerDetails.forEach(function(d){
+          var dText = d.innerText.toLowerCase();
+          if(dText.indexOf(query.toLowerCase()) !== -1){
+            d.classList.remove('hidden-by-search');
+            d.open = true;
+            highlightNode(d, re);
+            anyVisible = true;
+            matchCount++;
+          } else {
+            d.classList.add('hidden-by-search');
+          }
+        });
+        block.classList.toggle('hidden-by-search', !anyVisible);
+      } else if(blockMatches){
+        block.classList.remove('hidden-by-search');
+        highlightNode(block, re);
+        matchCount++;
+      } else {
+        block.classList.add('hidden-by-search');
+      }
+    });
+
+    searchStatus.textContent = matchCount > 0 ? matchCount + ' section(s) match "' + query + '"' : 'No matches for "' + query + '"';
+  }
+
+  function highlightNode(node, re){
+    var walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null);
+    var textNodes = [];
+    var n;
+    while((n = walker.nextNode())){
+      if(n.parentNode.tagName !== 'SCRIPT' && n.parentNode.tagName !== 'STYLE'){
+        textNodes.push(n);
+      }
+    }
+    textNodes.forEach(function(tn){
+      if(re.test(tn.nodeValue)){
+        re.lastIndex = 0;
+        var span = document.createElement('span');
+        span.innerHTML = tn.nodeValue.replace(re, '<mark>$1</mark>');
+        tn.parentNode.replaceChild(span, tn);
+      }
+    });
+  }
+
+  var searchDebounce;
+  searchInput.addEventListener('input', function(){
+    clearTimeout(searchDebounce);
+    var val = searchInput.value;
+    searchDebounce = setTimeout(function(){ runSearch(val); }, 150);
+  });
+
+  /* ---------- Keyboard shortcuts ---------- */
+  document.addEventListener('keydown', function(e){
+    var tag = (document.activeElement && document.activeElement.tagName) || '';
+    var typing = tag === 'INPUT' || tag === 'TEXTAREA';
+
+    if(e.key === '/' && !typing){
+      e.preventDefault();
+      openSearch();
+    } else if((e.key === 't' || e.key === 'T') && !typing){
+      applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    } else if(e.key === 'Escape'){
+      if(searchInput.classList.contains('open')){ closeSearch(); searchInput.blur(); }
+      var tocPanel = document.getElementById('toc-panel');
+      if(tocPanel.classList.contains('open')){ tocPanel.classList.remove('open'); document.getElementById('toc-toggle').setAttribute('aria-expanded','false'); }
+    }
+  });
+
+  /* ---------- Floating table of contents ---------- */
+  var tocLinks = document.getElementById('toc-links');
+  var sections = document.querySelectorAll('main section.block');
+  var navEntries = [];
+  sections.forEach(function(sec){
+    var titleEl = sec.querySelector('.section-title');
+    if(!titleEl) return;
+    var label = titleEl.textContent.trim();
+    var a = document.createElement('a');
+    a.href = '#' + sec.id;
+    a.textContent = label;
+    tocLinks.appendChild(a);
+    navEntries.push({id: sec.id, link: a});
+  });
+
+  var tocToggle = document.getElementById('toc-toggle');
+  var tocPanel = document.getElementById('toc-panel');
+  tocToggle.addEventListener('click', function(){
+    var isOpen = tocPanel.classList.toggle('open');
+    tocToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if(!tocPanel.contains(e.target) && e.target !== tocToggle && tocPanel.classList.contains('open')){
+      tocPanel.classList.remove('open');
+      tocToggle.setAttribute('aria-expanded','false');
+    }
+  });
+
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var match = navEntries.find(function(ne){ return ne.id === entry.target.id; });
+      if(match){
+        if(entry.isIntersecting){
+          navEntries.forEach(function(ne){ ne.link.classList.remove('active'); });
+          match.link.classList.add('active');
+        }
+      }
+    });
+  }, {rootMargin:'-30% 0px -60% 0px'});
+  sections.forEach(function(sec){ observer.observe(sec); });
+
+})();
+</script>
+</body>
+</html>
