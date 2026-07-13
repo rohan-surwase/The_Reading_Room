@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rich Dad Poor Dad — Important Summary</title>
+<meta name="book:tagline" content="Build assets, master financial education, and make money work for you.">
+<meta name="book:date" content="2026-07-13">
+<meta name="book:accent" content="#FACC15">
+<style>
+:root{
+  --bg:#0b0d10; --bg2:#12151a; --panel:#161a20; --panel2:#1c2129;
+  --line:rgba(255,255,255,.08); --text:#eceef1; --sub:#9aa3af;
+  --gold:#FACC15; --gold2:#b98f0e; --green:#3ecf8e; --red:#f0576b;
+  --shadow:0 20px 50px rgba(0,0,0,.45);
+  --radius:16px;
+}
+[data-theme="light"]{
+  --bg:#f6f5f1; --bg2:#ffffff; --panel:#ffffff; --panel2:#f0efe9;
+  --line:rgba(0,0,0,.08); --text:#191712; --sub:#5c584f;
+  --gold:#a86e00; --gold2:#8a5a00;
+  --shadow:0 20px 50px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Georgia',ui-serif,serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  line-height:1.6; overflow-x:hidden;
+  transition:background .3s ease,color .3s ease;
+}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif; letter-spacing:.2px;}
+.container{max-width:960px; margin:0 auto; padding:0 20px;}
+.section{padding:70px 0; border-bottom:1px solid var(--line);}
+.eyebrow{color:var(--gold); text-transform:uppercase; font-size:.75rem; letter-spacing:2px; font-weight:700; margin-bottom:10px;}
+.section h2{font-size:clamp(1.6rem,4vw,2.4rem); margin-bottom:8px;}
+.section-sub{color:var(--sub); margin-bottom:36px; max-width:640px;}
+
+/* Reading progress bar */
+#reading-bar{position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--green)); width:0%; z-index:999; transition:width .1s linear;}
+
+/* Nav */
+#topnav{position:fixed; top:0; left:0; right:0; z-index:900; backdrop-filter:blur(10px); background:rgba(11,13,16,.75); border-bottom:1px solid var(--line); padding:14px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px;}
+[data-theme="light"] #topnav{background:rgba(246,245,241,.85);}
+#topnav .brand{font-weight:700; font-size:.95rem; color:var(--gold); white-space:nowrap;}
+#topnav .navlinks{display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;}
+#topnav .navlinks::-webkit-scrollbar{display:none;}
+#topnav a{color:var(--sub); text-decoration:none; font-size:.8rem; padding:8px 10px; border-radius:8px; white-space:nowrap; transition:.2s;}
+#topnav a:hover{color:var(--text); background:var(--panel2);}
+#searchInput{background:var(--panel2); border:1px solid var(--line); color:var(--text); border-radius:8px; padding:8px 12px; font-size:.8rem; width:120px; transition:width .25s;}
+#searchInput:focus{width:180px; outline:none; border-color:var(--gold);}
+#searchResults{position:fixed; top:60px; right:20px; width:300px; max-height:60vh; overflow-y:auto; background:var(--panel); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); z-index:950; display:none;}
+#searchResults div{padding:12px 14px; border-bottom:1px solid var(--line); cursor:pointer; font-size:.85rem;}
+#searchResults div:hover{background:var(--panel2);}
+#searchResults mark{background:var(--gold); color:#111; padding:0 2px; border-radius:2px;}
+
+/* Hero */
+#hero{min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:120px 20px 60px; position:relative; background:radial-gradient(ellipse at 50% 0%, rgba(250,204,21,.08), transparent 60%);}
+#hero .tag{color:var(--gold); letter-spacing:3px; text-transform:uppercase; font-size:.75rem; font-weight:700; margin-bottom:18px; animation:fadeUp .7s ease both;}
+#hero h1{font-size:clamp(2.4rem,7vw,4.5rem); font-weight:700; max-width:780px; animation:fadeUp .8s .1s ease both;}
+#hero h1 span{color:var(--gold);}
+#hero p{color:var(--sub); max-width:520px; margin:22px auto 0; font-size:1.05rem; animation:fadeUp .8s .2s ease both;}
+#hero .cta-row{margin-top:34px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center; animation:fadeUp .8s .3s ease both;}
+.btn{padding:13px 26px; border-radius:999px; border:1px solid var(--line); font-weight:600; cursor:pointer; font-size:.9rem; transition:.2s; text-decoration:none; display:inline-block;}
+.btn-primary{background:var(--gold); color:#141414; border-color:var(--gold);}
+.btn-primary:hover{transform:translateY(-2px); box-shadow:0 8px 24px rgba(250,204,21,.3);}
+.btn-ghost{color:var(--text); background:transparent;}
+.btn-ghost:hover{background:var(--panel2);}
+#hero .quote-mark{font-size:4rem; color:var(--gold); opacity:.25; line-height:1; margin-top:36px; animation:fadeUp .8s .4s ease both;}
+
+@keyframes fadeUp{from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;} to{opacity:1;}}
+@keyframes slideIn{from{opacity:0; transform:translateX(-16px);} to{opacity:1; transform:translateX(0);}}
+.reveal{opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease;}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+/* About */
+.about-grid{display:grid; grid-template-columns:1fr; gap:22px;}
+.about-card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:26px; box-shadow:var(--shadow);}
+.about-card h3{color:var(--gold); font-size:1rem; margin-bottom:10px;}
+.table-wrap{overflow-x:auto; border-radius:var(--radius); border:1px solid var(--line);}
+table{width:100%; border-collapse:collapse; font-size:.88rem;}
+th,td{padding:12px 14px; text-align:left; border-bottom:1px solid var(--line);}
+th{background:var(--panel2); color:var(--gold); font-size:.75rem; text-transform:uppercase; letter-spacing:1px;}
+tr:last-child td{border-bottom:none;}
+
+/* Lessons */
+.lesson-list{display:grid; gap:14px;}
+.lesson{display:flex; gap:18px; align-items:flex-start; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:20px; cursor:pointer;}
+.lesson .num{font-size:1.6rem; font-weight:700; color:var(--gold); min-width:44px;}
+.lesson h4{font-size:1.02rem; margin-bottom:4px;}
+.lesson p{color:var(--sub); font-size:.9rem; max-height:0; overflow:hidden; transition:max-height .3s ease, margin .3s ease;}
+.lesson.open p{max-height:100px; margin-top:6px;}
+
+/* Quotes */
+.quote-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px;}
+.quote-card{background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:12px; padding:20px; font-style:italic; font-size:.95rem;}
+
+/* Flashcards */
+.flash-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px;}
+.flash{perspective:1000px; height:150px; cursor:pointer;}
+.flash-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+.flash.flipped .flash-inner{transform:rotateY(180deg);}
+.flash-face{position:absolute; inset:0; backface-visibility:hidden; border-radius:14px; display:flex; align-items:center; justify-content:center; text-align:center; padding:14px; border:1px solid var(--line);}
+.flash-front{background:var(--panel); font-weight:700; font-size:1.05rem;}
+.flash-back{background:var(--gold); color:#141414; transform:rotateY(180deg); font-size:.82rem; font-weight:500;}
+.flash-progress{margin-top:16px; color:var(--sub); font-size:.85rem;}
+
+/* Quiz */
+.quiz-box{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:26px; box-shadow:var(--shadow);}
+.quiz-meta{display:flex; justify-content:space-between; color:var(--sub); font-size:.8rem; margin-bottom:16px;}
+.quiz-q{font-size:1.1rem; font-weight:600; margin-bottom:18px; min-height:56px;}
+.quiz-opts{display:grid; gap:10px;}
+.qopt{padding:14px 16px; border:1px solid var(--line); border-radius:10px; cursor:pointer; font-size:.92rem; transition:.15s;}
+.qopt:hover{border-color:var(--gold);}
+.qopt.correct{background:rgba(62,207,142,.15); border-color:var(--green);}
+.qopt.wrong{background:rgba(240,87,107,.15); border-color:var(--red);}
+.quiz-footer{margin-top:20px; display:flex; justify-content:space-between; align-items:center;}
+.progress-bar-track{background:var(--panel2); height:8px; border-radius:6px; overflow:hidden;}
+.progress-bar-fill{height:100%; background:linear-gradient(90deg,var(--gold),var(--green)); width:0%; transition:width .5s ease;}
+.quiz-result{text-align:center; padding:30px 0;}
+.quiz-result .score{font-size:3rem; color:var(--gold); font-weight:700;}
+
+/* Memory game */
+.mem-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; max-width:520px; margin:0 auto;}
+.mem-card{aspect-ratio:1; background:var(--panel); border:1px solid var(--line); border-radius:10px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:.72rem; text-align:center; padding:6px; font-weight:600;}
+.mem-card.hidden-text{color:transparent;}
+.mem-card.matched{background:rgba(62,207,142,.18); border-color:var(--green); color:var(--text) !important;}
+.mem-card.flip{background:var(--gold); color:#141414 !important;}
+.mem-stats{display:flex; gap:20px; justify-content:center; margin-bottom:16px; color:var(--sub); font-size:.85rem;}
+.mem-stats b{color:var(--gold);}
+
+/* Progress tracker */
+.stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:14px; margin-bottom:26px;}
+.stat-card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px; text-align:center;}
+.stat-card .val{font-size:1.8rem; font-weight:700; color:var(--gold);}
+.stat-card .lbl{color:var(--sub); font-size:.75rem; text-transform:uppercase; letter-spacing:1px;}
+.level-bar{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:24px;}
+.ach-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px;}
+.ach{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; opacity:.35; font-size:.8rem;}
+.ach.unlocked{opacity:1; border-color:var(--gold);}
+.ach .icon{font-size:1.6rem; margin-bottom:6px;}
+
+/* Notes */
+#notesArea{width:100%; min-height:180px; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); color:var(--text); padding:18px; font-size:.95rem; resize:vertical; font-family:inherit;}
+#notesArea:focus{outline:none; border-color:var(--gold);}
+.notes-status{color:var(--sub); font-size:.8rem; margin-top:8px;}
+
+/* Certificate */
+#certificate{background:var(--panel); border:2px solid var(--gold); border-radius:var(--radius); padding:44px 30px; text-align:center; position:relative; overflow:hidden;}
+#certificate::before{content:""; position:absolute; inset:8px; border:1px solid var(--gold); border-radius:10px; opacity:.4; pointer-events:none;}
+#certificate h3{font-size:.8rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:18px;}
+#certificate .name{font-size:2rem; margin:14px 0; font-weight:700; border-bottom:1px solid var(--line); display:inline-block; padding-bottom:6px; min-width:240px;}
+#certNameInput{background:transparent; border:none; border-bottom:1px solid var(--gold); color:var(--text); font-size:1.4rem; text-align:center; padding:6px; font-family:Georgia,serif; width:280px; max-width:80%;}
+#certNameInput:focus{outline:none;}
+.cert-locked{text-align:center; color:var(--sub); padding:20px;}
+
+/* Settings */
+.settings-row{display:flex; justify-content:space-between; align-items:center; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:14px;}
+.switch{width:50px; height:28px; background:var(--panel2); border-radius:20px; position:relative; cursor:pointer; border:1px solid var(--line);}
+.switch::after{content:""; position:absolute; width:22px; height:22px; background:var(--gold); border-radius:50%; top:2px; left:2px; transition:.25s;}
+.switch.on::after{left:24px;}
+.danger{color:var(--red); border-color:var(--red);}
+
+footer{text-align:center; padding:40px 20px; color:var(--sub); font-size:.8rem;}
+::selection{background:var(--gold); color:#141414;}
+@media(min-width:700px){ .about-grid{grid-template-columns:1fr 1fr;} }
+</style>
+</head>
+<body>
+
+<div id="reading-bar"></div>
+<nav id="topnav">
+  <div class="brand">RDPD</div>
+  <div class="navlinks">
+    <a href="#hero">Home</a><a href="#about">About</a><a href="#lessons">Lessons</a>
+    <a href="#quotes">Quotes</a><a href="#flashcards">Cards</a><a href="#quiz">Quiz</a>
+    <a href="#memory">Game</a><a href="#progress">Progress</a><a href="#notes">Notes</a>
+    <a href="#certificate">Certificate</a><a href="#settings">Settings</a>
+  </div>
+  <input type="text" id="searchInput" placeholder="Search…">
+</nav>
+<div id="searchResults"></div>
+
+<section id="hero">
+  <div class="tag">Book Summary &amp; Interactive Study Guide</div>
+  <h1>Rich Dad <span>Poor Dad</span></h1>
+  <p>Financial freedom comes from owning income-producing assets, improving your financial education, and making money work for you — instead of working for money your entire life.</p>
+  <div class="cta-row">
+    <a href="#about" class="btn btn-primary">Start Reading</a>
+    <a href="#quiz" class="btn btn-ghost">Take the Quiz</a>
+  </div>
+  <div class="quote-mark">&ldquo;</div>
+</section>
+
+<section id="about" class="section">
+  <div class="container">
+    <div class="eyebrow">01 / About the Book</div>
+    <h2 class="reveal">Core Message</h2>
+    <p class="section-sub reveal">The mindset shift at the heart of the book.</p>
+    <div class="about-grid">
+      <div class="about-card reveal">
+        <h3>The Big Idea</h3>
+        <p>Wealth isn't built by earning a bigger paycheck — it's built by acquiring assets that generate cash flow, understanding money through financial education, and putting that knowledge into consistent action.</p>
+      </div>
+      <div class="about-card reveal">
+        <h3>Rich Dad vs. Poor Dad</h3>
+        <div class="table-wrap">
+          <table id="comparisonTable">
+            <tr><th>Rich Dad</th><th>Poor Dad</th></tr>
+            <tr><td>Builds assets</td><td>Earns salary</td></tr>
+            <tr><td>Invests money</td><td>Saves only</td></tr>
+            <tr><td>Takes calculated risks</td><td>Avoids risks</td></tr>
+            <tr><td>Creates businesses</td><td>Depends on job</td></tr>
+            <tr><td>Focuses on cash flow</td><td>Focuses on paycheck</td></tr>
+            <tr><td>Makes money work</td><td>Works for money</td></tr>
+            <tr><td>Learns continuously</td><td>Relies on formal education</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lessons" class="section">
+  <div class="container">
+    <div class="eyebrow">02 / Key Lessons</div>
+    <h2 class="reveal">The 10 Most Important Lessons</h2>
+    <p class="section-sub reveal">Tap any lesson to expand it.</p>
+    <div class="lesson-list" id="lessonList"></div>
+  </div>
+</section>
+
+<section id="quotes" class="section">
+  <div class="container">
+    <div class="eyebrow">03 / Important Quotes</div>
+    <h2 class="reveal">Words to Remember</h2>
+    <p class="section-sub reveal">The lines that carry the book's philosophy.</p>
+    <div class="quote-grid" id="quoteGrid"></div>
+  </div>
+</section>
+
+<section id="flashcards" class="section">
+  <div class="container">
+    <div class="eyebrow">04 / Interactive Flashcards</div>
+    <h2 class="reveal">Key Terms</h2>
+    <p class="section-sub reveal">Tap a card to flip it and reveal the definition.</p>
+    <div class="flash-grid" id="flashGrid"></div>
+    <div class="flash-progress" id="flashProgress"></div>
+  </div>
+</section>
+
+<section id="quiz" class="section">
+  <div class="container">
+    <div class="eyebrow">05 / Knowledge Check</div>
+    <h2 class="reveal">20-Question Quiz</h2>
+    <p class="section-sub reveal">Test what you've learned. Earn XP for every correct answer.</p>
+    <div class="quiz-box" id="quizBox"></div>
+  </div>
+</section>
+
+<section id="memory" class="section">
+  <div class="container">
+    <div class="eyebrow">06 / Memory Game</div>
+    <h2 class="reveal">Match the Concepts</h2>
+    <p class="section-sub reveal">Find every matching pair to earn a bonus achievement.</p>
+    <div class="mem-stats"><div>Moves: <b id="memMoves">0</b></div><div>Matched: <b id="memMatched">0</b>/8</div></div>
+    <div class="mem-grid" id="memGrid"></div>
+  </div>
+</section>
+
+<section id="progress" class="section">
+  <div class="container">
+    <div class="eyebrow">07 / Progress Tracker</div>
+    <h2 class="reveal">Your Journey</h2>
+    <p class="section-sub reveal">Everything below is saved automatically on this device.</p>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="val" id="statLevel">1</div><div class="lbl">Level</div></div>
+      <div class="stat-card"><div class="val" id="statXP">0</div><div class="lbl">XP</div></div>
+      <div class="stat-card"><div class="val" id="statQuiz">0%</div><div class="lbl">Best Quiz</div></div>
+      <div class="stat-card"><div class="val" id="statCards">0/16</div><div class="lbl">Cards Seen</div></div>
+    </div>
+    <div class="level-bar">
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:.85rem; color:var(--sub);"><span>Level Progress</span><span id="xpToNext"></span></div>
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="levelFill"></div></div>
+    </div>
+    <h3 style="margin-bottom:14px; font-size:1rem; color:var(--gold);">Achievements</h3>
+    <div class="ach-grid" id="achGrid"></div>
+  </div>
+</section>
+
+<section id="notes" class="section">
+  <div class="container">
+    <div class="eyebrow">08 / Notes</div>
+    <h2 class="reveal">Your Notes</h2>
+    <p class="section-sub reveal">Private notes, saved automatically to this browser.</p>
+    <textarea id="notesArea" placeholder="Write your thoughts, action items, or favorite takeaways here…"></textarea>
+    <div class="notes-status" id="notesStatus">All notes saved locally.</div>
+  </div>
+</section>
+
+<section id="certificate" class="section">
+  <div class="container">
+    <div class="eyebrow">09 / Completion</div>
+    <h2 class="reveal">Certificate</h2>
+    <p class="section-sub reveal">Reach Level 3 to unlock your certificate of completion.</p>
+    <div id="certArea"></div>
+  </div>
+</section>
+
+<section id="settings" class="section">
+  <div class="container">
+    <div class="eyebrow">10 / Settings</div>
+    <h2 class="reveal">Preferences</h2>
+    <p class="section-sub reveal"></p>
+    <div class="settings-row">
+      <div><b>Theme</b><div style="color:var(--sub); font-size:.8rem;">Switch between dark and light mode</div></div>
+      <div class="switch" id="themeSwitch"></div>
+    </div>
+    <div class="settings-row">
+      <div><b>Reset Progress</b><div style="color:var(--sub); font-size:.8rem;">Clears quiz scores, XP, notes, and achievements</div></div>
+      <button class="btn danger" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</section>
+
+<footer>Rich Dad Poor Dad — Interactive Study Guide · All data stored locally on your device</footer>
+
+<script>
+(function(){
+"use strict";
+
+const STORE_KEY = "rdpd_state_v1";
+const defaultState = {
+  theme: "dark", xp: 0, quizBest: 0, quizAttempts: 0,
+  flashSeen: [], achievements: [], memoryBestMoves: null,
+  notes: "", certName: "", sectionsViewed: []
+};
+let state = Object.assign({}, defaultState, JSON.parse(localStorage.getItem(STORE_KEY) || "{}"));
+function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+function xpForLevel(l){ return l * 100; }
+function levelFromXP(xp){
+  let lvl = 1, remaining = xp;
+  while(remaining >= xpForLevel(lvl)){ remaining -= xpForLevel(lvl); lvl++; }
+  return {level:lvl, into:remaining, need:xpForLevel(lvl)};
+}
+function addXP(n){
+  state.xp += n; save(); renderProgress(); checkAchievements();
+}
+
+const ACHIEVEMENTS = [
+  {id:"first_flip", icon:"🃏", name:"First Flip", desc:"Flip a flashcard", test:s=>s.flashSeen.length>=1},
+  {id:"all_cards", icon:"📚", name:"Card Master", desc:"View all flashcards", test:s=>s.flashSeen.length>=FLASHCARDS.length},
+  {id:"quiz_pass", icon:"✅", name:"Quiz Passer", desc:"Score 70%+ on the quiz", test:s=>s.quizBest>=70},
+  {id:"quiz_perfect", icon:"🏆", name:"Perfect Score", desc:"Score 100% on the quiz", test:s=>s.quizBest>=100},
+  {id:"memory_win", icon:"🧠", name:"Memory Master", desc:"Complete the memory game", test:s=>s.memoryBestMoves!==null},
+  {id:"note_taker", icon:"📝", name:"Note Taker", desc:"Write a note", test:s=>s.notes && s.notes.trim().length>10},
+  {id:"level3", icon:"⭐", name:"Level 3 Reached", desc:"Reach Level 3", test:s=>levelFromXP(s.xp).level>=3},
+  {id:"level5", icon:"👑", name:"Financially Free", desc:"Reach Level 5", test:s=>levelFromXP(s.xp).level>=5},
+];
+function checkAchievements(){
+  ACHIEVEMENTS.forEach(a=>{
+    if(a.test(state) && !state.achievements.includes(a.id)){
+      state.achievements.push(a.id); save();
+    }
+  });
+  renderAchievements();
+}
+
+/* ---------- THEME ---------- */
+function applyTheme(){
+  document.documentElement.setAttribute("data-theme", state.theme);
+  document.getElementById("themeSwitch").classList.toggle("on", state.theme==="light");
+}
+document.getElementById("themeSwitch").addEventListener("click", ()=>{
+  state.theme = state.theme === "dark" ? "light" : "dark";
+  save(); applyTheme();
+});
+
+/* ---------- READING PROGRESS ---------- */
+window.addEventListener("scroll", ()=>{
+  const h = document.documentElement;
+  const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById("reading-bar").style.width = pct + "%";
+}, {passive:true});
+
+/* ---------- REVEAL ON SCROLL ---------- */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add("in"); });
+},{threshold:.15});
+function observeReveals(){ document.querySelectorAll(".reveal:not(.io-bound)").forEach(el=>{ el.classList.add("io-bound"); io.observe(el); }); }
+
+/* ---------- LESSONS ---------- */
+const LESSONS = [
+  ["The rich don't work for money.","They build systems and assets that generate income."],
+  ["Financial education is more valuable than a high salary.","Learn accounting, investing, taxes, and business."],
+  ["Know the difference between assets and liabilities.","Assets put money into your pocket. Liabilities take money out of your pocket."],
+  ["Buy assets first.","Invest before increasing your lifestyle."],
+  ["Mind your own business.","Build investments and businesses outside your job."],
+  ["Use corporations and tax knowledge legally.","Understand how taxes and business structures work."],
+  ["Create opportunities instead of waiting for them.","Train yourself to spot good investments."],
+  ["Overcome fear and self-doubt.","Every investor makes mistakes and learns from them."],
+  ["Keep learning.","Read books, attend seminars, and improve your skills."],
+  ["Take action.","Knowledge without action creates no wealth."]
+];
+const lessonList = document.getElementById("lessonList");
+LESSONS.forEach((l,i)=>{
+  const div = document.createElement("div");
+  div.className = "lesson reveal";
+  div.innerHTML = `<div class="num">${String(i+1).padStart(2,"0")}</div><div><h4>${l[0]}</h4><p>${l[1]}</p></div>`;
+  div.addEventListener("click", ()=>div.classList.toggle("open"));
+  lessonList.appendChild(div);
+});
+
+/* ---------- QUOTES ---------- */
+const QUOTES = [
+  "The rich don't work for money.",
+  "The poor and the middle class work for money. The rich have money work for them.",
+  "It's not how much money you make. It's how much money you keep.",
+  "Financial freedom is available to those who learn about it and work for it.",
+  "Winners are not afraid of losing. But losers are.",
+  "The love of money is not the root of all evil. The lack of money is the root of all evil.",
+  "Your house is not an asset if it takes money out of your pocket.",
+  "The single most powerful asset we all have is our mind.",
+  "Learn to use your emotions to think, not think with your emotions.",
+  "The more you learn, the more you earn."
+];
+const quoteGrid = document.getElementById("quoteGrid");
+QUOTES.forEach(q=>{
+  const d = document.createElement("div");
+  d.className = "quote-card reveal";
+  d.textContent = "\u201C" + q + "\u201D";
+  quoteGrid.appendChild(d);
+});
+
+/* ---------- FLASHCARDS ---------- */
+const FLASHCARDS = [
+  ["Asset","Something that puts money into your pocket."],
+  ["Liability","Something that takes money out of your pocket."],
+  ["Cash Flow","The movement of money in and out of your pocket each month."],
+  ["Financial Freedom","Having enough passive income to cover your expenses without working."],
+  ["Passive Income","Income earned with little ongoing effort, e.g. from assets."],
+  ["Financial Intelligence","The knowledge needed to make smart money decisions."],
+  ["Investing","Putting money into something with the expectation of a return."],
+  ["Entrepreneurship","Creating and running your own business venture."],
+  ["Real Estate","Property that can generate rental income or appreciate in value."],
+  ["Stocks","Shares of ownership in a company."],
+  ["Taxes","Compulsory payments to the government; understanding them legally reduces your burden."],
+  ["Return on Investment","The profit earned relative to the amount invested."],
+  ["Budgeting","Planning how income will be spent, saved, or invested."],
+  ["Compound Growth","Earnings that generate their own further earnings over time."],
+  ["Cash Flow Quadrant","A model of four ways people earn income: Employee, Self-employed, Business owner, Investor."],
+  ["Leverage","Using borrowed capital or resources to increase potential returns."]
+];
+const flashGrid = document.getElementById("flashGrid");
+FLASHCARDS.forEach((f,i)=>{
+  const d = document.createElement("div");
+  d.className = "flash reveal";
+  d.innerHTML = `<div class="flash-inner">
+      <div class="flash-face flash-front">${f[0]}</div>
+      <div class="flash-face flash-back">${f[1]}</div>
+    </div>`;
+  d.addEventListener("click", ()=>{
+    d.classList.toggle("flipped");
+    if(!state.flashSeen.includes(i)){ state.flashSeen.push(i); save(); addXP(5); }
+    updateFlashProgress();
+  });
+  flashGrid.appendChild(d);
+});
+function updateFlashProgress(){
+  document.getElementById("flashProgress").textContent = `${state.flashSeen.length} / ${FLASHCARDS.length} cards viewed`;
+  document.getElementById("statCards").textContent = `${state.flashSeen.length}/${FLASHCARDS.length}`;
+}
+
+/* ---------- QUIZ ---------- */
+const QUIZ = [
+  ["Why don't the rich work for money, according to the book?",["They inherit it","They build systems and assets that generate income","They rely on lottery luck","They avoid working entirely"],1],
+  ["What is more valuable than a high salary?",["A large house","Financial education","A luxury car","A long job title"],1],
+  ["What defines an asset?",["Something that takes money out of your pocket","Something that puts money into your pocket","Any expensive item you own","A monthly bill"],1],
+  ["What defines a liability?",["Something that puts money into your pocket","Something that takes money out of your pocket","A savings account","A source of passive income"],1],
+  ["What should you do before increasing your lifestyle?",["Buy liabilities","Buy assets first","Take a vacation","Apply for more credit cards"],1],
+  ["What does 'mind your own business' mean in the book?",["Ignore other people's opinions","Build investments and businesses outside your job","Focus only on your job","Avoid all business ventures"],1],
+  ["What should you understand to legally reduce your tax burden?",["Nothing, taxes are fixed","Taxes and corporate/business structures","Only your salary slip","Foreign currency exchange"],1],
+  ["Instead of waiting for opportunities, what should you do?",["Wait for a raise","Train yourself to spot good investments","Rely on your employer","Avoid all risk"],1],
+  ["What do winners do about losing, according to the book?",["They quit immediately","They are not afraid of losing and learn from mistakes","They blame others","They avoid all investing"],1],
+  ["What is emphasized about continuous learning?",["Formal schooling is enough","Read books, attend seminars, and keep improving your skills","Learning stops after graduation","Only children need to learn"],1],
+  ["What is the final and most important lesson in the summary?",["Save every penny","Take action","Avoid all debt","Buy a house first"],1],
+  ["Complete the quote: 'The rich don't work for ___.'",["time","money","free","status"],1],
+  ["Complete the quote: 'The poor and the middle class work for money. The rich have money ___.'",["work for them","in the bank","hidden away","invested only"],0],
+  ["According to the book, what matters more than how much you make?",["How much you spend on image","How much money you keep","How many hours you work","How big your salary is"],1],
+  ["Financial freedom is available to...",["only the wealthy by birth","those who learn about it and work for it","people with advanced degrees","government employees only"],1],
+  ["Complete: 'Winners are not afraid of losing, but ___ are.'",["investors","losers","beginners","bankers"],1],
+  ["What does the book claim is actually the root of all evil (contrary to the common saying)?",["The love of money","The lack of money","Greed","Debt"],1],
+  ["When is a house NOT considered an asset, per the book?",["When it's paid off","When it takes money out of your pocket","When it's rented out","When it appreciates in value"],1],
+  ["What is described as the single most powerful asset we all have?",["Our job","Our mind","Our savings account","Our house"],1],
+  ["What should you learn to do with your emotions?",["Suppress them completely","Use them to think, not think with them","Ignore them in investing","Let them make all decisions"],1]
+];
+let qIndex = 0, qScore = 0, answered = false;
+const quizBox = document.getElementById("quizBox");
+
+function renderQuiz(){
+  if(qIndex >= QUIZ.length){ renderQuizResult(); return; }
+  answered = false;
+  const [q, opts, correct] = QUIZ[qIndex];
+  quizBox.innerHTML = `
+    <div class="quiz-meta"><span>Question ${qIndex+1} / ${QUIZ.length}</span><span>Score: ${qScore}</span></div>
+    <div class="progress-bar-track" style="margin-bottom:20px;"><div class="progress-bar-fill" style="width:${(qIndex/QUIZ.length)*100}%"></div></div>
+    <div class="quiz-q">${q}</div>
+    <div class="quiz-opts" id="quizOpts"></div>
+  `;
+  const optsWrap = document.getElementById("quizOpts");
+  opts.forEach((o,i)=>{
+    const el = document.createElement("div");
+    el.className = "qopt";
+    el.textContent = o;
+    el.addEventListener("click", ()=>{
+      if(answered) return;
+      answered = true;
+      const allOpts = optsWrap.querySelectorAll(".qopt");
+      allOpts[correct].classList.add("correct");
+      if(i !== correct) el.classList.add("wrong"); else { qScore++; addXP(10); }
+      setTimeout(()=>{ qIndex++; renderQuiz(); }, 700);
+    });
+    optsWrap.appendChild(el);
+  });
+}
+function renderQuizResult(){
+  const pct = Math.round((qScore/QUIZ.length)*100);
+  state.quizAttempts++;
+  if(pct > state.quizBest){ state.quizBest = pct; }
+  save(); checkAchievements(); renderProgress();
+  quizBox.innerHTML = `
+    <div class="quiz-result">
+      <div class="score">${pct}%</div>
+      <p style="color:var(--sub); margin:10px 0 22px;">You answered ${qScore} of ${QUIZ.length} correctly.</p>
+      <button class="btn btn-primary" id="retakeBtn">Retake Quiz</button>
+    </div>`;
+  document.getElementById("retakeBtn").addEventListener("click", ()=>{ qIndex=0; qScore=0; renderQuiz(); });
+}
+renderQuiz();
+
+/* ---------- MEMORY GAME ---------- */
+const MEM_TERMS = ["Asset","Liability","Cash Flow","Investing","Passive Income","Real Estate","Financial IQ","Leverage"];
+let memCards = [], memFlipped = [], memMoves = 0, memMatched = 0, memLock = false;
+function buildMemory(){
+  memCards = MEM_TERMS.concat(MEM_TERMS).map((t,i)=>({id:i,term:t,matched:false}));
+  for(let i=memCards.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [memCards[i],memCards[j]]=[memCards[j],memCards[i]]; }
+  memFlipped = []; memMoves = 0; memMatched = 0; memLock = false;
+  renderMemory();
+}
+function renderMemory(){
+  const grid = document.getElementById("memGrid");
+  grid.innerHTML = "";
+  memCards.forEach(c=>{
+    const el = document.createElement("div");
+    el.className = "mem-card hidden-text" + (c.matched?" matched":"") + (memFlipped.includes(c.id)?" flip":"");
+    el.textContent = c.term;
+    if(c.matched || memFlipped.includes(c.id)) el.classList.remove("hidden-text");
+    el.addEventListener("click", ()=>onMemClick(c.id));
+    grid.appendChild(el);
+  });
+  document.getElementById("memMoves").textContent = memMoves;
+  document.getElementById("memMatched").textContent = memMatched;
+}
+function onMemClick(id){
+  if(memLock) return;
+  const card = memCards.find(c=>c.id===id);
+  if(card.matched || memFlipped.includes(id)) return;
+  memFlipped.push(id);
+  renderMemory();
+  if(memFlipped.length===2){
+    memMoves++;
+    memLock = true;
+    const [a,b] = memFlipped.map(fid=>memCards.find(c=>c.id===fid));
+    if(a.term === b.term){
+      a.matched = true; b.matched = true; memMatched++;
+      memFlipped = []; memLock = false;
+      addXP(8);
+      renderMemory();
+      if(memMatched === MEM_TERMS.length){
+        if(state.memoryBestMoves===null || memMoves < state.memoryBestMoves) state.memoryBestMoves = memMoves;
+        save(); checkAchievements(); addXP(25);
+      }
+    } else {
+      setTimeout(()=>{ memFlipped = []; memLock = false; renderMemory(); }, 800);
+    }
+  }
+}
+buildMemory();
+
+/* ---------- PROGRESS / ACHIEVEMENTS ---------- */
+function renderProgress(){
+  const {level, into, need} = levelFromXP(state.xp);
+  document.getElementById("statLevel").textContent = level;
+  document.getElementById("statXP").textContent = state.xp;
+  document.getElementById("statQuiz").textContent = state.quizBest + "%";
+  updateFlashProgress();
+  document.getElementById("levelFill").style.width = (into/need*100) + "%";
+  document.getElementById("xpToNext").textContent = `${into} / ${need} XP`;
+  renderCertificate();
+}
+function renderAchievements(){
+  const grid = document.getElementById("achGrid");
+  grid.innerHTML = "";
+  ACHIEVEMENTS.forEach(a=>{
+    const unlocked = state.achievements.includes(a.id);
+    const d = document.createElement("div");
+    d.className = "ach" + (unlocked?" unlocked":"");
+    d.innerHTML = `<div class="icon">${a.icon}</div><div><b>${a.name}</b><div style="color:var(--sub); font-size:.7rem; margin-top:2px;">${a.desc}</div></div>`;
+    grid.appendChild(d);
+  });
+}
+
+/* ---------- NOTES ---------- */
+const notesArea = document.getElementById("notesArea");
+notesArea.value = state.notes || "";
+let notesTimer;
+notesArea.addEventListener("input", ()=>{
+  document.getElementById("notesStatus").textContent = "Saving…";
+  clearTimeout(notesTimer);
+  notesTimer = setTimeout(()=>{
+    state.notes = notesArea.value; save(); checkAchievements();
+    document.getElementById("notesStatus").textContent = "All notes saved locally.";
+  }, 500);
+});
+
+/* ---------- CERTIFICATE ---------- */
+function renderCertificate(){
+  const area = document.getElementById("certArea");
+  const level = levelFromXP(state.xp).level;
+  if(level < 3){
+    area.innerHTML = `<div class="cert-locked">Reach Level 3 (currently Level ${level}) to unlock your certificate. Keep completing flashcards, the quiz, and the memory game to earn XP.</div>`;
+    return;
+  }
+  area.innerHTML = `
+    <div id="certificate">
+      <h3>Certificate of Completion</h3>
+      <div style="color:var(--sub); font-size:.85rem;">This certifies that</div>
+      <div class="name"><input id="certNameInput" placeholder="Your Name" value="${state.certName.replace(/"/g,'&quot;')}"></div>
+      <div style="color:var(--sub); font-size:.9rem; max-width:400px; margin:0 auto;">has successfully completed the interactive study guide for <b style="color:var(--gold)">Rich Dad Poor Dad</b>, reaching Level ${level}.</div>
+      <div style="margin-top:24px;"><button class="btn btn-primary" id="printCert">Print / Save as PDF</button></div>
+    </div>`;
+  const input = document.getElementById("certNameInput");
+  input.addEventListener("input", ()=>{ state.certName = input.value; save(); });
+  document.getElementById("printCert").addEventListener("click", ()=>window.print());
+}
+
+/* ---------- SEARCH ---------- */
+const SEARCH_INDEX = [
+  ...LESSONS.map((l,i)=>({title:l[0], text:l[1], target:"#lessons"})),
+  ...QUOTES.map(q=>({title:"Quote", text:q, target:"#quotes"})),
+  ...FLASHCARDS.map(f=>({title:f[0], text:f[1], target:"#flashcards"})),
+  {title:"Core Message", text:"Financial freedom comes from owning income-producing assets, improving your financial education, and making money work for you.", target:"#about"},
+];
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
+searchInput.addEventListener("input", ()=>{
+  const q = searchInput.value.trim().toLowerCase();
+  if(q.length < 2){ searchResults.style.display = "none"; return; }
+  const matches = SEARCH_INDEX.filter(item => (item.title+" "+item.text).toLowerCase().includes(q)).slice(0,8);
+  if(!matches.length){ searchResults.innerHTML = `<div>No results for "${q}"</div>`; searchResults.style.display="block"; return; }
+  searchResults.innerHTML = matches.map(m=>{
+    const re = new RegExp("("+q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig");
+    return `<div data-target="${m.target}"><b>${m.title}</b><br>${m.text.replace(re,"<mark>$1</mark>")}</div>`;
+  }).join("");
+  searchResults.style.display = "block";
+  searchResults.querySelectorAll("div[data-target]").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      document.querySelector(el.dataset.target).scrollIntoView({behavior:"smooth"});
+      searchResults.style.display = "none"; searchInput.value = "";
+    });
+  });
+});
+document.addEventListener("click", (e)=>{
+  if(!searchResults.contains(e.target) && e.target !== searchInput) searchResults.style.display = "none";
+});
+
+/* ---------- RESET ---------- */
+document.getElementById("resetBtn").addEventListener("click", ()=>{
+  if(!confirm("Reset all progress, quiz scores, notes, and achievements? This cannot be undone.")) return;
+  localStorage.removeItem(STORE_KEY);
+  state = Object.assign({}, defaultState);
+  save();
+  notesArea.value = "";
+  document.querySelectorAll(".flash.flipped").forEach(f=>f.classList.remove("flipped"));
+  qIndex = 0; qScore = 0; renderQuiz();
+  buildMemory();
+  applyTheme();
+  renderProgress(); renderAchievements();
+});
+
+/* ---------- INIT ---------- */
+applyTheme();
+renderProgress();
+renderAchievements();
+observeReveals();
+})();
+</script>
+
+<script src="../assets/library-core.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>
