@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zero to One — Building the Future Through Innovation</title>
+<meta name="book:tagline" content="Discover how groundbreaking ideas create entirely new markets instead of competing in existing ones.">
+<meta name="book:date" content="2026-07-17">
+<meta name="book:accent" content="#4F7CFF">
+<style>
+/* ============================================================
+   0. DESIGN TOKENS
+   Palette — Void #0A0E1A / Ink #0E1424 / Signal Blue #4F7CFF
+   Violet Pulse #8B5FFF / Cyan Edge #43E6E0 / Paper #E8ECF7
+   Display face: system bold sans, tight tracking ("manifesto" voice)
+   Utility face: monospace (the 0→1 binary motif, counters, timers)
+   ============================================================ */
+:root{
+  --void:#0A0E1A;
+  --ink:#10162A;
+  --ink-2:#151d36;
+  --edge:rgba(232,236,247,0.09);
+  --blue:#4F7CFF;
+  --violet:#8B5FFF;
+  --cyan:#43E6E0;
+  --paper:#E8ECF7;
+  --paper-dim:#9AA4C4;
+  --paper-dimmer:#6b7396;
+  --good:#4ADE9C;
+  --warn:#FFB84F;
+  --bad:#FF6B7A;
+  --grad-1: linear-gradient(135deg,var(--blue),var(--violet));
+  --grad-2: linear-gradient(135deg,var(--violet),var(--cyan));
+  --grad-3: linear-gradient(120deg,var(--blue),var(--violet) 55%,var(--cyan));
+  --radius: 18px;
+  --radius-sm: 12px;
+  --shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
+  --display: -apple-system, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+  --nav-h: 64px;
+  --tab-h: 66px;
+}
+:root[data-theme="light"]{
+  --void:#F3F5FB;
+  --ink:#FFFFFF;
+  --ink-2:#EEF1FA;
+  --edge:rgba(16,22,42,0.09);
+  --paper:#10162A;
+  --paper-dim:#4a5170;
+  --paper-dimmer:#7a83a3;
+  --shadow: 0 20px 50px -25px rgba(20,25,50,0.25);
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--void);
+  color:var(--paper);
+  font-family:var(--display);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  transition:background .4s ease,color .4s ease;
+}
+h1,h2,h3,h4{font-family:var(--display);letter-spacing:-0.02em;margin:0;}
+p{margin:0;line-height:1.6;color:var(--paper-dim);}
+a{color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+::selection{background:var(--blue);color:#fff;}
+.mono{font-family:var(--mono);}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+}
+
+/* ============================================================
+   1. BACKGROUND CANVAS + LAYOUT SHELL
+   ============================================================ */
+#particleCanvas,#confettiCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+#confettiCanvas{z-index:9999;}
+.app{position:relative;z-index:1;min-height:100vh;padding-bottom:calc(var(--tab-h) + 12px);}
+
+.topbar{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;gap:14px;
+  padding:12px 18px;
+  background:rgba(10,14,26,0.72);
+  backdrop-filter:blur(18px) saturate(140%);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);
+  border-bottom:1px solid var(--edge);
+}
+[data-theme="light"] .topbar{background:rgba(243,245,251,0.78);}
+.brandmark{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-0.01em;font-size:15px;white-space:nowrap;}
+.brandmark .zo{
+  width:30px;height:30px;border-radius:9px;background:var(--grad-1);
+  display:flex;align-items:center;justify-content:center;font-family:var(--mono);
+  font-weight:700;font-size:13px;color:#fff;flex:none;
+}
+.progress-pill{
+  margin-left:auto;display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;color:var(--paper-dim);
+  padding:6px 10px;border-radius:999px;background:var(--ink);border:1px solid var(--edge);
+}
+.progress-pill .bar{width:64px;height:5px;border-radius:99px;background:var(--edge);overflow:hidden;}
+.progress-pill .bar i{display:block;height:100%;background:var(--grad-1);width:0%;transition:width .6s ease;}
+.icon-btn{
+  width:36px;height:36px;border-radius:10px;border:1px solid var(--edge);background:var(--ink);
+  color:var(--paper);display:flex;align-items:center;justify-content:center;font-size:15px;flex:none;
+  transition:transform .15s ease, border-color .15s ease, background .15s ease;
+}
+.icon-btn:hover{border-color:var(--blue);transform:translateY(-1px);}
+.icon-btn:active{transform:scale(.92);}
+
+main{max-width:1180px;margin:0 auto;padding:0 18px;}
+.view{display:none;animation:viewIn .5s cubic-bezier(.2,.8,.2,1);}
+.view.active{display:block;}
+@keyframes viewIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+/* bottom tab bar (mobile-first primary nav) */
+.tabbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;
+  display:flex;overflow-x:auto;gap:2px;
+  padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+  background:rgba(10,14,26,0.85);backdrop-filter:blur(20px);
+  border-top:1px solid var(--edge);
+  scrollbar-width:none;
+}
+[data-theme="light"] .tabbar{background:rgba(243,245,251,0.9);}
+.tabbar::-webkit-scrollbar{display:none;}
+.tab{
+  flex:none;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 12px;border-radius:12px;border:none;background:transparent;color:var(--paper-dimmer);
+  font-size:10px;font-weight:600;letter-spacing:.02em;white-space:nowrap;transition:.15s;
+}
+.tab .ti{font-size:16px;}
+.tab.active{color:#fff;background:var(--ink-2);}
+.tab.active .ti{filter:drop-shadow(0 0 8px rgba(79,124,255,.6));}
+
+/* ============================================================
+   2. PRIMITIVES: cards, buttons, badges
+   ============================================================ */
+.glass{
+  background:linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
+  border:1px solid var(--edge);
+  border-radius:var(--radius);
+  backdrop-filter:blur(10px);
+  box-shadow:var(--shadow);
+}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 22px;border-radius:12px;border:none;font-weight:700;font-size:14px;
+  letter-spacing:.01em;position:relative;overflow:hidden;transition:transform .18s ease, box-shadow .18s ease;
+}
+.btn.primary{background:var(--grad-1);color:#fff;box-shadow:0 10px 30px -8px rgba(79,124,255,.55);}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px -8px rgba(79,124,255,.7);}
+.btn.ghost{background:var(--ink);color:var(--paper);border:1px solid var(--edge);}
+.btn.ghost:hover{border-color:var(--blue);}
+.btn:active{transform:scale(.97);}
+.btn[disabled]{opacity:.4;pointer-events:none;}
+.btn .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:rip .6s ease-out;pointer-events:none;}
+@keyframes rip{to{transform:scale(3);opacity:0;}}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;
+}
+.eyebrow::before{content:"";width:16px;height:1px;background:var(--cyan);}
+
+.section-title{font-size:clamp(24px,4vw,34px);font-weight:800;margin-bottom:8px;}
+.section-sub{max-width:620px;margin-bottom:26px;}
+
+.grid{display:grid;gap:16px;}
+.grid.cols-2{grid-template-columns:repeat(2,1fr);}
+.grid.cols-3{grid-template-columns:repeat(3,1fr);}
+@media(max-width:820px){.grid.cols-2,.grid.cols-3{grid-template-columns:1fr;}}
+
+.badge{
+  display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;
+  font-size:11px;font-weight:700;font-family:var(--mono);
+}
+.badge.blue{background:rgba(79,124,255,.15);color:#9db4ff;}
+.badge.violet{background:rgba(139,95,255,.15);color:#c6b0ff;}
+.badge.cyan{background:rgba(67,230,224,.15);color:#8ff2ee;}
+.badge.good{background:rgba(74,222,156,.15);color:var(--good);}
+.badge.warn{background:rgba(255,184,79,.15);color:var(--warn);}
+.badge.bad{background:rgba(255,107,122,.15);color:var(--bad);}
+
+.toast-wrap{position:fixed;top:74px;right:14px;z-index:200;display:flex;flex-direction:column;gap:8px;max-width:320px;}
+.toast{
+  padding:12px 16px;border-radius:12px;font-size:13px;font-weight:600;
+  background:var(--ink-2);border:1px solid var(--edge);box-shadow:var(--shadow);
+  animation:toastIn .35s ease, toastOut .4s ease 3.2s forwards;
+  display:flex;align-items:center;gap:10px;
+}
+@keyframes toastIn{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:none;}}
+@keyframes toastOut{to{opacity:0;transform:translateX(30px);}}
+
+/* ============================================================
+   3. HOME / HERO
+   ============================================================ */
+.hero{
+  position:relative;padding:56px 4px 30px;overflow:visible;
+}
+.hero-mark{
+  width:min(220px,52vw);aspect-ratio:1;margin:0 auto 20px;position:relative;
+}
+.hero-mark svg{width:100%;height:100%;}
+.hero-title{
+  text-align:center;font-size:clamp(34px,7vw,58px);font-weight:800;line-height:1.02;
+  background:var(--grad-3);-webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:200% 200%;animation:sheen 7s ease infinite;
+}
+@keyframes sheen{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.hero-tag{text-align:center;max-width:520px;margin:14px auto 0;font-size:15.5px;}
+.hero-cta{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap;}
+.hero-stats{display:flex;gap:10px;justify-content:center;margin-top:34px;flex-wrap:wrap;}
+.stat-chip{
+  padding:10px 16px;border-radius:14px;text-align:center;min-width:88px;
+}
+.stat-chip b{display:block;font-family:var(--mono);font-size:20px;background:var(--grad-2);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat-chip span{font-size:10px;color:var(--paper-dimmer);text-transform:uppercase;letter-spacing:.06em;}
+
+.home-grid{margin-top:46px;}
+.tile{
+  padding:20px;cursor:pointer;transition:transform .2s ease, border-color .2s ease;
+  display:flex;flex-direction:column;gap:8px;min-height:128px;
+}
+.tile:hover{transform:translateY(-4px);border-color:rgba(79,124,255,.4);}
+.tile .ic{font-size:22px;}
+.tile h4{font-size:15px;}
+.tile p{font-size:12.5px;}
+
+/* ============================================================
+   4. LEARN SECTIONS
+   ============================================================ */
+.concept-card{padding:20px;cursor:pointer;}
+.concept-head{display:flex;align-items:center;gap:12px;}
+.concept-num{font-family:var(--mono);font-size:11px;color:var(--paper-dimmer);}
+.concept-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--grad-1);flex:none;}
+.concept-body{max-height:0;overflow:hidden;transition:max-height .4s ease, margin-top .4s ease;font-size:13.5px;}
+.concept-card.open .concept-body{max-height:400px;margin-top:12px;}
+.concept-card.open{border-color:rgba(139,95,255,.45);}
+.chev{margin-left:auto;transition:transform .3s ease;color:var(--paper-dimmer);}
+.concept-card.open .chev{transform:rotate(180deg);}
+.bookmark-btn{background:none;border:none;color:var(--paper-dimmer);font-size:16px;}
+.bookmark-btn.on{color:var(--warn);}
+.notes-area{
+  width:100%;margin-top:10px;background:var(--void);border:1px solid var(--edge);border-radius:10px;
+  color:var(--paper);padding:8px 10px;font-size:12.5px;font-family:var(--display);resize:vertical;min-height:44px;
+}
+
+/* ============================================================
+   5. QUIZ
+   ============================================================ */
+.quiz-hud{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:20px;}
+.quiz-hud .hud-item{padding:8px 14px;font-family:var(--mono);font-size:12px;}
+.qcard{padding:26px 22px;}
+.qcard .qn{font-size:11px;color:var(--paper-dimmer);font-family:var(--mono);margin-bottom:8px;}
+.qcard h3{font-size:19px;line-height:1.4;margin-bottom:20px;}
+.opt{
+  display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  padding:13px 14px;margin-bottom:10px;border-radius:12px;border:1px solid var(--edge);
+  background:var(--ink);color:var(--paper);font-size:14px;transition:.15s;
+}
+.opt:hover{border-color:var(--blue);}
+.opt .k{font-family:var(--mono);font-size:11px;color:var(--paper-dimmer);width:18px;flex:none;}
+.opt.correct{border-color:var(--good);background:rgba(74,222,156,.1);}
+.opt.wrong{border-color:var(--bad);background:rgba(255,107,122,.1);}
+.opt[disabled]{pointer-events:none;}
+.qexplain{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--ink-2);font-size:13px;display:none;}
+.qexplain.show{display:block;animation:viewIn .3s ease;}
+.quiz-result{padding:34px 26px;text-align:center;}
+.big-score{font-family:var(--mono);font-size:52px;font-weight:800;background:var(--grad-2);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* ============================================================
+   6. FLASHCARDS
+   ============================================================ */
+.fc-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;}
+.fc-stage{perspective:1400px;width:min(420px,92vw);height:260px;}
+.fc-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.8,.2,1);cursor:pointer;}
+.fc-card.flipped{transform:rotateY(180deg);}
+.fc-face{
+  position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;padding:26px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;
+  border:1px solid var(--edge);box-shadow:var(--shadow);
+}
+.fc-face.front{background:linear-gradient(160deg,var(--ink),var(--ink-2));}
+.fc-face.back{background:var(--grad-1);transform:rotateY(180deg);color:#fff;}
+.fc-face.back p{color:rgba(255,255,255,.9);}
+.fc-term{font-size:22px;font-weight:800;}
+.fc-nav{display:flex;gap:10px;align-items:center;}
+.fc-dot{font-family:var(--mono);font-size:12px;color:var(--paper-dimmer);}
+.fc-known{display:flex;gap:8px;}
+
+/* ============================================================
+   7. GAMES: business builder / monopoly sim / secrets
+   ============================================================ */
+.stat-bars{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin:18px 0;}
+.stat-bar-item span{font-size:11px;color:var(--paper-dimmer);display:flex;justify-content:space-between;margin-bottom:4px;font-family:var(--mono);}
+.stat-bar-track{height:8px;border-radius:99px;background:var(--edge);overflow:hidden;}
+.stat-bar-fill{height:100%;border-radius:99px;transition:width .5s ease;}
+.choice-row{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
+.choice-card{
+  padding:16px;text-align:left;border-radius:14px;border:1px solid var(--edge);background:var(--ink);
+  transition:.15s;
+}
+.choice-card:hover{border-color:var(--violet);transform:translateY(-2px);}
+.choice-card h5{font-size:13.5px;margin-bottom:4px;}
+.choice-card p{font-size:11.5px;}
+.game-log{margin-top:16px;padding:14px;border-radius:12px;background:var(--ink-2);font-size:12.5px;max-height:160px;overflow-y:auto;}
+.game-log div{padding:4px 0;border-bottom:1px dashed var(--edge);}
+.ending-card{padding:30px;text-align:center;}
+.ending-card h2{font-size:26px;background:var(--grad-3);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:10px;}
+
+.sim-round{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end;margin:20px 0;min-height:140px;}
+.sim-bar-col{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:60px;}
+.sim-bar{width:26px;border-radius:6px 6px 0 0;background:var(--grad-1);transition:height .5s ease;}
+.sim-bar.compete{background:var(--grad-2);}
+.sim-bar-label{font-size:10px;color:var(--paper-dimmer);font-family:var(--mono);}
+
+/* ============================================================
+   8. TIMELINE / KNOWLEDGE MAP
+   ============================================================ */
+.tl{position:relative;padding-left:26px;}
+.tl::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--blue),var(--cyan));}
+.tl-item{position:relative;padding-bottom:26px;cursor:pointer;}
+.tl-item::before{
+  content:"";position:absolute;left:-26px;top:2px;width:16px;height:16px;border-radius:50%;
+  background:var(--void);border:3px solid var(--blue);transition:.3s;
+}
+.tl-item.open::before{background:var(--blue);box-shadow:0 0 14px rgba(79,124,255,.7);}
+.tl-item h4{font-size:15.5px;}
+.tl-detail{max-height:0;overflow:hidden;transition:max-height .4s ease;font-size:13px;}
+.tl-item.open .tl-detail{max-height:200px;margin-top:8px;}
+
+.kmap{position:relative;width:100%;aspect-ratio:1.3;max-width:640px;margin:0 auto;}
+.kmap svg{width:100%;height:100%;}
+.kmap-node{cursor:pointer;}
+.kmap-node circle{transition:.2s;}
+.kmap-node:hover circle{filter:brightness(1.3);}
+.kmap-node text{font-size:9px;font-family:var(--mono);fill:var(--paper);pointer-events:none;}
+.kmap-info{margin-top:14px;padding:14px;font-size:13px;min-height:52px;}
+
+/* ============================================================
+   9. QUOTES CAROUSEL / IDEA GEN / DAILY / FINAL / SEARCH
+   ============================================================ */
+.quote-stage{position:relative;height:200px;display:flex;align-items:center;justify-content:center;}
+.quote-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;transition:opacity .6s ease;padding:0 20px;}
+.quote-slide.active{opacity:1;}
+.quote-slide q{font-size:clamp(18px,3vw,24px);font-weight:700;font-style:normal;max-width:560px;}
+.quote-slide cite{margin-top:12px;font-size:12px;color:var(--paper-dimmer);font-style:normal;}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--edge);display:block;cursor:pointer;}
+.dots i.active{background:var(--blue);width:18px;border-radius:4px;}
+
+.idea-card{padding:28px;text-align:center;}
+.idea-line{font-size:16px;line-height:1.9;}
+.idea-line b{color:var(--cyan);}
+.fav-list{margin-top:16px;display:flex;flex-direction:column;gap:8px;}
+.fav-item{padding:10px 14px;font-size:12.5px;display:flex;justify-content:space-between;gap:10px;align-items:center;}
+
+.dc-streak{display:flex;gap:6px;margin-top:10px;}
+.dc-day{width:22px;height:22px;border-radius:6px;background:var(--edge);}
+.dc-day.hit{background:var(--grad-1);}
+
+.final-field{margin-bottom:18px;}
+.final-field label{font-size:12.5px;color:var(--paper-dim);display:block;margin-bottom:6px;font-family:var(--mono);}
+.range-row{display:flex;align-items:center;gap:12px;}
+input[type=range]{flex:1;accent-color:var(--blue);}
+textarea.final-input, input.final-input{
+  width:100%;background:var(--void);border:1px solid var(--edge);border-radius:10px;color:var(--paper);
+  padding:10px 12px;font-size:13.5px;font-family:var(--display);
+}
+.feedback-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--edge);font-size:13px;}
+
+.search-box{display:flex;gap:8px;margin-bottom:20px;}
+.search-box input{flex:1;background:var(--ink);border:1px solid var(--edge);border-radius:12px;color:var(--paper);padding:12px 14px;font-size:14px;}
+.search-result{padding:14px 16px;cursor:pointer;}
+.search-result h5{font-size:13.5px;margin-bottom:3px;}
+.search-result span{font-size:11px;}
+
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--edge);}
+.switch{width:42px;height:24px;border-radius:99px;background:var(--edge);position:relative;border:none;flex:none;}
+.switch i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--paper);transition:.25s;}
+.switch.on{background:var(--grad-1);}
+.switch.on i{left:21px;background:#fff;}
+
+.achv-card{padding:18px;text-align:center;opacity:.4;filter:grayscale(1);transition:.3s;}
+.achv-card.unlocked{opacity:1;filter:none;border-color:rgba(255,184,79,.45);}
+.achv-ic{font-size:28px;margin-bottom:8px;}
+
+footer{margin:60px auto 20px;text-align:center;font-size:11px;color:var(--paper-dimmer);}
+.kbd{font-family:var(--mono);background:var(--ink-2);border:1px solid var(--edge);border-radius:5px;padding:1px 6px;font-size:10px;}
+
+@media(min-width:860px){
+  .tabbar{flex-wrap:wrap;justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+<canvas id="confettiCanvas"></canvas>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brandmark"><span class="zo">0→1</span><span>Zero to One</span></div>
+    <div class="progress-pill"><span id="topProgressLabel">0%</span><span class="bar"><i id="topProgressBar"></i></span></div>
+    <button class="icon-btn" id="soundToggle" title="Sound">🔊</button>
+    <button class="icon-btn" id="themeToggle" title="Theme">🌙</button>
+  </div>
+
+  <main>
+
+    <!-- ============ HOME ============ -->
+    <section class="view active" data-view="home">
+      <div class="hero">
+        <div class="hero-mark">
+          <svg viewBox="0 0 200 200">
+            <defs>
+              <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4F7CFF"/><stop offset="55%" stop-color="#8B5FFF"/><stop offset="100%" stop-color="#43E6E0"/>
+              </linearGradient>
+            </defs>
+            <circle cx="100" cy="100" r="82" fill="none" stroke="url(#heroGrad)" stroke-width="6" stroke-dasharray="8 10" id="heroRing"/>
+            <text x="100" y="118" text-anchor="middle" font-family="ui-monospace,monospace" font-size="70" font-weight="700" fill="url(#heroGrad)" id="heroDigit">0</text>
+          </svg>
+        </div>
+        <h1 class="hero-title">Zero to One</h1>
+        <p class="hero-tag">Discover how groundbreaking ideas create entirely new markets instead of competing in existing ones. An interactive companion for building things that have never existed.</p>
+        <div class="hero-cta">
+          <button class="btn primary" id="startBtn">Start the Journey</button>
+          <button class="btn ghost" id="continueBtn">Continue Reading</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-chip glass"><b id="statSections">0/14</b><span>Concepts</span></div>
+          <div class="stat-chip glass"><b id="statQuiz">0%</b><span>Quiz Best</span></div>
+          <div class="stat-chip glass"><b id="statCards">0/50</b><span>Cards Known</span></div>
+          <div class="stat-chip glass"><b id="statAchv">0/7</b><span>Badges</span></div>
+        </div>
+      </div>
+
+      <div class="home-grid grid cols-3" id="homeTiles"></div>
+    </section>
+
+    <!-- ============ LEARN ============ -->
+    <section class="view" data-view="learn">
+      <div class="eyebrow">The Framework</div>
+      <h2 class="section-title">14 Core Ideas</h2>
+      <p class="section-sub">Tap any card to expand the idea, bookmark it for later, or jot a private note. Your progress is saved automatically.</p>
+      <div id="conceptList" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </section>
+
+    <!-- ============ QUIZ ============ -->
+    <section class="view" data-view="quiz">
+      <div class="eyebrow">Test Yourself</div>
+      <h2 class="section-title">The 50-Question Gauntlet</h2>
+      <p class="section-sub">Randomized order, instant feedback, and a running timer. Score 80% or higher to earn the Quiz Champion badge.</p>
+      <div id="quizArea"></div>
+    </section>
+
+    <!-- ============ FLASHCARDS ============ -->
+    <section class="view" data-view="flashcards">
+      <div class="eyebrow">Drill the Vocabulary</div>
+      <h2 class="section-title">50 Flashcards</h2>
+      <p class="section-sub">Tap a card to flip it. Mark what you know — mastered cards won't resurface as often.</p>
+      <div class="fc-wrap" id="fcArea"></div>
+    </section>
+
+    <!-- ============ BUSINESS BUILDER ============ -->
+    <section class="view" data-view="builder">
+      <div class="eyebrow">Simulation</div>
+      <h2 class="section-title">Business Builder</h2>
+      <p class="section-sub">Found a startup from scratch. Every decision shifts your Revenue, Innovation, Competition, Market Share, and Company Value — and determines your ending.</p>
+      <div id="builderArea"></div>
+    </section>
+
+    <!-- ============ MONOPOLY SIMULATOR ============ -->
+    <section class="view" data-view="monopoly">
+      <div class="eyebrow">Simulation</div>
+      <h2 class="section-title">Monopoly Simulator</h2>
+      <p class="section-sub">Run five rounds as either a price-competing commodity business or a differentiated near-monopoly. Watch what happens to margin.</p>
+      <div id="monopolyArea"></div>
+    </section>
+
+    <!-- ============ SECRET FINDER ============ -->
+    <section class="view" data-view="secrets">
+      <div class="eyebrow">Sharpen Your Eye</div>
+      <h2 class="section-title">Secret Finder</h2>
+      <p class="section-sub">In each scenario, one option is a widely-known fact and one is a genuine secret — something true and important that most people have overlooked. Find the secret.</p>
+      <div id="secretsArea"></div>
+    </section>
+
+    <!-- ============ IDEA GENERATOR ============ -->
+    <section class="view" data-view="ideagen">
+      <div class="eyebrow">Spark Something New</div>
+      <h2 class="section-title">Startup Idea Generator</h2>
+      <p class="section-sub">Combine industry, problem, technology, customer, business model, and unique advantage into a fresh concept. Save the ones worth exploring.</p>
+      <div class="glass idea-card"><p class="idea-line mono" id="ideaText">Tap generate to begin.</p></div>
+      <div class="hero-cta" style="margin-top:18px;">
+        <button class="btn primary" id="genIdeaBtn">🎲 Generate Idea</button>
+        <button class="btn ghost" id="saveIdeaBtn">☆ Save Favorite</button>
+      </div>
+      <div class="fav-list" id="favList"></div>
+    </section>
+
+    <!-- ============ TIMELINE ============ -->
+    <section class="view" data-view="timeline">
+      <div class="eyebrow">The Long Arc</div>
+      <h2 class="section-title">From Idea to Dominance</h2>
+      <p class="section-sub">Every durable company passes through the same seven stages. Tap a stage to see what actually happens there.</p>
+      <div class="tl" id="tlArea"></div>
+    </section>
+
+    <!-- ============ KNOWLEDGE MAP ============ -->
+    <section class="view" data-view="kmap">
+      <div class="eyebrow">See the Whole System</div>
+      <h2 class="section-title">Knowledge Map</h2>
+      <p class="section-sub">These nine ideas reinforce each other. Tap a node to see how it connects to the rest.</p>
+      <div class="glass" style="padding:20px;">
+        <div class="kmap" id="kmapArea"></div>
+        <div class="glass kmap-info" id="kmapInfo">Select a concept above.</div>
+      </div>
+    </section>
+
+    <!-- ============ QUOTES ============ -->
+    <section class="view" data-view="quotes">
+      <div class="eyebrow">Original Reflections</div>
+      <h2 class="section-title">30 Quotes on Building</h2>
+      <p class="section-sub">Original lines written to accompany the book's themes — not excerpts from it.</p>
+      <div class="glass quote-stage" id="quoteStage"></div>
+      <div class="dots" id="quoteDots"></div>
+      <div class="hero-cta" style="margin-top:16px;">
+        <button class="btn ghost" id="quotePrev">‹ Prev</button>
+        <button class="btn ghost" id="quoteNext">Next ›</button>
+      </div>
+    </section>
+
+    <!-- ============ DAILY CHALLENGE ============ -->
+    <section class="view" data-view="daily">
+      <div class="eyebrow" id="dailyDateLabel">Today</div>
+      <h2 class="section-title">Daily Challenge</h2>
+      <p class="section-sub">A new micro-challenge every day. Keep your streak alive.</p>
+      <div class="glass" style="padding:22px;">
+        <p id="dailyText" style="font-size:15.5px;color:var(--paper);"></p>
+        <div class="dc-streak" id="dcStreak"></div>
+        <div class="hero-cta" style="justify-content:flex-start;margin-top:18px;">
+          <button class="btn primary" id="dailyDoneBtn">Mark Complete</button>
+          <span class="badge blue mono" id="dcCount">Streak: 0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CHALLENGE ============ -->
+    <section class="view" data-view="final">
+      <div class="eyebrow">Capstone</div>
+      <h2 class="section-title">Final Challenge: Draft Your Strategy</h2>
+      <p class="section-sub">Rate your own startup concept across six dimensions. We'll score it and tell you what archetype you're building.</p>
+      <div class="glass" style="padding:22px;" id="finalForm">
+        <div class="final-field"><label>What problem are you solving?</label><input class="final-input" id="finalIdea" placeholder="e.g. Diagnosing rare diseases from a single blood draw"></div>
+        <div class="final-field"><label>Innovation — how new is the underlying technology? (1-10)</label><div class="range-row"><input type="range" min="1" max="10" value="5" id="rInnovation"><span class="mono" id="vInnovation">5</span></div></div>
+        <div class="final-field"><label>Market — how large and reachable is the initial market? (1-10)</label><div class="range-row"><input type="range" min="1" max="10" value="5" id="rMarket"><span class="mono" id="vMarket">5</span></div></div>
+        <div class="final-field"><label>Technology — is it at least 10x better than alternatives? (1-10)</label><div class="range-row"><input type="range" min="1" max="10" value="5" id="rTech"><span class="mono" id="vTech">5</span></div></div>
+        <div class="final-field"><label>Differentiation — how hard is this to copy? (1-10)</label><div class="range-row"><input type="range" min="1" max="10" value="5" id="rDiff"><span class="mono" id="vDiff">5</span></div></div>
+        <div class="final-field"><label>Distribution — do you have a real plan to reach customers? (1-10)</label><div class="range-row"><input type="range" min="1" max="10" value="5" id="rDist"><span class="mono" id="vDist">5</span></div></div>
+        <div class="final-field"><label>Growth — can this scale with low marginal cost? (1-10)</label><div class="range-row"><input type="range" min="1" max="10" value="5" id="rGrowth"><span class="mono" id="vGrowth">5</span></div></div>
+        <button class="btn primary" id="evalFinalBtn">Evaluate Strategy</button>
+      </div>
+      <div id="finalResult" style="margin-top:18px;"></div>
+    </section>
+
+    <!-- ============ ACHIEVEMENTS ============ -->
+    <section class="view" data-view="achv">
+      <div class="eyebrow">Progress</div>
+      <h2 class="section-title">Achievements</h2>
+      <p class="section-sub">Badges unlock automatically as you explore.</p>
+      <div class="grid cols-3" id="achvArea"></div>
+    </section>
+
+    <!-- ============ SEARCH ============ -->
+    <section class="view" data-view="search">
+      <div class="eyebrow">Find Anything</div>
+      <h2 class="section-title">Search</h2>
+      <div class="search-box"><input id="searchInput" placeholder="Search concepts, flashcards, quiz questions…" autocomplete="off"></div>
+      <div id="searchResults" style="display:flex;flex-direction:column;gap:10px;"></div>
+    </section>
+
+    <!-- ============ SETTINGS ============ -->
+    <section class="view" data-view="settings">
+      <div class="eyebrow">Preferences</div>
+      <h2 class="section-title">Settings</h2>
+      <div class="glass" style="padding:6px 20px;">
+        <div class="settings-row"><span>Dark theme</span><button class="switch on" id="swTheme"><i></i></button></div>
+        <div class="settings-row"><span>Interface sounds</span><button class="switch on" id="swSound"><i></i></button></div>
+        <div class="settings-row"><span>Reduce motion</span><button class="switch" id="swMotion"><i></i></button></div>
+        <div class="settings-row"><span>Reset all progress</span><button class="btn ghost" id="resetBtn" style="padding:8px 14px;font-size:12px;">Reset</button></div>
+      </div>
+      <div class="glass" style="padding:16px 20px;margin-top:16px;font-size:12px;color:var(--paper-dimmer);">
+        <div><span class="kbd">←</span> <span class="kbd">→</span> switch sections · <span class="kbd">/</span> focus search · <span class="kbd">Esc</span> close · swipe left/right on mobile</div>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="tabbar" id="tabbar"></nav>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+/* ================================================================
+   ZERO TO ONE — READING ROOM COMPANION APP
+   Vanilla JS, single file, no dependencies.
+   ================================================================ */
+(function(){
+"use strict";
+
+/* ---------- 1. DATA ---------- */
+
+const NAV = [
+  {id:'home',   label:'Home',      icon:'🏠'},
+  {id:'learn',  label:'Learn',     icon:'📘'},
+  {id:'quiz',   label:'Quiz',      icon:'🧠'},
+  {id:'flashcards', label:'Cards', icon:'🃏'},
+  {id:'builder',label:'Builder',   icon:'🚀'},
+  {id:'monopoly',label:'Monopoly', icon:'👑'},
+  {id:'secrets',label:'Secrets',   icon:'🔍'},
+  {id:'ideagen',label:'Ideas',     icon:'🎲'},
+  {id:'timeline',label:'Timeline', icon:'🛤️'},
+  {id:'kmap',   label:'Map',       icon:'🕸️'},
+  {id:'quotes', label:'Quotes',    icon:'💬'},
+  {id:'daily',  label:'Daily',     icon:'📅'},
+  {id:'final',  label:'Final',     icon:'🏁'},
+  {id:'achv',   label:'Badges',    icon:'🏅'},
+  {id:'search', label:'Search',    icon:'🔎'},
+  {id:'settings',label:'Settings', icon:'⚙️'},
+];
+
+const SECTIONS = [
+{t:'Zero → One', ic:'0→1', big:'Copying something that already works takes it from 1 to n. Building something that has never existed takes the world from 0 to 1. Both create value — only one creates something genuinely new.', deep:'Most economic progress is horizontal: a working idea, like a general store, gets copied across a thousand towns. Vertical progress is rarer and harder — a single new technology, process, or product that did not exist before. Interactive learning rewards recognizing the difference: expanding an existing model is safer and more familiar, but the biggest leaps in value come from the harder, rarer path of doing something new.'},
+{t:'Innovation', ic:'⚡', big:'Innovation is the act of vertical progress — using new methods or technology to do something that could not be done before, rather than doing an old thing more times.', deep:'A century of steady horizontal growth can create the impression that progress is automatic. It is not. Every technology that now feels ordinary — from indoor plumbing to the search engine — was once a narrow, uncertain bet by a small group willing to work on a problem nobody else believed was solvable yet.'},
+{t:'Competition', ic:'⚔️', big:'Fierce competition is often treated as a sign of health, but head-to-head rivalry over an identical product tends to erode the profits that let companies invest, pay well, and plan long-term.', deep:'Rivals imitate each other\'s features, undercut each other\'s prices, and narrow the space for anyone to do original work. The ideology of competition can be more damaging than competition itself: businesses that define themselves only by beating a rival stop asking whether there is a better question to answer altogether.'},
+{t:'Monopoly', ic:'👑', big:'A monopoly here does not mean an illegal scheme to fix prices — it means a company so differentiated that no one else offers a close substitute for what it does.', deep:'A well-run, differentiated business can charge fairly and still capture outsized profit because it is not locked in a race to the bottom. The path there runs through a small, defensible starting market rather than a broad, contested one. Own a narrow niche completely, then expand outward once that base is secure.'},
+{t:'Secrets', ic:'🗝️', big:'A secret is something true and valuable that most people do not yet believe. Great companies are often built around one.', deep:'Believing that most of what can be discovered has already been discovered discourages the search for secrets altogether. But there are still overlooked technical secrets (an unsolved engineering problem) and overlooked secrets about people (an unmet need nobody has named yet). Both are found by asking what important truth very few people agree with you on.'},
+{t:'Technology', ic:'🧬', big:'A new technology should offer roughly an order-of-magnitude improvement over whatever it replaces, not a marginal upgrade — otherwise it risks being just another option in a crowded field.', deep:'A modest improvement is easy for an established incumbent to shrug off or copy. A 10x improvement in speed, cost, or capability is what makes customers switch despite the friction of changing habits, and it is what makes a young company\'s advantage hard to erase.'},
+{t:'Founders', ic:'🧭', big:'Small, tightly aligned founding teams with a clear, singular vision tend to move faster and hold together better than large groups assembled by committee.', deep:'Founders carry outsized influence early on — their judgment sets the culture, the pace, and the standard the whole company inherits. That influence is a responsibility: unchecked, it can tip into recklessness, but properly channeled it is often the difference between a company that merely survives and one that defines a category.'},
+{t:'Sales', ic:'🤝', big:'Sales is not beneath the people who build the product — it is the invisible skill that decides whether a great product ever reaches the people who need it.', deep:'Engineers in particular tend to underrate distribution because a product\'s merit feels self-evident to its maker. In reality, a mediocre product with a great distribution engine regularly beats a superior product with no way to reach customers. Design a real sales motion before assuming the product will sell itself.'},
+{t:'Distribution', ic:'📡', big:'The right distribution channel depends on the price and complexity of what is being sold — a $2 app and a $200,000 enterprise contract cannot be sold the same way.', deep:'High-value, complex sales usually require a dedicated, relationship-driven sales process; low-value, simple products can spread through self-serve signups or word of mouth. Picking the wrong channel for the price point is one of the most common — and most fixable — reasons a good product never scales.'},
+{t:'Definite Optimism', ic:'🎯', big:'Definite optimism means believing the future can be better than the present — and having a specific plan to make it so, rather than hoping improvement arrives on its own.', deep:'It sits opposite indefinite optimism (things will probably get better, but without a plan), definite pessimism (the future is knowable and bad, so hedge), and indefinite pessimism (the future is unknowable and probably bad, so avoid commitment). Building something new requires the definite kind: a concrete bet, made on purpose.'},
+{t:'Last Mover Advantage', ic:'🏆', big:'Being first to a market matters far less than being the last significant winner — the company still generating most of an industry\'s profit years after the initial rush of competitors has faded.', deep:'A first mover with no durable advantage is often overtaken by a better-executed follower. Lasting value comes from a moat — proprietary technology, network effects, economies of scale, or brand — deep enough that being early was never really the point.'},
+{t:'Network Effects', ic:'🕸️', big:'A network-effect product becomes more useful to each user as more people join it, which is exactly why the very first users have to get value even when the network is nearly empty.', deep:'This creates a delicate bootstrapping problem: a network with no members is worthless, so early growth usually has to start inside a small, specific community before expanding outward, rather than attempting to serve everyone from day one.'},
+{t:'Scaling', ic:'📈', big:'A business scales well when serving one more customer costs relatively little beyond the first — software is the clearest example, but the same logic applies to any high-leverage design or process.', deep:'Businesses with high marginal costs per unit — most service businesses, for instance — struggle to become monopolies no matter how good the service is, because growth requires proportional new investment. Designing low marginal cost in from the start is a structural choice, not an afterthought.'},
+{t:'Building the Future', ic:'🌌', big:'The most valuable companies combine ambitious new technology with the human judgment to apply it somewhere specific — neither alone is enough.', deep:'Technology without a clear-eyed view of people and markets drifts into cleverness without impact. People without new technology are limited to redistributing what already exists. The companies that shape the next decade tend to be the ones that pair a genuine technical edge with a specific, well-chosen problem worth solving.'},
+];
+
+// 50 quiz questions
+const QUIZ = [
+{q:"What does moving from 'zero to one' describe?",o:["Copying a proven business model exactly","Creating something that has never existed before","Doubling a company's headcount","Entering a market with the lowest price"],c:1,e:"Zero-to-one is vertical progress — a genuinely new thing, not a copy of something that already works."},
+{q:"What is 'horizontal' (1 to n) progress?",o:["Inventing an entirely new technology","Taking something that works and copying it many times","Reducing a company's costs","Merging two competitors"],c:1,e:"Horizontal progress spreads an existing, working idea across many instances — globalization rather than invention."},
+{q:"Why can competition erode profits over time?",o:["It always leads to illegal price fixing","Rivals imitate each other and undercut prices until margins disappear","It reduces the total size of the market","It forces companies to stop advertising"],c:1,e:"Head-to-head rivalry over a near-identical product pushes prices toward cost, leaving little room for reinvestment."},
+{q:"In this framework, what is a 'monopoly'?",o:["An illegal scheme to fix prices across an industry","A company so differentiated that no close substitute exists","Any company with more than 50% market share","A government-granted exclusive license"],c:1,e:"The useful sense of monopoly here is a business with no meaningful competitor, built through differentiation."},
+{q:"What is the recommended way to build a lasting company?",o:["Enter the largest possible market immediately","Dominate a small, specific niche first, then expand","Compete on price against every incumbent","Avoid choosing a market until the product is finished"],c:1,e:"Owning a narrow niche completely gives a defensible base to expand outward from."},
+{q:"What counts as a 'secret' in this framework?",o:["Confidential financial statements","A true, important thing that most people don't yet believe","Any patent filing","Information hidden from investors"],c:1,e:"A secret is an overlooked truth — technical or about people — that hasn't been widely recognized yet."},
+{q:"What are the two broad categories of secrets described?",o:["Financial and legal","Secrets about nature and secrets about people","Public and private","Domestic and international"],c:1,e:"Secrets can be technical/scientific (nature) or about unmet human needs and behavior (people)."},
+{q:"Roughly how much better should new technology be to drive real change?",o:["10% better","2x better","About an order of magnitude (10x) better","Identical, but cheaper"],c:2,e:"A marginal improvement is easy to ignore or copy; a 10x improvement is what overcomes the friction of switching habits."},
+{q:"Why do small, tightly aligned founding teams often move faster?",o:["They have more funding by default","Shared vision reduces internal conflict and decision friction","Investors require small teams","Small teams pay lower taxes"],c:1,e:"Alignment on vision reduces the coordination cost that larger, less cohesive groups face."},
+{q:"Why is sales often undervalued by technical founders?",o:["Sales is genuinely unnecessary for good products","A product's merit feels self-evident to the person who built it","Salespeople are more expensive than engineers","Distribution never affects growth"],c:1,e:"Makers tend to assume quality speaks for itself, which underrates the real work of reaching customers."},
+{q:"What determines the right distribution channel for a product?",o:["The founder's personal preference","The price and complexity of the sale","The size of the engineering team","The company's founding year"],c:1,e:"High-value, complex offerings typically need relationship-driven sales; low-value simple products can scale through self-serve channels."},
+{q:"What is 'definite optimism'?",o:["Assuming the future will improve on its own","Believing the future can be better, with a specific plan to make it so","Avoiding big commitments due to uncertainty","Expecting the future to be worse and preparing defensively"],c:1,e:"Definite optimism pairs a positive outlook with a concrete plan, rather than passive hope."},
+{q:"Which stance expects the future to be bad but doesn't know how, so it avoids commitment?",o:["Definite optimism","Indefinite optimism","Definite pessimism","Indefinite pessimism"],c:3,e:"Indefinite pessimism expects decline without a clear picture of it, leading to risk-avoidance rather than action."},
+{q:"What is 'last mover advantage'?",o:["Being the final company to enter a dying market","Being the lasting, dominant winner in an industry long after the initial rush of entrants","Copying the first mover's product exactly","Exiting a market before competitors arrive"],c:1,e:"What matters is not being first, but being the company still capturing most of an industry's value years later."},
+{q:"What is essential for a product with strong network effects to survive its early days?",o:["A huge marketing budget from day one","Delivering value to a small starting group even before the network is large","Charging a premium price immediately","Guaranteeing profitability in year one"],c:1,e:"Network products must be useful to their first, small user base, since the network alone offers little value while nearly empty."},
+{q:"Why do many service businesses struggle to become monopolies?",o:["Services are inherently low-quality","They usually have high marginal costs, so growth requires proportional new investment","Customers dislike personal service","Services can't be branded"],c:1,e:"Unlike software, most service businesses can't add customers without roughly proportional new cost, capping scale advantages."},
+{q:"What combination tends to produce the most valuable new companies?",o:["Ambitious technology with human judgment about where to apply it","Low prices with aggressive advertising","Large teams with minimal planning","Copying successful competitors closely"],c:0,e:"New technology without a clear-eyed sense of markets and people drifts into cleverness without impact — and vice versa."},
+{q:"What is the main risk of an 'ideology of competition'?",o:["It makes companies too profitable","It can distract a company from asking whether there's a better question to answer altogether","It lowers product quality across an industry","It eliminates the need for marketing"],c:1,e:"Defining a company purely by beating rivals can crowd out the harder, more valuable question of what's actually worth building."},
+{q:"Which best describes 'vertical integration' in a business context?",o:["A company owning more stages of its own supply chain or production","Two competitors merging into one company","A company expanding into a new country","A company reducing its product line"],c:0,e:"Vertical integration means controlling more of the chain that produces and delivers a product, as opposed to relying entirely on outside suppliers."},
+{q:"What is a 'moat' in a business context?",o:["A marketing slogan","A durable advantage that protects a company from competitors","A type of funding round","A legal requirement for public companies"],c:1,e:"A moat — proprietary technology, network effects, scale, or brand — is what keeps an advantage from eroding over time."},
+{q:"Which is an example of a network-effect product?",o:["A bakery selling bread","A messaging app that gets more useful as more contacts join","A mining company extracting ore","A textbook publisher"],c:1,e:"Messaging and social platforms are classic examples: each additional user increases the value for everyone already on it."},
+{q:"What is 'economies of scale'?",o:["The cost per unit falling as production volume increases","A company's stock price rising","A rule requiring equal pricing across regions","The tendency of markets to fragment over time"],c:0,e:"Economies of scale describe declining per-unit cost as a business grows, often strengthening a leader's position."},
+{q:"Why might a narrow, unglamorous market be a smart place to start a company?",o:["It guarantees the highest possible revenue","It's easier to dominate completely, creating a defensible base to expand from","Investors always prefer niche markets","Regulation is always lighter in small markets"],c:1,e:"A small market that can be fully captured is a stronger foundation than a large one where the company is one of many undifferentiated players."},
+{q:"What best distinguishes proprietary technology as a competitive advantage?",o:["It's technology no other company could legally or practically replicate easily","Any technology that is patented","Technology purchased from a vendor","Open-source software"],c:0,e:"Proprietary technology is a durable edge specifically because it's hard for competitors to copy or substitute."},
+{q:"What role does branding play in building a monopoly-style advantage?",o:["It has no real economic effect","It can create a perception of differentiation that's hard for rivals to replicate quickly","It only matters for luxury goods","It is illegal in most markets"],c:1,e:"A strong brand can function as a genuine moat by making a company's offering feel meaningfully distinct to customers."},
+{q:"What is the danger of chasing an overcrowded, 'hot' market?",o:["It's always the safest financial choice","Many competitors racing toward the same idea often destroys the margins that made it attractive","It typically leads to monopoly quickly","It reduces the need for a differentiated product"],c:1,e:"When many companies pursue an identical opportunity at once, they tend to compete it down to thin margins for everyone."},
+{q:"What is a 'complex sale', in distribution terms?",o:["A sale involving a single click on a website","A high-value transaction that typically requires a dedicated, relationship-driven sales process","A sale that happens automatically through advertising alone","A discounted bulk sale"],c:1,e:"Complex sales — enterprise contracts, for example — usually can't be closed through self-serve channels alone."},
+{q:"Which of these is closest to a 'viral' distribution mechanism?",o:["A door-to-door sales team","A product that naturally spreads because using it exposes it to new potential users","A billboard advertising campaign","A print catalog mailer"],c:1,e:"Viral growth happens when the act of using a product itself introduces it to new users, without a dedicated sales force."},
+{q:"What is one common founder pitfall related to overconfidence?",o:["Underestimating how much marketing costs","Assuming personal vision alone guarantees good judgment on every decision","Hiring too few engineers","Raising too little funding"],c:1,e:"Founders wield outsized influence; unchecked, that influence can tip into decisions the rest of the team can't safely challenge."},
+{q:"Why might a large board of directors slow a young company down?",o:["Large boards are illegal for startups","More stakeholders can mean slower consensus and diluted accountability","Boards only exist after a company goes public","Board size has no effect on decision speed"],c:1,e:"Smaller, more aligned governance groups tend to make faster, clearer decisions than large, diffuse ones."},
+{q:"What is the core idea behind 'definite' planning, as opposed to 'indefinite' drifting?",o:["Avoiding all long-term commitments","Having a specific view of the future and building toward it deliberately","Copying whatever competitors are doing","Waiting for market research before acting"],c:1,e:"Definite planning means committing to a specific vision of the future rather than hoping things improve without a plan."},
+{q:"Which best explains why being 'first' to market is overrated?",o:["First movers always fail","Without a durable advantage, a better-executed follower can easily overtake an early but undefended lead","Being first is illegal in most industries","First movers have no customers"],c:1,e:"Speed to market matters less than building something hard to replicate once you're there."},
+{q:"What is the relationship between technology and 'vertical progress'?",o:["They are unrelated concepts","New technology is the primary engine of vertical, 0-to-1 progress","Technology only enables horizontal progress","Vertical progress requires no technology at all"],c:1,e:"Genuinely new technology is what makes doing something previously impossible, possible — the essence of vertical progress."},
+{q:"Why is a bootstrapped early user base important for network products?",o:["It has no importance — scale can start anywhere","It proves the product delivers value even before network effects kick in at scale","It guarantees profitability immediately","It replaces the need for a real product"],c:1,e:"Early adopters need a reason to stay before the network is large enough to be valuable on its own."},
+{q:"What is a common trap in mistaking 'competition' for a virtue in itself?",o:["Believing that winning a competitive fight is inherently more valuable than building something differentiated","Charging too little for a product","Ignoring customer feedback entirely","Refusing to hire salespeople"],c:0,e:"Framing success purely as beating rivals can obscure the more valuable path of avoiding that fight altogether through differentiation."},
+{q:"What does 'scaling with low marginal cost' typically look like?",o:["Hiring one new employee for every new customer","Serving an additional customer at very little extra cost, as with software","Doubling factory floor space for every unit sold","Requiring new capital for every unit of growth"],c:1,e:"Low marginal cost is what lets a business grow revenue much faster than its costs."},
+{q:"Why does the framework suggest questioning 'indefinite optimism'?",o:["Because optimism itself is bad","Because expecting things to improve without a specific plan can lead to drift rather than deliberate building","Because it always leads to bankruptcy","Because it's identical to pessimism"],c:1,e:"Hoping for improvement without a plan tends to produce incremental drift rather than intentional, ambitious progress."},
+{q:"What does 'brand monopoly' generally refer to?",o:["A legally protected trademark only","Market power derived from a distinct, hard-to-replicate brand identity","A monopoly created entirely by government regulation","Any company with a recognizable logo"],c:1,e:"A powerful brand can be a genuine source of durable differentiation, not just decoration."},
+{q:"Which is the best description of a startup's 'unique advantage'?",o:["Its office location","Something about the product, team, or approach that competitors can't easily replicate","Its founding date","Its number of employees"],c:1,e:"A unique advantage is whatever makes the company hard to copy — technology, insight, network, or relationships."},
+{q:"What is a practical first step toward finding a business 'secret'?",o:["Asking what important truth very few people agree with you on","Copying a competitor's roadmap","Running a large-scale ad campaign","Hiring a big sales team before building a product"],c:0,e:"Secrets are found by questioning consensus — looking for overlooked truths about technology or people."},
+{q:"Why can excessive focus on 'the competition' distort a founder's decisions?",o:["It has no real effect on decisions","It can lead the company to define itself by rivals instead of by an original value proposition","Competitors always have worse products","It only affects marketing spend"],c:1,e:"Watching rivals too closely can pull focus away from building something genuinely differentiated."},
+{q:"What best describes 'distribution' in a startup context?",o:["The process of getting a product in front of and into the hands of customers","The physical shipping of inventory only","A synonym for advertising exclusively","A financial term for dividend payments"],c:0,e:"Distribution covers every channel — sales, marketing, virality, partnerships — used to reach customers."},
+{q:"Why might economies of scale reinforce a company's advantage over time?",o:["They never actually reduce costs","As a scaled leader's per-unit costs fall, it can often out-invest and out-price less scaled rivals","They only apply to raw materials","They apply exclusively to nonprofits"],c:1,e:"Lower per-unit costs at scale can compound into a widening advantage over smaller competitors."},
+{q:"What is the danger of underinvesting in distribution because 'the product sells itself'?",o:["There is no danger — great products always find their market","A superior product can still lose to an inferior one that reaches customers more effectively","It reduces manufacturing costs","It automatically increases margins"],c:1,e:"Distribution failures are a common, avoidable reason strong products never reach the scale they deserve."},
+{q:"What does it mean to say monopoly profits can fund long-term investment?",o:["Thin, competitive margins leave little room for R&D, while durable margins can be reinvested in the future","Monopolies are prohibited from reinvesting profit","Only public companies can reinvest profits","Reinvestment is unrelated to profit margin"],c:0,e:"Without price wars eating into margin, differentiated companies can afford to invest in long-horizon work."},
+{q:"Which is an example of horizontal (1 to n) progress rather than vertical (0 to 1)?",o:["Inventing the first working search engine","Opening the two-hundredth branch of an existing coffee chain in a new city","Discovering a new class of antibiotics","Building the first commercially viable electric car"],c:1,e:"Replicating an already-proven format across new locations is horizontal progress, not the creation of something new."},
+{q:"What is one reason 'definite' plans tend to outperform 'indefinite' ones in building new things?",o:["Definite plans require no adjustment ever","A specific plan gives a company a clear target to build toward and measure progress against","Indefinite plans are always illegal","Definite plans eliminate all risk"],c:1,e:"A concrete plan creates focus and a way to evaluate whether the company is actually on track."},
+{q:"Why does the framework treat 'differentiation' as central to defensible value?",o:["Because differentiation is only about pricing","Because a genuinely distinct offering avoids being commoditized and competed down to thin margins","Because differentiated products are always more expensive to make","Because differentiation guarantees permanent success with no further effort"],c:1,e:"Differentiation is what keeps a company out of the margin-crushing dynamics of head-to-head competition."},
+{q:"What best captures the idea of 'building the future' as used here?",o:["Predicting exactly what will happen next","Deliberately applying new technology and human judgment to make a specific better outcome real","Waiting passively for markets to evolve","Only investing in established, proven industries"],c:1,e:"Building the future is an active, deliberate act — pairing technology with judgment about where it matters most."},
+{q:"Why is a 'power law' distribution relevant to how outsized returns are created?",o:["It suggests most value in a category concentrates in a small number of outsized winners rather than spreading evenly","It means every company in a market earns roughly equal returns","It only applies to public stock markets","It has no relevance to startups"],c:0,e:"In many venture-style outcomes, a small number of dramatic winners account for most of the total value created."},
+];
+
+// 50 flashcards
+const FLASHCARDS = [
+{term:"Zero to One",def:"Creating something genuinely new rather than copying what already works."},
+{term:"One to N",def:"Horizontal progress — copying and scaling a proven idea across many instances."},
+{term:"Vertical Progress",def:"New technology or methods that make previously impossible things possible."},
+{term:"Horizontal Progress",def:"Taking something known to work and replicating it broadly."},
+{term:"Monopoly (business sense)",def:"A company so differentiated that no close substitute for it exists."},
+{term:"Perfect Competition",def:"A market with many firms selling identical products, driving profit margins toward zero."},
+{term:"Secret",def:"A true, valuable thing that most people don't yet believe or haven't discovered."},
+{term:"Secret About Nature",def:"An undiscovered scientific or engineering truth waiting to be found."},
+{term:"Secret About People",def:"An unmet human need or behavior nobody has articulated yet."},
+{term:"10x Improvement",def:"A roughly order-of-magnitude gain over existing alternatives, strong enough to drive real adoption."},
+{term:"Proprietary Technology",def:"A technical advantage that's difficult for competitors to replicate."},
+{term:"Network Effects",def:"A product that becomes more valuable to each user as more people use it."},
+{term:"Economies of Scale",def:"Per-unit costs that fall as production or usage volume increases."},
+{term:"Brand Monopoly",def:"Market power derived from a distinct, hard-to-copy brand identity."},
+{term:"Last Mover Advantage",def:"Being the company still capturing most of an industry's value long after early entrants fade."},
+{term:"First Mover",def:"The first company into a market — an advantage only if paired with a durable moat."},
+{term:"Moat",def:"Any durable structural advantage that protects a company from being copied or undercut."},
+{term:"Definite Optimism",def:"Believing the future can be better, backed by a specific plan to make it so."},
+{term:"Indefinite Optimism",def:"Expecting things to improve without a concrete plan for how."},
+{term:"Definite Pessimism",def:"Believing the future is knowable and will be worse, prompting defensive planning."},
+{term:"Indefinite Pessimism",def:"Expecting decline without a clear picture of it, leading to risk avoidance."},
+{term:"Founder's Influence",def:"The outsized early impact a founder has on a company's culture, pace, and standards."},
+{term:"Founding Team Alignment",def:"Shared vision among founders that reduces internal conflict and speeds decisions."},
+{term:"Distribution",def:"Every channel and method used to get a product in front of and into the hands of customers."},
+{term:"Complex Sale",def:"A high-value transaction that typically requires a dedicated, relationship-driven sales process."},
+{term:"Self-Serve Growth",def:"Customer acquisition that happens with minimal direct sales involvement, e.g. sign-up flows."},
+{term:"Viral Growth",def:"Adoption that spreads because using the product exposes it to new potential users."},
+{term:"Sales Blindness",def:"The tendency of technical founders to underrate distribution because product merit feels self-evident."},
+{term:"Power Law",def:"A distribution where a small number of outcomes account for most of the total value."},
+{term:"Vertical Integration",def:"A company owning more stages of its own supply or production chain."},
+{term:"Differentiation",def:"Making an offering distinct enough that it isn't easily compared on price alone."},
+{term:"Commoditization",def:"A process where products become interchangeable, competing mainly on price."},
+{term:"Niche Market Entry",def:"Starting in a small, ownable market before expanding into adjacent ones."},
+{term:"Market Expansion Path",def:"The sequence of adjacent markets a company enters after dominating its first niche."},
+{term:"Bootstrapping (network)",def:"Delivering value to a small starting group before a network product has scale."},
+{term:"Marginal Cost",def:"The cost of producing or serving one additional unit or customer."},
+{term:"Low Marginal Cost Business",def:"A business, like software, where serving more customers adds little additional cost."},
+{term:"Board Size Discipline",def:"Keeping governance small enough to preserve fast, accountable decision-making."},
+{term:"Ideology of Competition",def:"The belief that beating rivals is inherently more valuable than building something differentiated."},
+{term:"Red Ocean",def:"A crowded market where many competitors fight over the same customers, eroding margins."},
+{term:"Blue Ocean (related concept)",def:"An uncontested market space created by genuine differentiation rather than rivalry."},
+{term:"Technology-People Combination",def:"Pairing ambitious new technology with human judgment about where to apply it."},
+{term:"Definite Plan",def:"A specific, concrete roadmap toward a chosen future outcome."},
+{term:"Durable Advantage",def:"A competitive edge that persists over time rather than eroding quickly."},
+{term:"Unique Advantage",def:"Whatever about a company's product, team, or approach is hard for others to replicate."},
+{term:"Founding Vision",def:"The original, specific view of the future a company is built to pursue."},
+{term:"Reinvestment Capacity",def:"The ability to fund long-term work, enabled by margins that competition would otherwise erode."},
+{term:"Adjacent Market",def:"A nearby market a company can credibly expand into after dominating its first one."},
+{term:"Overcrowded Opportunity",def:"A 'hot' idea pursued by so many companies at once that margins collapse for everyone."},
+{term:"Building the Future",def:"Deliberately applying technology and judgment to make a specific, better outcome real."},
+];
+
+// 30 original quotes
+const QUOTES = [
+{q:"The safest path is the one everyone else is already walking — which is exactly why it leads somewhere crowded.",a:"On originality"},
+{q:"A copy of a good idea is still just a copy.",a:"On imitation"},
+{q:"Ask what's true that almost no one agrees with you on. That question is where new companies begin.",a:"On secrets"},
+{q:"Competing well is not the same as building something worth building.",a:"On competition"},
+{q:"Own a small room completely before you try to own a large house.",a:"On market entry"},
+{q:"A plan is optimism with a spine.",a:"On planning"},
+{q:"Ten percent better gets ignored. Ten times better gets adopted.",a:"On technology"},
+{q:"The first users of a network are doing you a favor before the network can return it.",a:"On network effects"},
+{q:"Distribution is the bridge between a good idea and a used one.",a:"On sales"},
+{q:"A small aligned team can outrun a large divided one.",a:"On founding teams"},
+{q:"Margins are what let a company think past next quarter.",a:"On monopoly"},
+{q:"Being first means nothing if you're first to be forgotten.",a:"On timing"},
+{q:"Every industry has an overlooked corner. Someone is standing in it right now, not noticing.",a:"On secrets"},
+{q:"Growth without a plan is just motion.",a:"On indefinite optimism"},
+{q:"The hardest part of building something new is believing it's allowed to not look like anything else.",a:"On originality"},
+{q:"Scale rewards the business that gets cheaper as it gets bigger.",a:"On economies of scale"},
+{q:"A brand is a promise repeated until people stop questioning it.",a:"On differentiation"},
+{q:"You don't need to win every fight. You need to avoid the ones that weren't worth having.",a:"On competition"},
+{q:"Vision is easy to state and hard to hold onto by the hundredth difficult decision.",a:"On leadership"},
+{q:"The market doesn't reward the best idea. It rewards the idea that reached it.",a:"On distribution"},
+{q:"A moat is just a decision made early enough that no one can undo it later.",a:"On durable advantage"},
+{q:"Ambition without a specific target is just restlessness.",a:"On definite optimism"},
+{q:"The future isn't found. It's assembled, on purpose, by someone willing to commit to a shape for it.",a:"On building"},
+{q:"Every durable company starts as someone's small, uncomfortable bet.",a:"On starting small"},
+{q:"If your only plan is to be better than the competitor next door, you've already limited how big you can become.",a:"On differentiation"},
+{q:"The best technology doesn't just work. It makes the old way suddenly look unacceptable.",a:"On 10x improvement"},
+{q:"People rarely ask for the thing that doesn't exist yet. That's exactly why it's worth building.",a:"On secrets"},
+{q:"A company's culture is set in its first ninety days and defended for the next ten years.",a:"On founders"},
+{q:"Scaling is not doing more of the same. It's building so the same effort produces more.",a:"On scaling"},
+{q:"The companies that last aren't the ones that avoided risk. They're the ones that chose theirs on purpose.",a:"On definite planning"},
+];
+
+// timeline
+const TIMELINE = [
+{t:"Idea",d:"A specific, falsifiable belief about a secret worth pursuing — not a vague direction, but a concrete claim about what's true and undervalued."},
+{t:"Prototype",d:"The smallest working version that tests the core claim. Its job is to prove the hard part is possible, not to look finished."},
+{t:"Early Users",d:"A small group who need the product enough to tolerate its rough edges. Their retention, not their applause, is the signal that matters."},
+{t:"Growth",d:"Distribution starts to compound — through sales, virality, or both. The channel has to match the price and complexity of what's being sold."},
+{t:"Scale",d:"Marginal costs stay low enough that growth in revenue outpaces growth in cost. This is where low-marginal-cost design pays off."},
+{t:"Dominance",d:"The company becomes the default in its niche — differentiated enough that customers no longer meaningfully compare it to alternatives."},
+{t:"Long-Term Success",d:"Durable margins fund reinvestment, adjacent expansion, and the next 0-to-1 leap, rather than being competed away."},
+];
+
+// knowledge map nodes + edges (positions on a 0-100 grid)
+const KNODES = [
+ {id:'innovation',label:'Innovation',x:50,y:12,c:'#4F7CFF',desc:'Innovation is the engine — the new technology or method that everything else in the map depends on.'},
+ {id:'technology',label:'Technology',x:82,y:26,c:'#4F7CFF',desc:'Technology turns innovation into something usable, and needs to be roughly 10x better to matter.'},
+ {id:'secrets',label:'Secrets',x:90,y:60,c:'#8B5FFF',desc:'Secrets are where innovation and technology originate — an overlooked truth waiting to be acted on.'},
+ {id:'founders',label:'Founders',x:70,y:85,c:'#8B5FFF',desc:'Founders decide which secret to pursue and hold the vision together as the company grows.'},
+ {id:'competition',label:'Competition',x:38,y:88,c:'#43E6E0',desc:'Competition is the force differentiation is designed to avoid — a trap that erodes margins.'},
+ {id:'monopoly',label:'Monopoly',x:15,y:70,c:'#43E6E0',desc:'Monopoly (differentiation) is the strategic answer to competition, built on secrets and technology.'},
+ {id:'distribution',label:'Distribution',x:10,y:38,c:'#4F7CFF',desc:'Distribution carries a differentiated product to the people who need it — without it, monopoly stays theoretical.'},
+ {id:'scaling',label:'Scaling',x:28,y:16,c:'#8B5FFF',desc:'Scaling turns an early monopoly into lasting dominance by keeping marginal costs low as distribution compounds.'},
+ {id:'future',label:'Future',x:50,y:50,c:'#43E6E0',desc:'Building the future is the center — where technology, people, monopoly, and distribution all meet.'},
+];
+const KEDGES = [['innovation','technology'],['technology','secrets'],['secrets','founders'],['founders','competition'],['competition','monopoly'],['monopoly','distribution'],['distribution','scaling'],['scaling','innovation'],['future','innovation'],['future','monopoly'],['future','distribution'],['future','founders']];
+
+// startup idea generator
+const IDEA_LISTS = {
+ industry:["Healthcare","Agriculture","Education","Logistics","Energy","Finance","Manufacturing","Aerospace","Retail","Construction"],
+ problem:["a slow, manual process that hasn't changed in decades","a shortage of skilled workers","a lack of trustworthy data","an expensive middle layer of intermediaries","a safety risk that's normalized as unavoidable","a huge amount of wasted material or time","a service only available to large institutions"],
+ tech:["computer vision","a new sensor material","edge computing","predictive modeling","robotics","biosynthesis","satellite data","peer-to-peer coordination software"],
+ customer:["independent clinics","small manufacturers","rural cooperatives","mid-size logistics fleets","municipal governments","first-time homeowners","independent contractors"],
+ model:["a subscription for continuous monitoring","a per-unit transaction fee","a licensing deal with incumbents","a marketplace taking a small cut of each match","an outcomes-based contract tied to results"],
+ advantage:["a proprietary dataset no competitor has access to","a 10x cost advantage from a novel process","a founding team with rare domain expertise","an exclusive early partnership with a key supplier","a network effect that strengthens with every new user"],
+};
+
+// daily challenges
+const DAILY_CHALLENGES = [
+"Write one sentence describing a secret you believe that most people in your field would disagree with.",
+"Name a business you know well. Is it competing, or does it have a real monopoly? Justify your answer in two sentences.",
+"Pick a product you use daily. What would a 10x-better version of it actually look like?",
+"Describe the smallest market you could completely dominate with an idea you have right now.",
+"Write a one-line definite plan for something you want to be true in five years.",
+"Identify one distribution channel you've never considered for an idea you have.",
+"List three things almost everyone believes about your industry. Which one might be wrong?",
+"Sketch the first ten users you'd need for a network-effect product, and why they'd join first.",
+"Name a company with genuine last-mover advantage. What's its moat?",
+"Describe one adjacent market a company you admire could expand into next.",
+"Write down a founding team of three people (skills, not names) for an idea you have.",
+"What's one process in your daily life with high marginal cost that could be redesigned to scale?",
+"Pick an 'obvious' market and explain why it might actually be a trap.",
+"Describe a brand you think has genuine differentiation, and why it's hard to copy.",
+"Write the single sentence a salesperson would need to close your best idea.",
+"What's a secret about people (not technology) that you suspect is true?",
+"Describe what 'definite pessimism' would look like applied to your current plans.",
+"Name one thing you could build today that would look inevitable in retrospect.",
+"If your idea had to start in one narrow niche, which would you choose and why?",
+"Write one question you're afraid the answer to your business idea is 'no.'",
+];
+
+// secret finder scenarios: each has a 'known fact' and a 'secret' — user picks which is the secret
+const SECRETS = [
+{scenario:"A regional hospital network is struggling with scheduling.",known:"Hospitals are generally understaffed.",secret:"Nurses lose nearly an hour per shift manually reconciling three different scheduling systems that don't talk to each other.",explain:"The staffing shortage is public knowledge — not a secret. The specific, fixable inefficiency in the scheduling workflow is the overlooked truth a company could act on."},
+{scenario:"Small farms are adopting new equipment slowly.",known:"Farming equipment is expensive.",secret:"Most small farms can't get financing because lenders don't know how to value equipment that depreciates faster than official tables assume.",explain:"High cost is common knowledge. The specific financing gap caused by outdated depreciation assumptions is the kind of narrow, fixable secret worth building around."},
+{scenario:"A city's public transit ridership is falling.",known:"Ridership has declined since before the pandemic.",secret:"Riders aren't leaving because of price — they're leaving because real-time arrival data is wrong roughly one trip in five, and people stop trusting a system after two bad guesses.",secretIsSecond:true,explain:"The overall decline is widely reported. The specific trust-breaking mechanism — inaccurate real-time data — is the overlooked, actionable secret."},
+{scenario:"Independent bookstores are closing.",known:"Online retailers offer lower prices and faster delivery.",secret:"Local bookstores that host recurring small events retain customers at nearly triple the rate of stores that don't, but almost none track or invest in this.",explain:"Price and delivery-speed disadvantages are well known. The specific, measurable retention effect of community events is the overlooked opportunity."},
+{scenario:"A manufacturing plant has frequent equipment downtime.",known:"Industrial equipment eventually breaks down.",secret:"Eighty percent of this plant's unplanned downtime traces back to three specific machines that fail in a predictable pattern nobody has bothered to document.",explain:"General equipment failure is expected and known. The specific, predictable pattern in three machines is the actionable secret worth solving."},
+{scenario:"A neighborhood has a shortage of childcare options.",known:"Childcare is expensive nationwide.",secret:"Many qualified caregivers in this neighborhood are unemployed because licensing paperwork takes an average of eleven weeks, longer than most can afford to wait.",explain:"National childcare cost is broadly known. The specific local licensing bottleneck sidelining qualified caregivers is the overlooked secret."},
+{scenario:"A logistics company has rising fuel costs.",known:"Fuel prices fluctuate and are hard to control.",secret:"Roughly 15% of this company's routes are duplicated by two different drivers on the same day because dispatch software from two acquisitions was never merged.",explain:"Fuel cost volatility is common knowledge across the industry. The specific, fixable routing duplication from unmerged systems is the real secret."},
+{scenario:"A software company has high customer churn.",known:"Software churn is common in competitive markets.",secret:"Most churned customers stopped using the product within three days of a specific onboarding step that silently fails on older phone models.",explain:"General churn is expected in any competitive market. The specific, technical, fixable cause is the overlooked secret worth investigating."},
+];
+
+const ACHIEVEMENTS = [
+ {id:'Innovator',ic:'⚡',title:'Innovator',desc:'Read all 14 concept sections.',check:s=>Object.keys(s.sectionsRead||{}).length>=14},
+ {id:'Visionary',ic:'🌌',title:'Visionary',desc:'Complete the Final Challenge.',check:s=>!!s.finalDone},
+ {id:'Founder',ic:'🚀',title:'Startup Founder',desc:'Finish the Business Builder game.',check:s=>!!s.builderDone},
+ {id:'MonopolyBuilder',ic:'👑',title:'Monopoly Builder',desc:'Complete the Monopoly Simulator.',check:s=>!!s.monopolyDone},
+ {id:'SecretHunter',ic:'🔍',title:'Secret Hunter',desc:'Solve all Secret Finder scenarios.',check:s=>(s.secretsSolved||0)>=SECRETS.length},
+ {id:'QuizChampion',ic:'🧠',title:'Quiz Champion',desc:'Score 80% or higher on the quiz.',check:s=>(s.quizBest||0)>=80},
+ {id:'FutureThinker',ic:'📅',title:'Future Thinker',desc:'Reach a 3-day Daily Challenge streak.',check:s=>(s.dailyStreak||0)>=3},
+];
+
+// business builder game data
+const BUILDER_STEPS = [
+ {key:'market',label:'Choose Your Market',opts:[
+   {n:'Massive, crowded market',d:'High demand, but a dozen well-funded rivals.',fx:{Revenue:6,Innovation:0,Competition:9,MarketShare:2,CompanyValue:3}},
+   {n:'Small, underserved niche',d:'Low demand today, almost no competitors.',fx:{Revenue:2,Innovation:3,Competition:1,MarketShare:8,CompanyValue:5}},
+   {n:'Adjacent to an existing giant',d:'Riding an incumbent\'s wave, but limited room to differentiate.',fx:{Revenue:5,Innovation:1,Competition:6,MarketShare:4,CompanyValue:3}},
+ ]},
+ {key:'tech',label:'Choose Your Technology',opts:[
+   {n:'Marginal improvement on existing tools',d:'Fast to build, easy for rivals to copy.',fx:{Revenue:2,Innovation:1,Competition:5,MarketShare:1,CompanyValue:1}},
+   {n:'A genuine 10x leap',d:'Slow and risky to build, hard for anyone to replicate.',fx:{Revenue:1,Innovation:9,Competition:-3,MarketShare:3,CompanyValue:7}},
+   {n:'License someone else\'s technology',d:'Quick to launch, but you don\'t own the moat.',fx:{Revenue:4,Innovation:0,Competition:3,MarketShare:2,CompanyValue:0}},
+ ]},
+ {key:'team',label:'Build Your Team',opts:[
+   {n:'Small, tightly aligned founding trio',d:'Fast decisions, deep trust, limited hands.',fx:{Revenue:0,Innovation:4,Competition:-1,MarketShare:1,CompanyValue:4}},
+   {n:'Large team hired quickly for scale',d:'More capacity, weaker early alignment.',fx:{Revenue:3,Innovation:-1,Competition:1,MarketShare:3,CompanyValue:0}},
+   {n:'Mostly outsourced / contractors',d:'Cheap and flexible, but institutional knowledge leaks out.',fx:{Revenue:1,Innovation:-2,Competition:2,MarketShare:0,CompanyValue:-2}},
+ ]},
+ {key:'brand',label:'Define Your Brand',opts:[
+   {n:'Premium, differentiated positioning',d:'Higher prices, smaller initial audience.',fx:{Revenue:2,Innovation:1,Competition:-2,MarketShare:1,CompanyValue:5}},
+   {n:'Cheapest option in the category',d:'Fast volume, thin margins, constant price pressure.',fx:{Revenue:5,Innovation:0,Competition:7,MarketShare:5,CompanyValue:-1}},
+   {n:'No clear positioning yet',d:'Flexible, but forgettable to customers.',fx:{Revenue:1,Innovation:0,Competition:2,MarketShare:0,CompanyValue:-2}},
+ ]},
+ {key:'sales',label:'Choose Your Sales Motion',opts:[
+   {n:'Dedicated enterprise sales team',d:'Slower deals, much higher contract value.',fx:{Revenue:6,Innovation:0,Competition:0,MarketShare:2,CompanyValue:4}},
+   {n:'Self-serve signup, no sales team',d:'Fast, cheap, works only for simple products.',fx:{Revenue:3,Innovation:0,Competition:1,MarketShare:3,CompanyValue:1}},
+   {n:'Assume the product will sell itself',d:'No investment in distribution at all.',fx:{Revenue:-3,Innovation:1,Competition:2,MarketShare:-3,CompanyValue:-4}},
+ ]},
+ {key:'pricing',label:'Set Your Pricing',opts:[
+   {n:'Price to match differentiated value',d:'Sustainable margin, but requires proving the value.',fx:{Revenue:4,Innovation:0,Competition:-2,MarketShare:1,CompanyValue:5}},
+   {n:'Race to the lowest price in the category',d:'Grabs share fast, erodes margin for everyone.',fx:{Revenue:3,Innovation:0,Competition:8,MarketShare:4,CompanyValue:-3}},
+   {n:'Keep pricing flexible / ad-hoc',d:'No clear model, inconsistent revenue.',fx:{Revenue:0,Innovation:0,Competition:1,MarketShare:0,CompanyValue:-1}},
+ ]},
+ {key:'growth',label:'Plan Your Growth',opts:[
+   {n:'Expand into an adjacent market once your niche is owned',d:'Slower, but compounding and durable.',fx:{Revenue:3,Innovation:2,Competition:-1,MarketShare:4,CompanyValue:7}},
+   {n:'Expand everywhere at once',d:'Explosive top-line growth, thin execution.',fx:{Revenue:5,Innovation:-1,Competition:5,MarketShare:3,CompanyValue:-2}},
+   {n:'Stay put and defend the current niche',d:'Stable, but capped upside.',fx:{Revenue:1,Innovation:0,Competition:-1,MarketShare:0,CompanyValue:2}},
+ ]},
+];
+
+/* ---------- 2. STATE ---------- */
+const DEFAULT_STATE = {
+  theme:'dark', sound:true, reduceMotion:false,
+  sectionsRead:{}, bookmarks:{}, notes:{},
+  quizBest:0,
+  cardsKnown:{},
+  builderDone:false, monopolyDone:false,
+  secretsSolved:0, secretsDone:{},
+  finalDone:false,
+  favorites:[],
+  dailyStreak:0, dailyLastDate:null, dailyLog:{},
+  unlockedAchv:{},
+};
+let state = loadState();
+function loadState(){
+  try{
+    const raw = localStorage.getItem('z2o_state_v1');
+    if(raw) return Object.assign({}, DEFAULT_STATE, JSON.parse(raw));
+  }catch(e){}
+  return Object.assign({}, DEFAULT_STATE);
+}
+function saveState(){
+  try{ localStorage.setItem('z2o_state_v1', JSON.stringify(state)); }catch(e){}
+}
+
+/* ---------- 3. UTIL ---------- */
+function $(sel,root){ return (root||document).querySelector(sel); }
+function $all(sel,root){ return Array.from((root||document).querySelectorAll(sel)); }
+function el(tag,cls,html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!==undefined)e.innerHTML=html; return e; }
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+function toast(msg,kind){
+  const t = el('div','toast', (kind==='achv'?'🏅 ':'') + msg);
+  $('#toastWrap').appendChild(t);
+  setTimeout(()=>t.remove(),3800);
+  playBeep(kind==='achv'?880:520,kind==='achv'?0.18:0.08);
+}
+function pct(part,total){ return total? Math.round(100*part/total):0; }
+
+/* ---------- 4. AUDIO ---------- */
+let actx=null;
+function playBeep(freq,dur){
+  if(!state.sound) return;
+  try{
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    const o = actx.createOscillator(); const g = actx.createGain();
+    o.type='sine'; o.frequency.value=freq||500;
+    g.gain.value=0.05;
+    o.connect(g); g.connect(actx.destination);
+    o.start();
+    g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + (dur||0.1));
+    o.stop(actx.currentTime + (dur||0.1) + 0.02);
+  }catch(e){}
+}
+
+/* ---------- 5. CONFETTI ---------- */
+const confettiCanvas = document.getElementById('confettiCanvas');
+const cctx = confettiCanvas.getContext('2d');
+let confettiParticles = [];
+function resizeCanvases(){
+  [confettiCanvas, particleCanvas].forEach(c=>{ c.width=innerWidth; c.height=innerHeight; });
+}
+function fireConfetti(){
+  if(state.reduceMotion) return;
+  const colors=['#4F7CFF','#8B5FFF','#43E6E0','#4ADE9C','#FFB84F'];
+  for(let i=0;i<90;i++){
+    confettiParticles.push({
+      x: innerWidth/2 + (Math.random()-0.5)*140, y: innerHeight*0.3,
+      vx:(Math.random()-0.5)*9, vy: Math.random()*-9-3,
+      g:0.28, size:4+Math.random()*5, color:colors[i%colors.length],
+      rot:Math.random()*360, vr:(Math.random()-0.5)*14, life:120
+    });
+  }
+}
+function confettiLoop(){
+  cctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+  confettiParticles = confettiParticles.filter(p=>p.life>0);
+  confettiParticles.forEach(p=>{
+    p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.life--;
+    cctx.save(); cctx.translate(p.x,p.y); cctx.rotate(p.rot*Math.PI/180);
+    cctx.fillStyle=p.color; cctx.globalAlpha=Math.min(1,p.life/40);
+    cctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+    cctx.restore();
+  });
+  requestAnimationFrame(confettiLoop);
+}
+requestAnimationFrame(confettiLoop);
+
+/* ---------- 6. AMBIENT PARTICLE BACKGROUND ---------- */
+const particleCanvas = document.getElementById('particleCanvas');
+const pctx = particleCanvas.getContext('2d');
+let particles=[];
+function initParticles(){
+  particles=[];
+  const count = Math.min(70, Math.floor(innerWidth/22));
+  for(let i=0;i<count;i++){
+    particles.push({
+      x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+      vx:(Math.random()-0.5)*0.25, vy:(Math.random()-0.5)*0.25,
+      r:Math.random()*1.6+0.6
+    });
+  }
+}
+function particleLoop(){
+  pctx.clearRect(0,0,particleCanvas.width,particleCanvas.height);
+  if(!state.reduceMotion){
+    const isLight = document.documentElement.getAttribute('data-theme')==='light';
+    pctx.fillStyle = isLight? 'rgba(79,124,255,0.35)':'rgba(79,124,255,0.55)';
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>innerWidth)p.vx*=-1;
+      if(p.y<0||p.y>innerHeight)p.vy*=-1;
+      pctx.beginPath(); pctx.arc(p.x,p.y,p.r,0,7); pctx.fill();
+    });
+    pctx.strokeStyle = isLight? 'rgba(139,95,255,0.10)':'rgba(139,95,255,0.14)';
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const a=particles[i],b=particles[j];
+        const d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<110){ pctx.globalAlpha=1-d/110; pctx.beginPath(); pctx.moveTo(a.x,a.y); pctx.lineTo(b.x,b.y); pctx.stroke(); }
+      }
+    }
+    pctx.globalAlpha=1;
+  }
+  requestAnimationFrame(particleLoop);
+}
+resizeCanvases(); initParticles(); requestAnimationFrame(particleLoop);
+window.addEventListener('resize',()=>{ resizeCanvases(); initParticles(); });
+
+/* ---------- 7. NAV / ROUTER ---------- */
+const tabbar = $('#tabbar');
+NAV.forEach(n=>{
+  const b = el('button','tab', `<span class="ti">${n.icon}</span><span>${n.label}</span>`);
+  b.dataset.view = n.id;
+  b.addEventListener('click',()=>{ showView(n.id); playBeep(400,0.05); });
+  tabbar.appendChild(b);
+});
+function showView(id){
+  $all('.view').forEach(v=>v.classList.toggle('active', v.dataset.view===id));
+  $all('.tab').forEach(t=>t.classList.toggle('active', t.dataset.view===id));
+  window.scrollTo({top:0,behavior: state.reduceMotion?'auto':'smooth'});
+  if(id==='quiz' && !quizState.started) initQuiz();
+  if(id==='flashcards' && !fcState.inited) initFlashcards();
+  if(id==='builder' && !builderState.inited) initBuilder();
+  if(id==='monopoly' && !monopolyState.inited) initMonopoly();
+  if(id==='secrets' && !secretsState.inited) initSecrets();
+  if(id==='timeline') renderTimeline();
+  if(id==='kmap') renderKMap();
+  if(id==='quotes' && !quotesState.inited) initQuotes();
+  if(id==='daily') renderDaily();
+  if(id==='achv') renderAchievements();
+  if(id==='learn') renderLearn();
+  if(id==='home') renderHome();
+}
+document.addEventListener('keydown',e=>{
+  const order = NAV.map(n=>n.id);
+  const cur = $('.tab.active')?.dataset.view || 'home';
+  const idx = order.indexOf(cur);
+  if(e.key==='ArrowRight'){ showView(order[(idx+1)%order.length]); }
+  else if(e.key==='ArrowLeft'){ showView(order[(idx-1+order.length)%order.length]); }
+  else if(e.key==='/'){ e.preventDefault(); showView('search'); setTimeout(()=>$('#searchInput').focus(),50); }
+  else if(e.key==='Escape'){ document.activeElement && document.activeElement.blur(); }
+});
+let touchX=null;
+document.addEventListener('touchstart',e=>{ touchX=e.touches[0].clientX; });
+document.addEventListener('touchend',e=>{
+  if(touchX===null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if(Math.abs(dx)>70){
+    const order = NAV.map(n=>n.id);
+    const cur = $('.tab.active')?.dataset.view || 'home';
+    const idx = order.indexOf(cur);
+    showView(dx<0? order[(idx+1)%order.length] : order[(idx-1+order.length)%order.length]);
+  }
+  touchX=null;
+});
+
+/* ---------- 8. HOME ---------- */
+function renderHome(){
+  const tiles = [
+    {id:'learn',ic:'📘',h:'Learn the 14 Ideas',p:'Expandable cards on every core concept.'},
+    {id:'quiz',ic:'🧠',h:'Take the Quiz',p:'50 questions, instant feedback.'},
+    {id:'flashcards',ic:'🃏',h:'Flashcards',p:'50 terms, tap to flip.'},
+    {id:'builder',ic:'🚀',h:'Business Builder',p:'Play out a founding story.'},
+    {id:'monopoly',ic:'👑',h:'Monopoly Simulator',p:'Compete vs. differentiate.'},
+    {id:'secrets',ic:'🔍',h:'Secret Finder',p:'Spot the overlooked truth.'},
+    {id:'ideagen',ic:'🎲',h:'Idea Generator',p:'Random startup combinations.'},
+    {id:'timeline',ic:'🛤️',h:'Timeline',p:'Idea to long-term dominance.'},
+    {id:'kmap',ic:'🕸️',h:'Knowledge Map',p:'How every idea connects.'},
+    {id:'quotes',ic:'💬',h:'Quote Carousel',p:'30 original reflections.'},
+    {id:'daily',ic:'📅',h:'Daily Challenge',p:'A new micro-task, every day.'},
+    {id:'final',ic:'🏁',h:'Final Challenge',p:'Score your own strategy.'},
+  ];
+  const wrap = $('#homeTiles'); wrap.innerHTML='';
+  tiles.forEach(t=>{
+    const c = el('div','tile glass',`<div class="ic">${t.ic}</div><h4>${t.h}</h4><p>${t.p}</p>`);
+    c.addEventListener('click',()=>showView(t.id));
+    wrap.appendChild(c);
+  });
+  const sectionsN = Object.keys(state.sectionsRead).length;
+  $('#statSections').textContent = sectionsN+'/14';
+  $('#statQuiz').textContent = state.quizBest+'%';
+  $('#statCards').textContent = Object.keys(state.cardsKnown).length+'/50';
+  $('#statAchv').textContent = Object.keys(state.unlockedAchv).length+'/7';
+  updateTopProgress();
+}
+function updateTopProgress(){
+  const sectionsN = Object.keys(state.sectionsRead).length;
+  const cardsN = Object.keys(state.cardsKnown).length;
+  const total = sectionsN/14*40 + Math.min(state.quizBest,100)/100*25 + cardsN/50*20 + Object.keys(state.unlockedAchv).length/7*15;
+  const p = Math.round(total);
+  $('#topProgressBar').style.width = p+'%';
+  $('#topProgressLabel').textContent = p+'%';
+}
+$('#startBtn').addEventListener('click',()=>showView('learn'));
+$('#continueBtn').addEventListener('click',()=>{
+  const firstUnread = SECTIONS.findIndex((s,i)=>!state.sectionsRead[i]);
+  showView('learn');
+  setTimeout(()=>{
+    const idx = firstUnread<0?0:firstUnread;
+    const card = $all('.concept-card')[idx];
+    if(card){ card.scrollIntoView({behavior:'smooth',block:'center'}); card.classList.add('open'); }
+  },100);
+});
+
+/* ---------- 9. LEARN ---------- */
+function renderLearn(){
+  const wrap = $('#conceptList'); wrap.innerHTML='';
+  SECTIONS.forEach((s,i)=>{
+    const card = el('div','concept-card glass');
+    card.innerHTML = `
+      <div class="concept-head">
+        <div class="concept-icon">${s.ic}</div>
+        <div>
+          <div class="concept-num">CONCEPT ${String(i+1).padStart(2,'0')} / 14</div>
+          <h3 style="font-size:16.5px;">${s.t}</h3>
+        </div>
+        <button class="bookmark-btn ${state.bookmarks[i]?'on':''}" data-i="${i}">${state.bookmarks[i]?'★':'☆'}</button>
+        <span class="chev">▾</span>
+      </div>
+      <div class="concept-body">
+        <p style="margin-bottom:10px;color:var(--paper);">${s.big}</p>
+        <p style="margin-bottom:10px;">${s.deep}</p>
+        <textarea class="notes-area" placeholder="Private note…" data-i="${i}">${state.notes[i]||''}</textarea>
+      </div>`;
+    card.querySelector('.concept-head').addEventListener('click',(e)=>{
+      if(e.target.closest('.bookmark-btn')) return;
+      card.classList.toggle('open');
+      if(card.classList.contains('open') && !state.sectionsRead[i]){
+        state.sectionsRead[i]=true; saveState(); checkAchievements(); updateTopProgress();
+      }
+    });
+    card.querySelector('.bookmark-btn').addEventListener('click',(e)=>{
+      e.stopPropagation();
+      state.bookmarks[i] = !state.bookmarks[i];
+      saveState();
+      const b = e.currentTarget;
+      b.classList.toggle('on'); b.textContent = state.bookmarks[i]?'★':'☆';
+    });
+    card.querySelector('.notes-area').addEventListener('input',(e)=>{
+      state.notes[i] = e.target.value; saveState();
+    });
+    wrap.appendChild(card);
+  });
+}
+
+/* ---------- 10. QUIZ ---------- */
+let quizState = {started:false, order:[], idx:0, score:0, startTime:0, timerInt:null, answered:false};
+function initQuiz(){
+  quizState = {started:true, order: shuffle(QUIZ.map((_,i)=>i)), idx:0, score:0, startTime:Date.now(), answered:false};
+  renderQuizHUD();
+  renderQuestion();
+  clearInterval(quizState.timerInt);
+  quizState.timerInt = setInterval(updateQuizTimer, 1000);
+}
+function renderQuizHUD(){
+  const area = $('#quizArea');
+  area.innerHTML = `
+    <div class="quiz-hud">
+      <div class="badge blue quiz-hud hud-item glass" id="qHudProgress">Question 1 / ${QUIZ.length}</div>
+      <div class="badge violet quiz-hud hud-item glass" id="qHudScore">Score 0</div>
+      <div class="badge cyan quiz-hud hud-item glass mono" id="qHudTimer">00:00</div>
+      <button class="btn ghost" id="qRestart" style="margin-left:auto;padding:8px 14px;font-size:12px;">Restart</button>
+    </div>
+    <div id="qCardHost"></div>`;
+  $('#qRestart').addEventListener('click', initQuiz);
+}
+function updateQuizTimer(){
+  const s = Math.floor((Date.now()-quizState.startTime)/1000);
+  const m = String(Math.floor(s/60)).padStart(2,'0'), sec = String(s%60).padStart(2,'0');
+  const elT = $('#qHudTimer'); if(elT) elT.textContent = m+':'+sec;
+}
+function renderQuestion(){
+  if(quizState.idx>=quizState.order.length){ finishQuiz(); return; }
+  quizState.answered=false;
+  const qi = quizState.order[quizState.idx];
+  const q = QUIZ[qi];
+  const optOrder = shuffle(q.o.map((_,i)=>i));
+  const host = $('#qCardHost');
+  host.innerHTML = `
+    <div class="qcard glass">
+      <div class="qn">QUESTION ${quizState.idx+1} OF ${QUIZ.length}</div>
+      <h3>${q.q}</h3>
+      <div id="optList"></div>
+      <div class="qexplain" id="qExplain"></div>
+      <div class="hero-cta" style="justify-content:flex-end;margin-top:16px;">
+        <button class="btn primary" id="qNext" disabled>Next Question →</button>
+      </div>
+    </div>`;
+  const optList = $('#optList');
+  const letters=['A','B','C','D'];
+  optOrder.forEach((origIdx,pos)=>{
+    const b = el('button','opt',`<span class="k">${letters[pos]}</span><span>${q.o[origIdx]}</span>`);
+    b.addEventListener('click',()=>{
+      if(quizState.answered) return;
+      quizState.answered=true;
+      const correct = origIdx===q.c;
+      b.classList.add(correct?'correct':'wrong');
+      if(!correct){
+        $all('.opt')[optOrder.indexOf(q.c)].classList.add('correct');
+      } else { quizState.score++; playBeep(760,0.12); } 
+      $all('.opt').forEach(o=>o.setAttribute('disabled','true'));
+      $('#qExplain').textContent = q.e;
+      $('#qExplain').classList.add('show');
+      $('#qNext').removeAttribute('disabled');
+      $('#qHudScore').textContent = 'Score '+quizState.score;
+    });
+    optList.appendChild(b);
+  });
+  $('#qNext').addEventListener('click',()=>{ quizState.idx++; $('#qHudProgress').textContent = `Question ${Math.min(quizState.idx+1,QUIZ.length)} / ${QUIZ.length}`; renderQuestion(); });
+}
+function finishQuiz(){
+  clearInterval(quizState.timerInt);
+  const pctScore = pct(quizState.score, QUIZ.length);
+  if(pctScore > state.quizBest){ state.quizBest = pctScore; }
+  saveState(); checkAchievements(); updateTopProgress();
+  const totalSec = Math.floor((Date.now()-quizState.startTime)/1000);
+  let badge = pctScore>=90?'Zero-to-One Master':pctScore>=80?'Quiz Champion':pctScore>=60?'Solid Grasp':'Keep Studying';
+  $('#quizArea').innerHTML += `
+    <div class="glass quiz-result" style="margin-top:16px;">
+      <div class="big-score">${pctScore}%</div>
+      <p style="margin-top:8px;">${quizState.score} / ${QUIZ.length} correct in ${Math.floor(totalSec/60)}m ${totalSec%60}s</p>
+      <div style="margin-top:14px;"><span class="badge warn">${badge}</span></div>
+      <div class="hero-cta" style="margin-top:20px;"><button class="btn primary" id="qRetry">Try Again</button></div>
+    </div>`;
+  $('#qRetry').addEventListener('click', initQuiz);
+  if(pctScore>=80) fireConfetti();
+}
+
+/* ---------- 11. FLASHCARDS ---------- */
+let fcState = {inited:false, order:[], idx:0};
+function initFlashcards(){
+  fcState = {inited:true, order: shuffle(FLASHCARDS.map((_,i)=>i)), idx:0};
+  renderFlashcard();
+}
+function renderFlashcard(){
+  const i = fcState.order[fcState.idx];
+  const card = FLASHCARDS[i];
+  const known = !!state.cardsKnown[i];
+  const wrap = $('#fcArea');
+  wrap.innerHTML = `
+    <div class="fc-dot mono">CARD ${fcState.idx+1} / ${FLASHCARDS.length} · ${Object.keys(state.cardsKnown).length} known</div>
+    <div class="fc-stage"><div class="fc-card" id="fcCard">
+      <div class="fc-face front"><div class="fc-term">${card.term}</div><p style="font-size:11px;">Tap to reveal definition</p></div>
+      <div class="fc-face back"><p style="color:#fff;font-size:15px;">${card.def}</p></div>
+    </div></div>
+    <div class="fc-known">
+      <button class="btn ghost" id="fcNo">Still Learning</button>
+      <button class="btn primary" id="fcYes">${known?'✓ Known':'I Know This'}</button>
+    </div>
+    <div class="fc-nav">
+      <button class="icon-btn" id="fcPrev">←</button>
+      <button class="icon-btn" id="fcShuffle">🔀</button>
+      <button class="icon-btn" id="fcNext">→</button>
+    </div>`;
+  $('#fcCard').addEventListener('click',()=> $('#fcCard').classList.toggle('flipped'));
+  $('#fcPrev').addEventListener('click',()=>{ fcState.idx=(fcState.idx-1+FLASHCARDS.length)%FLASHCARDS.length; renderFlashcard(); });
+  $('#fcNext').addEventListener('click',()=>{ fcState.idx=(fcState.idx+1)%FLASHCARDS.length; renderFlashcard(); });
+  $('#fcShuffle').addEventListener('click',()=>{ fcState.order = shuffle(FLASHCARDS.map((_,i)=>i)); fcState.idx=0; renderFlashcard(); });
+  $('#fcYes').addEventListener('click',()=>{ state.cardsKnown[i]=true; saveState(); checkAchievements(); updateTopProgress(); fcState.idx=(fcState.idx+1)%FLASHCARDS.length; renderFlashcard(); toast('Marked as known'); });
+  $('#fcNo').addEventListener('click',()=>{ delete state.cardsKnown[i]; saveState(); updateTopProgress(); fcState.idx=(fcState.idx+1)%FLASHCARDS.length; renderFlashcard(); });
+}
+
+/* ---------- 12. BUSINESS BUILDER GAME ---------- */
+let builderState = {inited:false, step:0, stats:{Revenue:20,Innovation:20,Competition:20,MarketShare:20,CompanyValue:20}, log:[]};
+function initBuilder(){
+  builderState = {inited:true, step:0, stats:{Revenue:20,Innovation:20,Competition:20,MarketShare:20,CompanyValue:20}, log:[]};
+  renderBuilder();
+}
+function renderBuilder(){
+  const area = $('#builderArea');
+  if(builderState.step>=BUILDER_STEPS.length){ renderBuilderEnding(); return; }
+  const step = BUILDER_STEPS[builderState.step];
+  area.innerHTML = `
+    <div class="glass" style="padding:22px;">
+      <div class="eyebrow">Step ${builderState.step+1} / ${BUILDER_STEPS.length}</div>
+      <h3 style="font-size:19px;margin-bottom:14px;">${step.label}</h3>
+      <div class="choice-row" id="choiceRow"></div>
+      <div class="stat-bars" id="statBars"></div>
+      <div class="game-log" id="gameLog"></div>
+    </div>`;
+  const row = $('#choiceRow');
+  step.opts.forEach(o=>{
+    const c = el('div','choice-card glass',`<h5>${o.n}</h5><p>${o.d}</p>`);
+    c.addEventListener('click',()=>{
+      Object.keys(o.fx).forEach(k=> builderState.stats[k] = Math.max(0, Math.min(100, builderState.stats[k]+o.fx[k])) );
+      builderState.log.unshift(`${step.label}: chose "${o.n}"`);
+      builderState.step++;
+      renderBuilder();
+      playBeep(600,0.08);
+    });
+    row.appendChild(c);
+  });
+  renderStatBars($('#statBars'), builderState.stats);
+  $('#gameLog').innerHTML = builderState.log.map(l=>`<div>${l}</div>`).join('') || '<div>Your decisions will appear here.</div>';
+}
+function renderStatBars(host, stats){
+  host.innerHTML='';
+  const colors={Revenue:'#4F7CFF',Innovation:'#8B5FFF',Competition:'#FF6B7A',MarketShare:'#43E6E0',CompanyValue:'#4ADE9C'};
+  Object.keys(stats).forEach(k=>{
+    const item = el('div','stat-bar-item',`<span>${k}<span>${stats[k]}</span></span><div class="stat-bar-track"><div class="stat-bar-fill" style="width:${stats[k]}%;background:${colors[k]}"></div></div>`);
+    host.appendChild(item);
+  });
+}
+function renderBuilderEnding(){
+  const s = builderState.stats;
+  let title, desc;
+  if(s.CompanyValue>=65 && s.Innovation>=55 && s.Competition<=35){
+    title='Visionary Unicorn'; desc='You built genuine differentiation on real innovation, avoided the price war, and compounded into a durable, high-value company.';
+  } else if(s.Competition>=65){
+    title='Red Ocean Casualty'; desc='You ended up fighting rivals head-on over an undifferentiated offering. Margins thinned and growth stalled under the pressure.';
+  } else if(s.MarketShare>=60 && s.CompanyValue<40){
+    title='Overhyped Bubble'; desc='You grabbed attention and share fast, but the underlying value never caught up — growth without a durable foundation.';
+  } else if(s.CompanyValue>=45){
+    title='Steady Niche Leader'; desc='You built a solid, defensible position in a market you actually own. Not flashy, but durable — a strong base to expand from.';
+  } else {
+    title='Early-Stage Struggler'; desc='The company survived its first stretch, but without a clear moat or distribution plan, it never found real traction.';
+  }
+  $('#builderArea').innerHTML = `
+    <div class="glass ending-card">
+      <h2>${title}</h2>
+      <p style="max-width:480px;margin:0 auto;">${desc}</p>
+      <div class="stat-bars" id="endStats" style="margin-top:20px;text-align:left;"></div>
+      <div class="hero-cta" style="margin-top:20px;"><button class="btn primary" id="builderAgain">Found Another Startup</button></div>
+    </div>`;
+  renderStatBars($('#endStats'), s);
+  $('#builderAgain').addEventListener('click', initBuilder);
+  if(!state.builderDone){ state.builderDone=true; saveState(); checkAchievements(); updateTopProgress(); }
+  fireConfetti();
+}
+
+/* ---------- 13. MONOPOLY SIMULATOR ---------- */
+let monopolyState = {inited:false, round:0, competeMargin:[], monoMargin:[]};
+function initMonopoly(){
+  monopolyState = {inited:true, round:0, competeMargin:[40], monoMargin:[40]};
+  renderMonopoly();
+}
+function renderMonopoly(){
+  const area = $('#monopolyArea');
+  area.innerHTML = `
+    <div class="glass" style="padding:22px;">
+      <p style="margin-bottom:16px;">Round ${monopolyState.round} of 5. Each round, both simulated businesses make a decision. The <b style="color:var(--cyan)">Compete</b> business always matches or undercuts rivals' prices. The <b style="color:var(--blue)">Differentiate</b> business invests in a distinct feature instead of cutting price.</p>
+      <div class="sim-round" id="simRound"></div>
+      <div class="hero-cta">
+        <button class="btn primary" id="simStep" ${monopolyState.round>=5?'disabled':''}>${monopolyState.round>=5?'Simulation Complete':'Run Next Round'}</button>
+        <button class="btn ghost" id="simReset">Reset</button>
+      </div>
+      <div id="simSummary" style="margin-top:16px;"></div>
+    </div>`;
+  drawSimBars();
+  $('#simStep').addEventListener('click', runMonopolyRound);
+  $('#simReset').addEventListener('click', initMonopoly);
+  if(monopolyState.round>=5) renderMonopolySummary();
+}
+function drawSimBars(){
+  const host = $('#simRound'); host.innerHTML='';
+  const maxH=110;
+  monopolyState.competeMargin.forEach((v,i)=>{
+    const h1 = Math.max(4,(v/60)*maxH);
+    const h2 = Math.max(4,(monopolyState.monoMargin[i]/60)*maxH);
+    const col = el('div','sim-bar-col');
+    col.innerHTML = `
+      <div style="display:flex;align-items:flex-end;gap:6px;height:${maxH}px;">
+        <div class="sim-bar compete" style="height:${h1}px;" title="Compete margin ${v}%"></div>
+        <div class="sim-bar" style="height:${h2}px;" title="Differentiate margin ${monopolyState.monoMargin[i]}%"></div>
+      </div>
+      <div class="sim-bar-label">Round ${i}</div>`;
+    host.appendChild(col);
+  });
+}
+function runMonopolyRound(){
+  monopolyState.round++;
+  const lastC = monopolyState.competeMargin[monopolyState.competeMargin.length-1];
+  const lastM = monopolyState.monoMargin[monopolyState.monoMargin.length-1];
+  const newC = Math.max(2, lastC - (6 + Math.random()*6));
+  const newM = Math.min(58, lastM + (Math.random()*4 - 0.5));
+  monopolyState.competeMargin.push(Math.round(newC));
+  monopolyState.monoMargin.push(Math.round(newM));
+  renderMonopoly();
+  playBeep(500,0.08);
+}
+function renderMonopolySummary(){
+  const c = monopolyState.competeMargin[monopolyState.competeMargin.length-1];
+  const m = monopolyState.monoMargin[monopolyState.monoMargin.length-1];
+  $('#simSummary').innerHTML = `
+    <div class="glass" style="padding:16px;">
+      <p><b style="color:var(--cyan);">Compete</b> ended with ${c}% margin after five rounds of matching rivals on price. <b style="color:var(--blue);">Differentiate</b> ended with ${m}% margin by staying out of the price fight. This is the practical shape of the monopoly-vs-competition argument: sameness gets priced down, distinctiveness holds its value.</p>
+    </div>`;
+  if(!state.monopolyDone){ state.monopolyDone=true; saveState(); checkAchievements(); updateTopProgress(); }
+}
+
+/* ---------- 14. SECRET FINDER ---------- */
+let secretsState = {inited:false};
+function initSecrets(){
+  secretsState.inited=true;
+  const area = $('#secretsArea'); area.innerHTML='';
+  SECRETS.forEach((s,i)=>{
+    const solved = !!state.secretsDone[i];
+    const opts = shuffle([{txt:s.known,isSecret:false},{txt:s.secret,isSecret:true}]);
+    const card = el('div','glass',`
+      <div style="padding:20px;">
+        <div class="badge blue" style="margin-bottom:10px;">SCENARIO ${i+1}</div>
+        <p style="color:var(--paper);margin-bottom:14px;">${s.scenario}</p>
+        <div id="secOpts${i}"></div>
+        <div class="qexplain" id="secExplain${i}">${solved?s.explain:''}</div>
+      </div>`);
+    card.style.marginBottom='14px';
+    area.appendChild(card);
+    const optHost = card.querySelector(`#secOpts${i}`);
+    opts.forEach(o=>{
+      const b = el('button','opt', o.txt);
+      if(solved){
+        b.setAttribute('disabled','true');
+        if(o.isSecret) b.classList.add('correct');
+      }
+      b.addEventListener('click',()=>{
+        if(state.secretsDone[i]) return;
+        Array.from(optHost.children).forEach(x=>x.setAttribute('disabled','true'));
+        if(o.isSecret){
+          b.classList.add('correct'); playBeep(760,0.12);
+          state.secretsDone[i]=true;
+          state.secretsSolved = Object.keys(state.secretsDone).length;
+          saveState(); checkAchievements(); updateTopProgress();
+        } else {
+          b.classList.add('wrong');
+          Array.from(optHost.children).find(x=>x.textContent===s.secret).classList.add('correct');
+        }
+        const exp = card.querySelector(`#secExplain${i}`);
+        exp.textContent = s.explain; exp.classList.add('show');
+      });
+      optHost.appendChild(b);
+    });
+  });
+}
+
+/* ---------- 15. IDEA GENERATOR ---------- */
+function generateIdea(){
+  const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+  const idea = {
+    industry: pick(IDEA_LISTS.industry), problem: pick(IDEA_LISTS.problem),
+    tech: pick(IDEA_LISTS.tech), customer: pick(IDEA_LISTS.customer),
+    model: pick(IDEA_LISTS.model), advantage: pick(IDEA_LISTS.advantage),
+  };
+  $('#ideaText').innerHTML = `A <b>${idea.industry}</b> company solving <b>${idea.problem}</b> using <b>${idea.tech}</b>, sold to <b>${idea.customer}</b> through <b>${idea.model}</b>, defended by <b>${idea.advantage}</b>.`;
+  window._lastIdea = idea;
+}
+$('#genIdeaBtn').addEventListener('click', ()=>{ generateIdea(); playBeep(600,0.08); });
+$('#saveIdeaBtn').addEventListener('click', ()=>{
+  if(!window._lastIdea){ toast('Generate an idea first'); return; }
+  state.favorites.unshift($('#ideaText').innerHTML);
+  state.favorites = state.favorites.slice(0,20);
+  saveState(); renderFavorites(); toast('Idea saved');
+});
+function renderFavorites(){
+  const host = $('#favList'); host.innerHTML='';
+  state.favorites.forEach((f,i)=>{
+    const item = el('div','fav-item glass', `<span>${f}</span><button class="icon-btn" data-i="${i}">✕</button>`);
+    item.querySelector('button').addEventListener('click',()=>{
+      state.favorites.splice(i,1); saveState(); renderFavorites();
+    });
+    host.appendChild(item);
+  });
+}
+
+/* ---------- 16. TIMELINE ---------- */
+function renderTimeline(){
+  const host = $('#tlArea'); host.innerHTML='';
+  TIMELINE.forEach((t,i)=>{
+    const item = el('div','tl-item',`<h4>${i+1}. ${t.t}</h4><div class="tl-detail"><p>${t.d}</p></div>`);
+    item.addEventListener('click',()=> item.classList.toggle('open'));
+    host.appendChild(item);
+  });
+}
+
+/* ---------- 17. KNOWLEDGE MAP ---------- */
+function renderKMap(){
+  const host = $('#kmapArea');
+  let svg = `<svg viewBox="0 0 100 100">`;
+  KEDGES.forEach(([a,b])=>{
+    const na=KNODES.find(n=>n.id===a), nb=KNODES.find(n=>n.id===b);
+    svg += `<line x1="${na.x}" y1="${na.y}" x2="${nb.x}" y2="${nb.y}" stroke="rgba(139,95,255,0.35)" stroke-width="0.4"/>`;
+  });
+  KNODES.forEach(n=>{
+    svg += `<g class="kmap-node" data-id="${n.id}"><circle cx="${n.x}" cy="${n.y}" r="7" fill="${n.c}" fill-opacity="0.85"/><text x="${n.x}" y="${n.y+13}" text-anchor="middle">${n.label}</text></g>`;
+  });
+  svg += `</svg>`;
+  host.innerHTML = svg;
+  $all('.kmap-node',host).forEach(g=>{
+    g.addEventListener('click',()=>{
+      const n = KNODES.find(k=>k.id===g.dataset.id);
+      $('#kmapInfo').innerHTML = `<b style="color:${n.c};">${n.label}</b> — ${n.desc}`;
+    });
+  });
+}
+
+/* ---------- 18. QUOTES ---------- */
+let quotesState = {inited:false, idx:0, timer:null};
+function initQuotes(){
+  quotesState.inited=true; quotesState.idx=0;
+  const stage = $('#quoteStage'); stage.innerHTML='';
+  QUOTES.forEach((q,i)=>{
+    stage.appendChild(el('div','quote-slide'+(i===0?' active':''),`<q>${q.q}</q><cite>— ${q.a}</cite>`));
+  });
+  const dots = $('#quoteDots'); dots.innerHTML='';
+  QUOTES.forEach((_,i)=>{
+    const d = el('i',i===0?'active':'');
+    d.addEventListener('click',()=>gotoQuote(i));
+    dots.appendChild(d);
+  });
+  clearInterval(quotesState.timer);
+  quotesState.timer = setInterval(()=>gotoQuote((quotesState.idx+1)%QUOTES.length), 6000);
+}
+function gotoQuote(i){
+  quotesState.idx=i;
+  $all('.quote-slide').forEach((s,idx)=>s.classList.toggle('active', idx===i));
+  $all('#quoteDots i').forEach((d,idx)=>d.classList.toggle('active', idx===i));
+}
+$('#quotePrev').addEventListener('click',()=>gotoQuote((quotesState.idx-1+QUOTES.length)%QUOTES.length));
+$('#quoteNext').addEventListener('click',()=>gotoQuote((quotesState.idx+1)%QUOTES.length));
+
+/* ---------- 19. DAILY CHALLENGE ---------- */
+function dayIndex(){
+  const start = new Date(2026,0,1);
+  const now = new Date();
+  const diff = Math.floor((now-start)/86400000);
+  return ((diff % DAILY_CHALLENGES.length)+DAILY_CHALLENGES.length)%DAILY_CHALLENGES.length;
+}
+function todayKey(){ const d=new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
+function renderDaily(){
+  const idx = dayIndex();
+  $('#dailyText').textContent = DAILY_CHALLENGES[idx];
+  $('#dailyDateLabel').textContent = new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
+  const done = !!state.dailyLog[todayKey()];
+  $('#dailyDoneBtn').textContent = done? '✓ Completed Today' : 'Mark Complete';
+  $('#dailyDoneBtn').disabled = done;
+  $('#dcCount').textContent = 'Streak: '+(state.dailyStreak||0);
+  const streakHost = $('#dcStreak'); streakHost.innerHTML='';
+  for(let i=6;i>=0;i--){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    streakHost.appendChild(el('div','dc-day'+(state.dailyLog[key]?' hit':'')));
+  }
+}
+$('#dailyDoneBtn').addEventListener('click',()=>{
+  const key = todayKey();
+  if(state.dailyLog[key]) return;
+  state.dailyLog[key]=true;
+  const y = new Date(); y.setDate(y.getDate()-1);
+  const yKey = `${y.getFullYear()}-${y.getMonth()+1}-${y.getDate()}`;
+  state.dailyStreak = state.dailyLog[yKey] ? (state.dailyStreak||0)+1 : 1;
+  saveState(); checkAchievements(); updateTopProgress(); renderDaily();
+  toast('Streak: '+state.dailyStreak+' days');
+  if(state.dailyStreak>=3) fireConfetti();
+});
+
+/* ---------- 20. FINAL CHALLENGE ---------- */
+['Innovation','Market','Tech','Diff','Dist','Growth'].forEach(k=>{
+  const r = $('#r'+k), v = $('#v'+k);
+  r.addEventListener('input',()=>{ v.textContent = r.value; });
+});
+$('#evalFinalBtn').addEventListener('click',()=>{
+  const vals = {
+    Innovation:+$('#rInnovation').value, Market:+$('#rMarket').value, Tech:+$('#rTech').value,
+    Diff:+$('#rDiff').value, Dist:+$('#rDist').value, Growth:+$('#rGrowth').value,
+  };
+  const avg = Object.values(vals).reduce((a,b)=>a+b,0)/6;
+  let archetype, note;
+  if(vals.Diff>=7 && vals.Tech>=7){ archetype='Emerging Monopoly'; note='Strong technology and hard-to-copy differentiation — the classic shape of a defensible, durable business, provided distribution keeps pace.'; }
+  else if(vals.Market>=7 && vals.Diff<=4){ archetype='Crowded Contender'; note='A large market with weak differentiation risks becoming a price-competitive fight. Consider narrowing your first market or sharpening what makes you different.'; }
+  else if(vals.Dist<=4){ archetype='Distribution Risk'; note='The idea may have real merit, but a weak distribution plan is one of the most common reasons good products stall. Strengthen your go-to-market before scaling.'; }
+  else if(vals.Growth>=7 && vals.Tech>=6){ archetype='Scalable Niche'; note='Low marginal cost paired with real technology suggests a business that can compound efficiently once its first niche is secured.'; }
+  else { archetype='Early Concept'; note='The fundamentals are still forming. Revisit which of the six dimensions is weakest and treat that as your next research question.'; }
+  const idea = $('#finalIdea').value.trim() || 'Your concept';
+  const rows = Object.keys(vals).map(k=>`<div class="feedback-row"><span>${k}</span><span class="mono">${vals[k]}/10</span></div>`).join('');
+  $('#finalResult').innerHTML = `
+    <div class="glass ending-card">
+      <div class="eyebrow">Result</div>
+      <h2>${archetype}</h2>
+      <p style="margin-bottom:14px;">${idea} — overall strength score ${avg.toFixed(1)}/10.</p>
+      <div style="text-align:left;max-width:360px;margin:0 auto 16px;">${rows}</div>
+      <p>${note}</p>
+    </div>`;
+  if(!state.finalDone){ state.finalDone=true; saveState(); checkAchievements(); updateTopProgress(); }
+  fireConfetti();
+});
+
+/* ---------- 21. ACHIEVEMENTS ---------- */
+function checkAchievements(){
+  let unlockedNew=false;
+  ACHIEVEMENTS.forEach(a=>{
+    if(!state.unlockedAchv[a.id] && a.check(state)){
+      state.unlockedAchv[a.id]=true; unlockedNew=true;
+      toast(a.title+' unlocked!','achv');
+    }
+  });
+  if(unlockedNew){ saveState(); fireConfetti(); }
+}
+function renderAchievements(){
+  const host = $('#achvArea'); host.innerHTML='';
+  ACHIEVEMENTS.forEach(a=>{
+    const unlocked = !!state.unlockedAchv[a.id];
+    const c = el('div','achv-card glass'+(unlocked?' unlocked':''),`<div class="achv-ic">${a.ic}</div><h4 style="font-size:13.5px;">${a.title}</h4><p style="font-size:11.5px;margin-top:6px;">${a.desc}</p>`);
+    host.appendChild(c);
+  });
+}
+
+/* ---------- 22. SEARCH ---------- */
+function buildSearchIndex(){
+  const idx=[];
+  SECTIONS.forEach((s,i)=>idx.push({type:'Concept',title:s.t,text:s.big,go:()=>{showView('learn'); setTimeout(()=>{ const c=$all('.concept-card')[i]; c.scrollIntoView({behavior:'smooth',block:'center'}); c.classList.add('open'); },80);}}));
+  FLASHCARDS.forEach((f)=>idx.push({type:'Flashcard',title:f.term,text:f.def,go:()=>showView('flashcards')}));
+  QUIZ.forEach((q)=>idx.push({type:'Quiz',title:q.q,text:q.o[q.c],go:()=>showView('quiz')}));
+  return idx;
+}
+const SEARCH_INDEX = buildSearchIndex();
+$('#searchInput').addEventListener('input',(e)=>{
+  const val = e.target.value.trim().toLowerCase();
+  const host = $('#searchResults'); host.innerHTML='';
+  if(val.length<2) return;
+  const results = SEARCH_INDEX.filter(r=> r.title.toLowerCase().includes(val) || r.text.toLowerCase().includes(val)).slice(0,30);
+  if(!results.length){ host.innerHTML = '<p style="padding:10px;">No matches yet — try another word.</p>'; return; }
+  results.forEach(r=>{
+    const c = el('div','glass search-result',`<span class="badge blue" style="margin-bottom:6px;">${r.type}</span><h5>${r.title}</h5><span style="color:var(--paper-dimmer);">${r.text.slice(0,90)}${r.text.length>90?'…':''}</span>`);
+    c.addEventListener('click', r.go);
+    host.appendChild(c);
+  });
+});
+
+/* ---------- 23. SETTINGS / THEME / SOUND ---------- */
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme', state.theme);
+  $('#themeToggle').textContent = state.theme==='dark' ? '🌙' : '☀️';
+  $('#swTheme').classList.toggle('on', state.theme==='dark');
+}
+$('#themeToggle').addEventListener('click',()=>{
+  state.theme = state.theme==='dark' ? 'light' : 'dark';
+  saveState(); applyTheme();
+});
+$('#swTheme').addEventListener('click',()=>{ state.theme = state.theme==='dark'?'light':'dark'; saveState(); applyTheme(); });
+$('#soundToggle').addEventListener('click',()=>{
+  state.sound = !state.sound; saveState(); applySound(); if(state.sound) playBeep(600,0.08);
+});
+$('#swSound').addEventListener('click',()=>{ state.sound=!state.sound; saveState(); applySound(); });
+function applySound(){
+  $('#soundToggle').textContent = state.sound?'🔊':'🔇';
+  $('#swSound').classList.toggle('on', state.sound);
+}
+$('#swMotion').addEventListener('click',()=>{
+  state.reduceMotion = !state.reduceMotion; saveState();
+  $('#swMotion').classList.toggle('on', state.reduceMotion);
+});
+$('#resetBtn').addEventListener('click',()=>{
+  if(confirm('Reset all saved progress? This cannot be undone.')){
+    state = Object.assign({}, DEFAULT_STATE, {theme:state.theme, sound:state.sound});
+    saveState();
+    toast('Progress reset');
+    renderHome(); renderAchievements();
+  }
+});
+
+/* ---------- 24. INIT ---------- */
+applyTheme(); applySound();
+$('#swMotion').classList.toggle('on', state.reduceMotion);
+renderFavorites();
+showView('home');
+
+// rotate the hero 0→1 digit as a subtle signature animation
+let heroFlip=false;
+setInterval(()=>{
+  if(state.reduceMotion) return;
+  heroFlip=!heroFlip;
+  const d = $('#heroDigit');
+  if(d) d.textContent = heroFlip?'1':'0';
+}, 2600);
+
+})();
+</script>
+
+<script src="../assets/library-core.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>
