@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Millionaire Next Door — The Quiet Path to Lasting Wealth</title>
+<meta name="description" content="An interactive visual summary of The Millionaire Next Door featuring key lessons, wealth-building principles, quizzes, flashcards, calculators, and actionable insights.">
+<meta name="keywords" content="The Millionaire Next Door, book summary, wealth, financial independence, investing, frugality, budgeting, millionaire mindset, PAW, UAW, personal finance, interactive learning">
+<meta name="author" content="Engineering Project Help">
+<meta name="book:tagline" content="Discover why real millionaires build wealth through discipline, frugality, and long-term investing rather than luxury lifestyles.">
+<meta name="book:date" content="2026-07-17">
+<meta name="book:accent" content="#2E8B57">
+<meta property="og:title" content="The Millionaire Next Door | Interactive Book Summary">
+<meta property="og:description" content="Master the timeless wealth-building lessons from The Millionaire Next Door through an immersive interactive learning experience.">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --bg:#0b0f0d;
+    --bg2:#0f1512;
+    --card:#131b17;
+    --card2:#161f1a;
+    --border:rgba(46,139,87,0.25);
+    --accent:#2E8B57;
+    --accent2:#3fb87a;
+    --gold:#d4af37;
+    --text:#e8f0ea;
+    --muted:#9fb3a7;
+    --glass:rgba(255,255,255,0.04);
+    --radius:18px;
+    --shadow:0 10px 40px rgba(0,0,0,0.5);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(46,139,87,0.12), transparent 40%),
+      radial-gradient(circle at 80% 20%, rgba(212,175,55,0.08), transparent 40%),
+      var(--bg);
+    color:var(--text);
+    line-height:1.65;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:Georgia,'Times New Roman',serif;letter-spacing:.3px;}
+  a{color:inherit;text-decoration:none;}
+  .container{max-width:1100px;margin:0 auto;padding:0 24px;}
+  section{padding:90px 0;position:relative;}
+
+  /* Progress Bar */
+  #progressBar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--gold));width:0%;z-index:9999;transition:width .1s ease;}
+
+  /* Nav */
+  nav{position:sticky;top:0;z-index:1000;backdrop-filter:blur(14px);background:rgba(11,15,13,0.75);border-bottom:1px solid var(--border);}
+  .navwrap{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{font-family:Georgia,serif;font-weight:700;font-size:1.15rem;color:var(--accent2);}
+  .navlinks{display:flex;gap:22px;flex-wrap:wrap;font-size:.85rem;}
+  .navlinks a{color:var(--muted);transition:color .25s;padding:4px 0;border-bottom:1px solid transparent;}
+  .navlinks a:hover{color:var(--accent2);border-color:var(--accent2);}
+  .navToggle{display:none;background:none;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;cursor:pointer;}
+  @media (max-width:820px){
+    .navlinks{display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg2);flex-direction:column;padding:16px 24px;border-bottom:1px solid var(--border);}
+    .navlinks.open{display:flex;}
+    .navToggle{display:block;}
+  }
+
+  /* Glass card */
+  .glass{
+    background:var(--glass);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    backdrop-filter:blur(10px);
+    box-shadow:var(--shadow);
+    transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+  }
+  .glass:hover{transform:translateY(-6px);border-color:var(--accent2);box-shadow:0 16px 50px rgba(46,139,87,0.25);}
+
+  /* Reveal */
+  .reveal{opacity:0;filter:blur(6px);transform:translateY(24px);transition:opacity .8s ease, filter .8s ease, transform .8s ease;}
+  .reveal.visible{opacity:1;filter:blur(0);transform:translateY(0);}
+
+  /* Section header */
+  .section-title{font-size:2.1rem;margin-bottom:10px;background:linear-gradient(90deg,var(--text),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .section-sub{color:var(--muted);max-width:640px;margin-bottom:44px;font-size:1rem;}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:0 auto;width:60%;opacity:.5;}
+
+  /* Hero */
+  .hero{min-height:92vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;padding-top:60px;}
+  .cover{
+    width:180px;height:260px;margin:0 auto 30px;border-radius:10px;
+    background:linear-gradient(160deg,#1b2d22,#0c130f);
+    border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6), 0 0 60px rgba(46,139,87,0.15);
+    animation:float 5s ease-in-out infinite;
+    position:relative;overflow:hidden;
+  }
+  .cover::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 40%,rgba(212,175,55,0.15) 50%,transparent 60%);animation:shine 4s linear infinite;}
+  @keyframes shine{0%{transform:translateX(-100%);}100%{transform:translateX(100%);}}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .cover-text{font-family:Georgia,serif;font-size:.95rem;padding:14px;color:var(--gold);text-align:center;letter-spacing:1px;}
+  .hero h1{font-size:clamp(2rem,5vw,3.4rem);margin-bottom:14px;}
+  .hero .author{color:var(--accent2);font-size:1.1rem;margin-bottom:18px;letter-spacing:1px;}
+  .tagline{max-width:600px;margin:0 auto 34px;color:var(--muted);font-size:1.15rem;font-style:italic;}
+  .btn{
+    display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;padding:14px 34px;border-radius:50px;font-weight:600;cursor:pointer;
+    border:none;font-size:1rem;position:relative;overflow:hidden;
+    box-shadow:0 8px 24px rgba(46,139,87,0.35);
+  }
+  .btn:active{transform:scale(.97);}
+  .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.5);transform:scale(0);animation:rip .6s linear;pointer-events:none;}
+  @keyframes rip{to{transform:scale(4);opacity:0;}}
+
+  /* Grid helpers */
+  .grid{display:grid;gap:24px;}
+  .grid-2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+  .grid-3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));}
+  .grid-4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+
+  .card{padding:26px;}
+  .card h3{color:var(--accent2);margin-bottom:10px;font-size:1.1rem;}
+  .card p{color:var(--muted);font-size:.92rem;}
+
+  /* Habit cards */
+  .habit-card{padding:22px;cursor:pointer;position:relative;}
+  .habit-card .front{display:flex;align-items:center;gap:12px;font-weight:600;}
+  .habit-card .back{max-height:0;overflow:hidden;transition:max-height .4s ease, margin-top .4s ease;color:var(--muted);font-size:.9rem;}
+  .habit-card.open .back{max-height:200px;margin-top:12px;}
+  .check{color:var(--gold);font-size:1.3rem;}
+
+  /* Table */
+  .table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);}
+  table{width:100%;border-collapse:collapse;min-width:600px;}
+  th,td{padding:14px 18px;text-align:left;border-bottom:1px solid var(--border);font-size:.92rem;}
+  th{background:rgba(46,139,87,0.15);color:var(--accent2);position:sticky;top:0;}
+  tr:hover td{background:rgba(255,255,255,0.03);}
+  .paw{color:var(--accent2);font-weight:600;}
+  .uaw{color:#d47070;font-weight:600;}
+
+  /* Timeline */
+  .timeline{display:flex;flex-direction:column;gap:0;position:relative;max-width:520px;margin:0 auto;}
+  .tl-item{display:flex;gap:20px;align-items:flex-start;position:relative;padding-bottom:44px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-dot{min-width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 0 20px rgba(46,139,87,0.5);z-index:2;}
+  .tl-item:not(:last-child)::after{content:"";position:absolute;left:21px;top:44px;width:2px;height:calc(100% - 44px);background:linear-gradient(var(--accent),transparent);}
+  .tl-content h4{color:var(--accent2);margin-bottom:4px;}
+  .tl-content p{color:var(--muted);font-size:.88rem;}
+
+  /* Accordion */
+  .accordion-item{border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;background:var(--card);}
+  .accordion-head{padding:18px 22px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;}
+  .accordion-head span.icon{transition:transform .3s;color:var(--accent2);}
+  .accordion-item.open .icon{transform:rotate(45deg);}
+  .accordion-body{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 22px;color:var(--muted);font-size:.92rem;}
+  .accordion-item.open .accordion-body{max-height:200px;padding:0 22px 20px;}
+
+  /* Flip cards */
+  .flip-outer{perspective:1000px;height:170px;cursor:pointer;}
+  .flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;}
+  .flip-outer.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-face{position:absolute;inset:0;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;backface-visibility:hidden;padding:16px;border:1px solid var(--border);}
+  .flip-front{background:linear-gradient(160deg,var(--card),var(--card2));color:#d47070;font-weight:700;}
+  .flip-back{background:linear-gradient(160deg,#122016,#0d1712);transform:rotateY(180deg);color:var(--accent2);font-size:.85rem;}
+
+  /* Quiz */
+  .quiz-box{padding:30px;}
+  .quiz-progress{color:var(--muted);font-size:.85rem;margin-bottom:10px;}
+  .quiz-question{font-size:1.15rem;margin-bottom:20px;color:var(--text);}
+  .quiz-options{display:flex;flex-direction:column;gap:10px;}
+  .quiz-opt{padding:14px 18px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:.25s;background:rgba(255,255,255,0.02);}
+  .quiz-opt:hover{border-color:var(--accent2);}
+  .quiz-opt.correct{background:rgba(46,139,87,0.25);border-color:var(--accent2);}
+  .quiz-opt.wrong{background:rgba(212,80,80,0.2);border-color:#d47070;}
+  .quiz-nav{display:flex;justify-content:space-between;margin-top:24px;}
+  .quiz-result{text-align:center;}
+  .score-circle{width:140px;height:140px;border-radius:50%;border:6px solid var(--accent2);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:20px auto;box-shadow:0 0 40px rgba(46,139,87,0.4);}
+
+  /* Calculator */
+  .calc-box{padding:34px;}
+  .calc-field{margin-bottom:18px;}
+  .calc-field label{display:block;margin-bottom:8px;color:var(--muted);font-size:.88rem;}
+  .calc-field input{width:100%;padding:12px 16px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text);font-size:1rem;}
+  .calc-result{margin-top:20px;padding:20px;border-radius:14px;background:rgba(46,139,87,0.1);border:1px solid var(--border);}
+  .calc-rate{font-size:2.2rem;color:var(--accent2);font-weight:700;}
+
+  /* Quotes carousel */
+  .quote-box{text-align:center;max-width:700px;margin:0 auto;min-height:140px;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+  .quote-text{font-size:1.4rem;font-family:Georgia,serif;font-style:italic;color:var(--text);margin-bottom:14px;transition:opacity .4s;}
+  .quote-dots{display:flex;gap:8px;justify-content:center;margin-top:20px;}
+  .qdot{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:.3s;}
+  .qdot.active{background:var(--accent2);width:22px;border-radius:5px;}
+
+  /* Flashcards */
+  .flash-outer{perspective:1000px;height:150px;cursor:pointer;}
+  .flash-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;}
+  .flash-outer.flipped .flash-inner{transform:rotateY(180deg);}
+  .flash-face{position:absolute;inset:0;border-radius:16px;display:flex;align-items:center;justify-content:center;text-align:center;backface-visibility:hidden;padding:14px;border:1px solid var(--border);font-weight:600;}
+  .flash-front{background:linear-gradient(160deg,var(--card),var(--card2));color:var(--gold);}
+  .flash-back{background:linear-gradient(160deg,#122016,#0d1712);transform:rotateY(180deg);color:var(--muted);font-size:.85rem;font-weight:400;}
+
+  /* Challenge */
+  .challenge-list{display:flex;flex-direction:column;gap:12px;}
+  .challenge-item{display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:12px;background:var(--card);border:1px solid var(--border);cursor:pointer;transition:.25s;}
+  .challenge-item.done{border-color:var(--accent2);background:rgba(46,139,87,0.12);}
+  .challenge-item .box{width:22px;height:22px;border-radius:6px;border:2px solid var(--accent2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .challenge-item.done .box{background:var(--accent2);}
+  .challenge-item.done span.label{text-decoration:line-through;color:var(--muted);}
+  #challengeProgress{margin-top:16px;color:var(--muted);font-size:.9rem;}
+
+  footer{text-align:center;padding:60px 24px;color:var(--muted);border-top:1px solid var(--border);font-size:.85rem;}
+
+  #backToTop{position:fixed;bottom:26px;right:26px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;font-size:1.2rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:.3s;z-index:900;}
+  #backToTop.show{opacity:1;pointer-events:auto;}
+
+  .final-quote{font-family:Georgia,serif;font-size:1.5rem;text-align:center;font-style:italic;color:var(--accent2);max-width:700px;margin:0 auto;}
+</style>
+</head>
+<body>
+
+<div id="progressBar"></div>
+
+<nav>
+  <div class="navwrap">
+    <div class="brand">The Millionaire Next Door</div>
+    <button class="navToggle" id="navToggle">☰</button>
+    <div class="navlinks" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#philosophy">Philosophy</a>
+      <a href="#habits">Habits</a>
+      <a href="#pawuaw">PAW vs UAW</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#principles">Principles</a>
+      <a href="#mistakes">Mistakes</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#calculator">Calculator</a>
+      <a href="#flashcards">Flashcards</a>
+      <a href="#challenge">Challenge</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="cover"><div class="cover-text">THE<br>MILLIONAIRE<br>NEXT DOOR</div></div>
+    <h1>The Millionaire Next Door</h1>
+    <div class="author">Thomas J. Stanley &amp; William D. Danko</div>
+    <p class="tagline">"Wealth is not about how much you make. It's about how much you keep."</p>
+    <button class="btn" onclick="rippleEffect(event); scrollToId('about')">Start Learning</button>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <h2 class="section-title reveal">About the Book</h2>
+    <p class="section-sub reveal">A groundbreaking study that shattered popular assumptions about who millionaires really are — and how they actually got there.</p>
+    <div class="grid grid-3">
+      <div class="glass card reveal">
+        <h3>What It Teaches</h3>
+        <p>Real wealth is built quietly through frugality, disciplined saving, and consistent investing — not through high income or visible luxury. Most millionaires live well below their means.</p>
+      </div>
+      <div class="glass card reveal">
+        <h3>Why It Matters</h3>
+        <p>Based on decades of research into actual millionaire households, the book overturned the myth that wealth equals flashy spending, revealing that most self-made millionaires are ordinary, unassuming people.</p>
+      </div>
+      <div class="glass card reveal">
+        <h3>Who Should Read It</h3>
+        <p>Anyone who wants to build lasting financial independence — young professionals, families, entrepreneurs, and anyone tired of chasing the appearance of wealth instead of the substance of it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section id="philosophy">
+  <div class="container">
+    <h2 class="section-title reveal">Core Philosophy</h2>
+    <p class="section-sub reveal">Five ideas that form the backbone of the entire book.</p>
+    <div class="grid grid-2">
+      <div class="glass card reveal"><h3>Wealth Is What You Don't See</h3><p>True wealth isn't the car in the driveway or the watch on your wrist — it's the accumulated assets that never get spent. The wealthy often look ordinary precisely because they aren't broadcasting their net worth.</p></div>
+      <div class="glass card reveal"><h3>Live Below Your Means</h3><p>Millionaires consistently spend far less than they earn, prioritizing long-term security over short-term status. This single habit compounds into extraordinary financial freedom over decades.</p></div>
+      <div class="glass card reveal"><h3>Financial Independence</h3><p>The ultimate goal isn't a big paycheck — it's having enough accumulated wealth that work becomes optional, not mandatory.</p></div>
+      <div class="glass card reveal"><h3>Delayed Gratification</h3><p>Choosing future security over present indulgence is the defining trait separating wealth builders from those who merely appear wealthy.</p></div>
+      <div class="glass card reveal"><h3>Building Net Worth</h3><p>Every financial decision should be measured against one question: does this grow or shrink my net worth over time?</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HABITS -->
+<section id="habits">
+  <div class="container">
+    <h2 class="section-title reveal">Interactive Habit Cards</h2>
+    <p class="section-sub reveal">Tap each card to reveal the lesson behind the habit.</p>
+    <div class="grid grid-4" id="habitGrid"></div>
+  </div>
+</section>
+
+<!-- PAW VS UAW -->
+<section id="pawuaw">
+  <div class="container">
+    <h2 class="section-title reveal">PAW vs UAW</h2>
+    <p class="section-sub reveal">Prodigious Accumulators of Wealth build fortunes quietly. Under Accumulators of Wealth spend theirs away — regardless of income.</p>
+    <div class="table-wrap reveal">
+      <table>
+        <thead><tr><th>Dimension</th><th class="paw">PAW</th><th class="uaw">UAW</th></tr></thead>
+        <tbody>
+          <tr><td>Income</td><td class="paw">Often average to high</td><td class="uaw">Often high but irrelevant</td></tr>
+          <tr><td>Lifestyle</td><td class="paw">Modest, unassuming</td><td class="uaw">Flashy, status-driven</td></tr>
+          <tr><td>Savings</td><td class="paw">Consistent, disciplined</td><td class="uaw">Minimal or none</td></tr>
+          <tr><td>Investments</td><td class="paw">Regular, long-term</td><td class="uaw">Rare or speculative</td></tr>
+          <tr><td>Net Worth</td><td class="paw">Grows steadily</td><td class="uaw">Stagnant or negative</td></tr>
+          <tr><td>Mindset</td><td class="paw">Long-term security</td><td class="uaw">Immediate gratification</td></tr>
+          <tr><td>Habits</td><td class="paw">Budgeting, frugality</td><td class="uaw">Overspending, debt</td></tr>
+          <tr><td>Financial Future</td><td class="paw">Independent, secure</td><td class="uaw">Dependent, at risk</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="container">
+    <h2 class="section-title reveal">Wealth Building Roadmap</h2>
+    <p class="section-sub reveal">The compounding path every accumulator follows.</p>
+    <div class="timeline" id="timelineList"></div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section id="principles">
+  <div class="container">
+    <h2 class="section-title reveal">Key Principles</h2>
+    <p class="section-sub reveal">Click each principle to expand.</p>
+    <div id="accordionList"></div>
+  </div>
+</section>
+
+<!-- MISTAKES -->
+<section id="mistakes">
+  <div class="container">
+    <h2 class="section-title reveal">Common Money Mistakes</h2>
+    <p class="section-sub reveal">Flip each card to see the fix.</p>
+    <div class="grid grid-3" id="mistakeGrid"></div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="container">
+    <h2 class="section-title reveal">Millionaire Mindset Quiz</h2>
+    <p class="section-sub reveal">Test how well you've absorbed the book's core lessons.</p>
+    <div class="glass quiz-box reveal" id="quizBox"></div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section id="calculator">
+  <div class="container">
+    <h2 class="section-title reveal">Wealth Calculator</h2>
+    <p class="section-sub reveal">See how your savings rate stacks up against wealth-building benchmarks.</p>
+    <div class="glass calc-box reveal" style="max-width:480px;margin:0 auto;">
+      <div class="calc-field"><label>Monthly Income</label><input type="number" id="income" placeholder="e.g. 80000"></div>
+      <div class="calc-field"><label>Monthly Expenses</label><input type="number" id="expenses" placeholder="e.g. 50000"></div>
+      <button class="btn" style="width:100%;" onclick="rippleEffect(event); calcWealth()">Calculate</button>
+      <div class="calc-result" id="calcResult" style="display:none;">
+        <div>Monthly Savings: <strong id="savedAmt"></strong></div>
+        <div class="calc-rate" id="savingsRate"></div>
+        <div id="calcFeedback" style="color:var(--muted);margin-top:8px;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTES -->
+<section id="quotes">
+  <div class="container">
+    <h2 class="section-title reveal">Quotes to Remember</h2>
+    <div class="glass quote-box reveal" style="padding:40px;">
+      <div class="quote-text" id="quoteText"></div>
+      <div class="quote-dots" id="quoteDots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FLASHCARDS -->
+<section id="flashcards">
+  <div class="container">
+    <h2 class="section-title reveal">Flashcards</h2>
+    <p class="section-sub reveal">Tap to reveal the definition. Great for quick revision.</p>
+    <div class="grid grid-4" id="flashGrid"></div>
+  </div>
+</section>
+
+<!-- CHALLENGE -->
+<section id="challenge">
+  <div class="container">
+    <h2 class="section-title reveal">30-Day Wealth Challenge</h2>
+    <p class="section-sub reveal">Check off each habit as you build it. Progress is saved on this device.</p>
+    <div class="challenge-list reveal" id="challengeList"></div>
+    <div id="challengeProgress" class="reveal"></div>
+  </div>
+</section>
+
+<!-- TAKEAWAYS -->
+<section id="takeaways">
+  <div class="container">
+    <h2 class="section-title reveal">Key Takeaways</h2>
+    <div class="grid grid-3">
+      <div class="glass card reveal"><h3>Look Rich vs Be Rich</h3><p>Choose actual net worth over the appearance of wealth. The two are rarely the same person.</p></div>
+      <div class="glass card reveal"><h3>Consistency Compounds</h3><p>Small, boring, repeated financial habits outperform occasional big financial moves.</p></div>
+      <div class="glass card reveal"><h3>Freedom Over Flash</h3><p>Financial independence gives you options; luxury spending gives you obligations.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL SUMMARY -->
+<section id="summary">
+  <div class="container" style="text-align:center;">
+    <div class="divider reveal" style="margin-bottom:40px;"></div>
+    <h2 class="section-title reveal" style="margin:0 auto 24px;">Final Summary</h2>
+    <p class="final-quote reveal">Wealth is built in silence — through daily discipline, patient investing, and the quiet refusal to spend for show. The millionaire next door isn't lucky. They're consistent.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Part of The Reading Room collection — Interactive Book Companion</p>
+</footer>
+
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+/* ---------- Navigation ---------- */
+document.getElementById('navToggle').addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('.navlinks a').forEach(a=>a.addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.remove('open');
+}));
+function scrollToId(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+
+/* ---------- Progress Bar & Back to top ---------- */
+window.addEventListener('scroll',()=>{
+  const h = document.documentElement;
+  const pct = (h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progressBar').style.width = pct+'%';
+  document.getElementById('backToTop').classList.toggle('show', h.scrollTop>500);
+});
+
+/* ---------- Reveal on scroll ---------- */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); } });
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- Ripple ---------- */
+function rippleEffect(e){
+  const btn = e.currentTarget;
+  const circle = document.createElement('span');
+  const d = Math.max(btn.clientWidth, btn.clientHeight);
+  circle.style.width = circle.style.height = d+'px';
+  circle.style.left = (e.clientX - btn.getBoundingClientRect().left - d/2)+'px';
+  circle.style.top = (e.clientY - btn.getBoundingClientRect().top - d/2)+'px';
+  circle.classList.add('ripple');
+  btn.appendChild(circle);
+  setTimeout(()=>circle.remove(),600);
+}
+document.querySelectorAll('.btn').forEach(b=>{ if(!b.hasAttribute('onclick')) b.addEventListener('click', rippleEffect); });
+
+/* ---------- Habit Cards ---------- */
+const habits = [
+  {t:"Spend less than you earn", d:"The single most consistent trait among self-made millionaires — a persistent gap between income and expenses."},
+  {t:"Invest consistently", d:"Regular investing, regardless of market mood, is how ordinary income turns into extraordinary net worth."},
+  {t:"Avoid lifestyle inflation", d:"As income rises, PAWs keep spending flat, redirecting the surplus toward assets instead of upgrades."},
+  {t:"Budget everything", d:"Detailed awareness of where money goes is a defining habit of every wealth accumulator studied."},
+  {t:"Buy assets first", d:"Pay yourself first — investments and savings come before discretionary spending, not after."},
+  {t:"Avoid status spending", d:"Luxury goods purchased to impress others rarely build wealth; they usually drain it."},
+  {t:"Think long-term", d:"Decisions are evaluated over decades, not weeks — patience is treated as a financial strategy."},
+  {t:"Build financial freedom", d:"The end goal isn't a bigger house — it's the ability to make choices without financial constraint."}
+];
+const habitGrid = document.getElementById('habitGrid');
+habits.forEach(h=>{
+  const el = document.createElement('div');
+  el.className='glass habit-card reveal';
+  el.innerHTML = `<div class="front"><span class="check">✓</span> ${h.t}</div><div class="back">${h.d}</div>`;
+  el.addEventListener('click',()=>el.classList.toggle('open'));
+  habitGrid.appendChild(el);
+  io.observe(el);
+});
+
+/* ---------- Timeline ---------- */
+const roadmap = [
+  {t:"Earn", d:"Generate stable income through work, business, or a career."},
+  {t:"Save", d:"Set aside a disciplined portion before any discretionary spending."},
+  {t:"Invest", d:"Put savings to work in assets that grow over time."},
+  {t:"Compound", d:"Let returns generate their own returns, year after year."},
+  {t:"Grow Assets", d:"Reinvest and diversify as net worth steadily expands."},
+  {t:"Financial Freedom", d:"Reach the point where work becomes a choice, not a necessity."}
+];
+const tl = document.getElementById('timelineList');
+roadmap.forEach((r,i)=>{
+  const el = document.createElement('div');
+  el.className='tl-item reveal';
+  el.innerHTML = `<div class="tl-dot">${i+1}</div><div class="tl-content"><h4>${r.t}</h4><p>${r.d}</p></div>`;
+  tl.appendChild(el);
+  io.observe(el);
+});
+
+/* ---------- Accordion ---------- */
+const principles = [
+  {t:"Frugality", d:"Living well within your means, not below your dignity — the foundation of every accumulator's habits."},
+  {t:"Budgeting", d:"Tracking income and expenses meticulously so every rupee has a purpose."},
+  {t:"Investing", d:"Putting money into productive assets consistently, regardless of short-term market noise."},
+  {t:"Discipline", d:"Sticking to financial plans even when social pressure pushes toward spending."},
+  {t:"Entrepreneurship", d:"Many PAWs build wealth by owning businesses rather than relying solely on salaries."},
+  {t:"Delayed Gratification", d:"Choosing long-term security over the instant reward of a purchase."},
+  {t:"Financial Planning", d:"Setting concrete goals and mapping the savings and investment steps to reach them."}
+];
+const accList = document.getElementById('accordionList');
+principles.forEach(p=>{
+  const el = document.createElement('div');
+  el.className='accordion-item reveal';
+  el.innerHTML = `<div class="accordion-head">${p.t}<span class="icon">+</span></div><div class="accordion-body">${p.d}</div>`;
+  el.querySelector('.accordion-head').addEventListener('click',()=>el.classList.toggle('open'));
+  accList.appendChild(el);
+  io.observe(el);
+});
+
+/* ---------- Mistake Flip Cards ---------- */
+const mistakes = [
+  {t:"Overspending", s:"Fix: Track every expense and set firm monthly caps per category."},
+  {t:"Luxury Addiction", s:"Fix: Separate self-worth from possessions; buy for utility, not status."},
+  {t:"Debt", s:"Fix: Prioritize paying down high-interest debt before any new spending."},
+  {t:"Lifestyle Inflation", s:"Fix: Bank raises and bonuses instead of upgrading your lifestyle."},
+  {t:"Ignoring Investments", s:"Fix: Automate monthly investing so it happens before you can spend it."},
+  {t:"Paycheck to Paycheck", s:"Fix: Build a small emergency fund first, then grow it steadily."}
+];
+const mGrid = document.getElementById('mistakeGrid');
+mistakes.forEach(m=>{
+  const el = document.createElement('div');
+  el.className='flip-outer reveal';
+  el.innerHTML = `<div class="flip-inner">
+    <div class="flip-face flip-front">${m.t}</div>
+    <div class="flip-face flip-back">${m.s}</div>
+  </div>`;
+  el.addEventListener('click',()=>el.classList.toggle('flipped'));
+  mGrid.appendChild(el);
+  io.observe(el);
+});
+
+/* ---------- Quiz ---------- */
+const quizData = [
+  {q:"According to the book, wealth is best defined as:", o:["What you spend","What you don't see","Your salary","Your job title"], a:1},
+  {q:"What does PAW stand for?", o:["Personal Asset Wallet","Prodigious Accumulator of Wealth","Planned Annual Withdrawal","Passive Asset Wealth"], a:1},
+  {q:"UAWs typically:", o:["Save aggressively","Spend more than they accumulate relative to income","Avoid all debt","Invest early"], a:1},
+  {q:"The book's central message about looking rich is:", o:["It guarantees wealth","It's the same as being wealthy","It often hides low net worth","It's required for success"], a:2},
+  {q:"A key habit of wealth builders is:", o:["Living below their means","Buying luxury cars","Avoiding budgets","Spending bonuses immediately"], a:0},
+  {q:"Compounding works best with:", o:["Short-term trading","Consistent long-term investing","Frequent withdrawals","High spending"], a:1},
+  {q:"Delayed gratification means:", o:["Spending now, saving later","Choosing future benefit over present indulgence","Avoiding all spending forever","Ignoring financial goals"], a:1},
+  {q:"Net worth grows fastest when you:", o:["Increase spending with income","Keep expenses flat as income rises","Take on more debt","Buy status items"], a:1},
+  {q:"Budgeting is important because it:", o:["Restricts all fun","Reveals where money actually goes","Is only for low earners","Guarantees riches instantly"], a:1},
+  {q:"Financial independence primarily means:", o:["Having a large paycheck","Owning many possessions","Not needing to work for income","Having no savings"], a:2},
+  {q:"Many PAWs build wealth through:", o:["Business ownership and steady investing","Winning the lottery","Renting everything","Frequent luxury upgrades"], a:0},
+  {q:"Status spending typically:", o:["Builds long-term wealth","Signals wealth without building it","Is required for financial success","Increases net worth"], a:1}
+];
+let qIndex=0, qScore=0, qAnswered=false;
+const quizBox = document.getElementById('quizBox');
+function renderQuiz(){
+  if(qIndex>=quizData.length){ renderQuizResult(); return; }
+  qAnswered=false;
+  const item = quizData[qIndex];
+  quizBox.innerHTML = `
+    <div class="quiz-progress">Question ${qIndex+1} of ${quizData.length}</div>
+    <div class="quiz-question">${item.q}</div>
+    <div class="quiz-options">${item.o.map((opt,i)=>`<div class="quiz-opt" data-i="${i}">${opt}</div>`).join('')}</div>
+    <div class="quiz-nav"><span></span><button class="btn" id="nextBtn" style="opacity:.5;pointer-events:none;">Next</button></div>
+  `;
+  quizBox.querySelectorAll('.quiz-opt').forEach(opt=>{
+    opt.addEventListener('click',()=>{
+      if(qAnswered) return;
+      qAnswered=true;
+      const i = parseInt(opt.dataset.i);
+      quizBox.querySelectorAll('.quiz-opt').forEach(o=>{
+        const oi = parseInt(o.dataset.i);
+        if(oi===item.a) o.classList.add('correct');
+        else if(oi===i) o.classList.add('wrong');
+      });
+      if(i===item.a) qScore++;
+      const nb = document.getElementById('nextBtn');
+      nb.style.opacity=1; nb.style.pointerEvents='auto';
+    });
+  });
+  document.getElementById('nextBtn').addEventListener('click',(e)=>{
+    rippleEffect(e);
+    qIndex++;
+    renderQuiz();
+  });
+}
+function renderQuizResult(){
+  quizBox.innerHTML = `
+    <div class="quiz-result">
+      <h3>Quiz Complete!</h3>
+      <div class="score-circle">${qScore}/${quizData.length}</div>
+      <p style="color:var(--muted);margin-bottom:20px;">${qScore>=quizData.length*0.7 ? "Excellent! You've internalized the millionaire mindset." : "Good effort — revisit the sections above to sharpen your understanding."}</p>
+      <button class="btn" id="restartBtn">Restart Quiz</button>
+    </div>`;
+  document.getElementById('restartBtn').addEventListener('click',(e)=>{
+    rippleEffect(e);
+    qIndex=0; qScore=0; renderQuiz();
+  });
+}
+renderQuiz();
+
+/* ---------- Calculator ---------- */
+function calcWealth(){
+  const inc = parseFloat(document.getElementById('income').value)||0;
+  const exp = parseFloat(document.getElementById('expenses').value)||0;
+  const saved = inc-exp;
+  const rate = inc>0 ? (saved/inc*100) : 0;
+  document.getElementById('calcResult').style.display='block';
+  document.getElementById('savedAmt').textContent = saved.toLocaleString();
+  document.getElementById('savingsRate').textContent = rate.toFixed(1)+'%';
+  let fb;
+  if(rate<0) fb="You're spending more than you earn — this is the fastest path away from wealth. Start by cutting expenses.";
+  else if(rate<10) fb="A modest start. Millionaires in the book typically save well above this rate — aim higher.";
+  else if(rate<20) fb="A solid savings rate. Keep this consistent and your net worth will grow steadily.";
+  else if(rate<35) fb="Strong PAW-level behavior. You're building wealth faster than most.";
+  else fb="Exceptional discipline — this is the savings rate of a true wealth accumulator.";
+  document.getElementById('calcFeedback').textContent = fb;
+}
+
+/* ---------- Quotes Carousel ---------- */
+const quotes = [
+  "Wealth is what you accumulate, not what you spend.",
+  "Being rich and looking rich are not the same.",
+  "Financial independence is more valuable than displaying wealth.",
+  "Whatever your income, always live below your means.",
+  "Time, energy, and money should be allocated toward things that build wealth."
+];
+let qi=0;
+const quoteText = document.getElementById('quoteText');
+const quoteDots = document.getElementById('quoteDots');
+quotes.forEach((q,i)=>{
+  const d = document.createElement('div');
+  d.className='qdot'+(i===0?' active':'');
+  d.addEventListener('click',()=>{qi=i; showQuote();});
+  quoteDots.appendChild(d);
+});
+function showQuote(){
+  quoteText.style.opacity=0;
+  setTimeout(()=>{
+    quoteText.textContent = '"'+quotes[qi]+'"';
+    quoteText.style.opacity=1;
+    document.querySelectorAll('.qdot').forEach((d,i)=>d.classList.toggle('active', i===qi));
+  },300);
+}
+showQuote();
+setInterval(()=>{ qi=(qi+1)%quotes.length; showQuote(); }, 4500);
+
+/* ---------- Flashcards ---------- */
+const flashcards = [
+  {t:"PAW", d:"Prodigious Accumulator of Wealth — someone whose net worth greatly exceeds what's expected for their income."},
+  {t:"UAW", d:"Under Accumulator of Wealth — someone whose net worth is far lower than expected given their income."},
+  {t:"Net Worth", d:"Total assets minus total liabilities — the truest measure of financial standing."},
+  {t:"Assets", d:"Things you own that hold or grow value: investments, property, businesses."},
+  {t:"Liabilities", d:"Debts and obligations that drain your net worth: loans, credit card balances."},
+  {t:"Frugality", d:"Deliberately spending less than you could, to preserve resources for long-term goals."},
+  {t:"Compound Growth", d:"Growth generated by reinvesting returns, so gains themselves start earning gains."},
+  {t:"Lifestyle Inflation", d:"Increasing spending as income rises, which quietly erodes wealth-building potential."},
+  {t:"Delayed Gratification", d:"Postponing a present reward for a larger future benefit."},
+  {t:"Financial Independence", d:"Having enough accumulated wealth that working for income becomes optional."}
+];
+const flashGrid = document.getElementById('flashGrid');
+flashcards.forEach(f=>{
+  const el = document.createElement('div');
+  el.className='flash-outer reveal';
+  el.innerHTML = `<div class="flash-inner">
+    <div class="flash-face flash-front">${f.t}</div>
+    <div class="flash-face flash-back">${f.d}</div>
+  </div>`;
+  el.addEventListener('click',()=>el.classList.toggle('flipped'));
+  flashGrid.appendChild(el);
+  io.observe(el);
+});
+
+/* ---------- 30-Day Challenge ---------- */
+const challengeItems = [
+  "Track every expense for a full day",
+  "Save a portion of income before spending",
+  "Read one chapter about investing basics",
+  "Avoid one impulse purchase",
+  "Review your monthly budget",
+  "Calculate your current net worth",
+  "Cancel one unused subscription",
+  "Research one low-cost index fund",
+  "Set one 12-month savings goal",
+  "Avoid eating out for 3 days straight",
+  "Compare prices before a purchase over ₹1000",
+  "List 3 status purchases you regret",
+  "Automate one recurring investment",
+  "Write down your long-term financial goal"
+];
+const STORAGE_KEY = 'millionaire_next_door_challenge';
+function loadChallengeState(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }catch(e){ return {}; }
+}
+function saveChallengeState(state){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+const challengeList = document.getElementById('challengeList');
+let challengeState = loadChallengeState();
+function renderChallenge(){
+  challengeList.innerHTML='';
+  let doneCount=0;
+  challengeItems.forEach((item,i)=>{
+    const done = !!challengeState[i];
+    if(done) doneCount++;
+    const el = document.createElement('div');
+    el.className='challenge-item'+(done?' done':'');
+    el.innerHTML = `<div class="box">${done?'✓':''}</div><span class="label">${item}</span>`;
+    el.addEventListener('click',()=>{
+      challengeState[i] = !challengeState[i];
+      saveChallengeState(challengeState);
+      renderChallenge();
+    });
+    challengeList.appendChild(el);
+  });
+  document.getElementById('challengeProgress').textContent = `${doneCount} of ${challengeItems.length} habits completed`;
+}
+renderChallenge();
+</script>
+
+<script src="../assets/library-core.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>
