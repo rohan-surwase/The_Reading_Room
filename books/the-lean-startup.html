@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lean Startup — Build, Measure, Learn</title>
+<meta name="book:tagline" content="Learn how to build successful products through rapid experimentation, customer feedback, and continuous innovation.">
+<meta name="book:date" content="2026-07-17">
+<meta name="book:accent" content="#27AE60">
+<style>
+  /* ============================= TOKENS ============================= */
+  :root{
+    --bg-0:#080b0c;
+    --bg-1:#0d1512;
+    --bg-2:#0f1a16;
+    --ink-0:#eef6f0;
+    --ink-1:#b9c9c0;
+    --ink-2:#7d9186;
+    --accent:#27AE60;
+    --accent-2:#5bd88a;
+    --gold:#e8b44c;
+    --glass:rgba(255,255,255,0.045);
+    --glass-brd:rgba(120,255,180,0.14);
+    --glass-brd-strong:rgba(120,255,180,0.32);
+    --shadow-1: 0 20px 60px -20px rgba(0,0,0,0.65);
+    --radius-lg:26px;
+    --radius-md:18px;
+    --radius-sm:12px;
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: 'SF Mono', 'Consolas', 'Menlo', monospace;
+    --ease: cubic-bezier(.22,1,.36,1);
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+  }
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 700px at 12% -8%, rgba(39,174,96,0.16), transparent 60%),
+      radial-gradient(900px 600px at 100% 8%, rgba(232,180,76,0.08), transparent 55%),
+      linear-gradient(180deg, var(--bg-0), var(--bg-1) 40%, var(--bg-2));
+    color:var(--ink-0);
+    font-family:var(--sans);
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{ font-family:var(--serif); font-weight:600; letter-spacing:-0.01em; margin:0; }
+  p{ margin:0; }
+  a{ color:inherit; }
+  button{ font-family:var(--sans); cursor:pointer; }
+  ::selection{ background:rgba(39,174,96,0.35); }
+  :focus-visible{ outline:2px solid var(--accent-2); outline-offset:3px; border-radius:6px; }
+
+  /* ============================= UTILITY / REUSED ANIMATION CLASSES ============================= */
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  .float{ animation:floatY 6s ease-in-out infinite; }
+  .float.delay1{ animation-delay:1.2s; }
+  .float.delay2{ animation-delay:2.4s; }
+  @keyframes floatY{ 0%,100%{ transform:translateY(0px);} 50%{ transform:translateY(-14px);} }
+  .glow-pulse{ animation:glowPulse 3.4s ease-in-out infinite; }
+  @keyframes glowPulse{ 0%,100%{ box-shadow:0 0 0 rgba(39,174,96,0);} 50%{ box-shadow:0 0 40px rgba(39,174,96,0.35);} }
+  .spin-slow{ animation:spin 18s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg);} }
+  .fade-in{ animation:fadeIn .5s var(--ease) both; }
+  @keyframes fadeIn{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:translateY(0);} }
+  .pop{ animation:pop .45s var(--ease) both; }
+  @keyframes pop{ 0%{ transform:scale(.85); opacity:0;} 100%{ transform:scale(1); opacity:1;} }
+  .shimmer{ position:relative; overflow:hidden; }
+  .shimmer::after{ content:""; position:absolute; inset:0; background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%); background-size:200% 100%; animation:shimmerMove 3.2s linear infinite; }
+  @keyframes shimmerMove{ from{ background-position:200% 0;} to{ background-position:-200% 0;} }
+
+  .glass{
+    background:var(--glass);
+    border:1px solid var(--glass-brd);
+    border-radius:var(--radius-md);
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    box-shadow:var(--shadow-1);
+  }
+  .glass:hover{ border-color:var(--glass-brd-strong); }
+  .card{
+    padding:26px;
+    transition:transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
+  }
+  .card:hover{ transform:translateY(-6px); }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:14px 26px;
+    border-radius:100px;
+    border:1px solid var(--glass-brd-strong);
+    background:linear-gradient(135deg, rgba(39,174,96,0.9), rgba(45,120,90,0.65));
+    color:#eafff1;
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:.01em;
+    position:relative;
+    overflow:hidden;
+    transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+    min-height:48px;
+  }
+  .btn:hover{ transform:translateY(-3px); box-shadow:0 14px 30px -10px rgba(39,174,96,0.55); }
+  .btn:active{ transform:translateY(0); }
+  .btn.ghost{ background:rgba(255,255,255,0.03); color:var(--ink-0); border-color:var(--glass-brd); }
+  .btn.small{ padding:9px 18px; font-size:13px; min-height:38px; }
+  .btn .ripple{ position:absolute; border-radius:50%; background:rgba(255,255,255,0.55); transform:scale(0); animation:rippleAnim .6s ease-out forwards; pointer-events:none; }
+  @keyframes rippleAnim{ to{ transform:scale(3.2); opacity:0; } }
+
+  .eyebrow{ text-transform:uppercase; letter-spacing:.22em; font-size:12px; color:var(--accent-2); font-weight:700; }
+  .section{ max-width:1120px; margin:0 auto; padding:120px 24px; position:relative; }
+  .section-head{ margin-bottom:52px; max-width:680px; }
+  .section-head h2{ font-size:clamp(28px,4vw,42px); margin-top:10px; }
+  .section-head .sub{ color:var(--ink-1); margin-top:14px; font-size:16px; }
+  .grid{ display:grid; gap:20px; }
+  .grid-2{ grid-template-columns:repeat(2,1fr); }
+  .grid-3{ grid-template-columns:repeat(3,1fr); }
+  .grid-4{ grid-template-columns:repeat(4,1fr); }
+  @media (max-width:900px){ .grid-2,.grid-3,.grid-4{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:600px){ .grid-2,.grid-3,.grid-4{ grid-template-columns:1fr; } }
+
+  /* ============================= PARTICLES / BACKDROP ============================= */
+  #particles{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+  .particle{ position:absolute; border-radius:50%; background:radial-gradient(circle at 30% 30%, rgba(120,255,180,0.9), rgba(39,174,96,0.05)); opacity:.35; filter:blur(0.5px); animation:driftUp linear infinite; }
+  @keyframes driftUp{ from{ transform:translateY(110vh) translateX(0);} to{ transform:translateY(-10vh) translateX(40px);} }
+
+  /* ============================= PROGRESS BAR / NAV ============================= */
+  #progressBar{ position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--accent),var(--gold)); width:0%; z-index:1000; transition:width .1s linear; box-shadow:0 0 12px rgba(39,174,96,0.7); }
+  header.nav{
+    position:sticky; top:0; z-index:900;
+    display:flex; align-items:center; gap:14px;
+    flex-wrap:nowrap;
+    padding:10px 16px;
+    background:rgba(8,11,12,0.7);
+    backdrop-filter:blur(16px) saturate(160%);
+    border-bottom:1px solid var(--glass-brd);
+    min-width:0;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:var(--serif); font-size:16px; flex-shrink:0; white-space:nowrap; }
+  .brand span:last-child{ overflow:hidden; text-overflow:ellipsis; }
+  .brand-mark{ width:30px; height:30px; border-radius:9px; background:conic-gradient(from 220deg, var(--accent), var(--gold), var(--accent)); display:grid; place-items:center; font-size:12px; font-weight:700; color:#04120a; flex-shrink:0; }
+  nav.links{ display:flex; gap:6px; flex-wrap:nowrap; }
+  nav.links a{ font-size:13px; padding:7px 12px; border-radius:100px; color:var(--ink-1); text-decoration:none; transition:.25s; white-space:nowrap; flex-shrink:0; }
+  nav.links a:hover, nav.links a:focus-visible{ color:var(--ink-0); background:rgba(255,255,255,0.06); }
+  .nav-scroll{ overflow-x:auto; overflow-y:hidden; scrollbar-width:none; min-width:0; flex:1; -webkit-overflow-scrolling:touch; }
+  .nav-scroll::-webkit-scrollbar{ display:none; }
+  @media (max-width:640px){
+    .brand span:last-child{ display:none; }
+    header.nav{ padding:10px 12px; gap:10px; }
+  }
+
+  /* ============================= HERO ============================= */
+  .hero{ min-height:92vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:80px 24px 60px; position:relative; }
+  .cover{
+    width:170px; height:240px; border-radius:14px; margin:0 auto 34px;
+    background:linear-gradient(155deg, rgba(39,174,96,0.9), rgba(15,40,28,0.9));
+    border:1px solid var(--glass-brd-strong);
+    box-shadow:0 30px 60px -18px rgba(39,174,96,0.45), inset 0 0 40px rgba(255,255,255,0.06);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+    position:relative;
+  }
+  .cover::before{ content:"B → M → L"; font-family:var(--mono); font-size:11px; letter-spacing:.15em; color:var(--gold); }
+  .cover-title{ font-family:var(--serif); font-size:15px; padding:0 14px; color:#eafff1; }
+  .hero h1{ font-size:clamp(38px,6.5vw,68px); line-height:1.05; background:linear-gradient(120deg, #eafff1, var(--accent-2) 45%, var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent; animation:titleShift 8s ease-in-out infinite; }
+  @keyframes titleShift{ 0%,100%{ filter:brightness(1);} 50%{ filter:brightness(1.18);} }
+  .hero .tagline{ max-width:600px; margin:22px auto 36px; color:var(--ink-1); font-size:18px; }
+  .hero-cta{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+  .scroll-hint{ margin-top:60px; font-size:12px; color:var(--ink-2); letter-spacing:.15em; text-transform:uppercase; }
+  .scroll-hint .chev{ display:block; margin:8px auto 0; width:10px; height:10px; border-right:2px solid var(--accent-2); border-bottom:2px solid var(--accent-2); transform:rotate(45deg); animation:chevBounce 1.8s ease-in-out infinite; }
+  @keyframes chevBounce{ 0%,100%{ transform:rotate(45deg) translateY(0);} 50%{ transform:rotate(45deg) translateY(6px);} }
+
+  /* ============================= EXPANDABLE CARDS ============================= */
+  .exp-card{ cursor:pointer; }
+  .exp-card .head{ display:flex; justify-content:space-between; align-items:center; gap:14px; }
+  .exp-card h3{ font-size:19px; }
+  .exp-card .num{ font-family:var(--mono); color:var(--accent-2); font-size:13px; }
+  .exp-card .chevron{ transition:transform .35s var(--ease); color:var(--accent-2); font-size:20px; }
+  .exp-card.open .chevron{ transform:rotate(180deg); }
+  .exp-body{ max-height:0; overflow:hidden; transition:max-height .5s var(--ease), opacity .4s; opacity:0; }
+  .exp-card.open .exp-body{ max-height:400px; opacity:1; margin-top:14px; }
+  .exp-body p{ color:var(--ink-1); font-size:14.5px; }
+
+  /* ============================= BML SIMULATOR ============================= */
+  .bml-wrap{ display:flex; flex-direction:column; align-items:center; gap:30px; }
+  .bml-ring{ position:relative; width:280px; height:280px; }
+  .bml-ring svg{ width:100%; height:100%; transform:rotate(-90deg); }
+  .bml-ring circle.bg{ fill:none; stroke:rgba(255,255,255,0.06); stroke-width:10; }
+  .bml-ring circle.fg{ fill:none; stroke:url(#ringGrad); stroke-width:10; stroke-linecap:round; transition:stroke-dashoffset .6s var(--ease); }
+  .bml-center{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+  .bml-center .stage{ font-family:var(--serif); font-size:22px; color:var(--accent-2); }
+  .bml-center .cyclecount{ font-size:12px; color:var(--ink-2); }
+  .bml-buttons{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+  .bml-node{ min-width:110px; text-align:center; }
+  .bml-node.active{ box-shadow:0 0 0 2px var(--accent-2) inset, 0 0 30px rgba(39,174,96,0.4); }
+  .bml-feedback{ min-height:24px; color:var(--gold); font-size:14px; text-align:center; }
+
+  /* ============================= TIMELINE ============================= */
+  .timeline{ position:relative; padding-left:34px; }
+  .timeline::before{ content:""; position:absolute; left:9px; top:6px; bottom:6px; width:2px; background:linear-gradient(var(--accent), var(--gold)); opacity:.5; }
+  .t-item{ position:relative; margin-bottom:30px; cursor:pointer; }
+  .t-item::before{ content:""; position:absolute; left:-34px; top:4px; width:16px; height:16px; border-radius:50%; background:var(--bg-1); border:2px solid var(--accent-2); transition:.3s; }
+  .t-item.active::before{ background:var(--accent-2); box-shadow:0 0 14px var(--accent-2); }
+  .t-item h4{ font-size:17px; color:var(--ink-0); }
+  .t-item p{ color:var(--ink-1); font-size:14px; margin-top:6px; display:none; }
+  .t-item.active p{ display:block; }
+
+  /* ============================= CHIP / SELECT GRID (MVP challenge) ============================= */
+  .chip-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{ padding:10px 16px; border-radius:100px; border:1px solid var(--glass-brd); background:rgba(255,255,255,0.03); font-size:13.5px; color:var(--ink-1); transition:.25s; }
+  .chip.selected{ background:linear-gradient(135deg, rgba(39,174,96,0.85), rgba(45,120,90,0.5)); color:#eafff1; border-color:var(--glass-brd-strong); transform:translateY(-2px); }
+  .chip[disabled]{ opacity:.35; cursor:not-allowed; }
+  .stat-row{ display:flex; gap:16px; flex-wrap:wrap; margin-top:18px; }
+  .stat-box{ flex:1; min-width:140px; text-align:center; padding:18px; }
+  .stat-box .val{ font-family:var(--serif); font-size:28px; color:var(--accent-2); }
+  .stat-box .lbl{ font-size:12px; color:var(--ink-2); text-transform:uppercase; letter-spacing:.1em; margin-top:4px; }
+
+  /* ============================= SCENARIO / GAME BLOCKS ============================= */
+  .scenario{ margin-bottom:18px; }
+  .scenario .choices{ display:flex; gap:12px; flex-wrap:wrap; margin-top:14px; }
+  .result-box{ margin-top:14px; padding:14px 16px; border-radius:var(--radius-sm); background:rgba(39,174,96,0.08); border:1px solid var(--glass-brd); font-size:14px; color:var(--ink-1); display:none; }
+  .result-box.show{ display:block; }
+
+  /* ============================= CHAT SIMULATOR ============================= */
+  .chat-window{ min-height:160px; margin-bottom:16px; }
+  .bubble{ max-width:80%; padding:12px 16px; border-radius:16px; margin-bottom:10px; font-size:14px; }
+  .bubble.them{ background:rgba(255,255,255,0.05); border:1px solid var(--glass-brd); }
+  .bubble.me{ background:linear-gradient(135deg, rgba(39,174,96,0.5), rgba(45,120,90,0.25)); margin-left:auto; border:1px solid var(--glass-brd-strong); }
+  .choice-list{ display:flex; flex-direction:column; gap:10px; }
+  .choice-list button{ text-align:left; }
+
+  /* ============================= GAUGE (PMF meter) ============================= */
+  .gauge{ width:220px; margin:0 auto; }
+  .gauge-label{ text-align:center; margin-top:10px; font-family:var(--serif); font-size:20px; color:var(--accent-2); }
+
+  /* ============================= FLASHCARDS ============================= */
+  .flash-scene{ perspective:1200px; height:190px; }
+  .flash-card{ position:relative; width:100%; height:100%; transition:transform .6s var(--ease); transform-style:preserve-3d; cursor:pointer; }
+  .flash-card.flipped{ transform:rotateY(180deg); }
+  .flash-face{ position:absolute; inset:0; backface-visibility:hidden; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; text-align:center; padding:18px; font-size:14.5px; }
+  .flash-face.front{ background:linear-gradient(150deg, rgba(39,174,96,0.18), rgba(255,255,255,0.03)); border:1px solid var(--glass-brd); font-family:var(--serif); font-size:17px; }
+  .flash-face.back{ background:rgba(255,255,255,0.05); border:1px solid var(--glass-brd-strong); transform:rotateY(180deg); color:var(--ink-1); }
+
+  /* ============================= MEMORY MATCH ============================= */
+  .memory-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  @media (max-width:600px){ .memory-grid{ grid-template-columns:repeat(3,1fr); } }
+  .mem-card{ aspect-ratio:1/1; border-radius:var(--radius-sm); background:rgba(255,255,255,0.04); border:1px solid var(--glass-brd); display:flex; align-items:center; justify-content:center; text-align:center; padding:8px; font-size:12px; cursor:pointer; transition:.3s; color:transparent; }
+  .mem-card .txt{ display:none; }
+  .mem-card.revealed{ background:rgba(39,174,96,0.15); color:var(--ink-0); }
+  .mem-card.revealed .txt{ display:block; }
+  .mem-card.matched{ background:rgba(232,180,76,0.15); border-color:var(--gold); color:var(--ink-0); opacity:.7; }
+  .mem-card.matched .txt{ display:block; }
+
+  /* ============================= QUIZ ============================= */
+  .quiz-progress{ height:6px; border-radius:100px; background:rgba(255,255,255,0.06); overflow:hidden; margin-bottom:22px; }
+  .quiz-progress-fill{ height:100%; background:linear-gradient(90deg,var(--accent),var(--gold)); transition:width .4s var(--ease); }
+  .q-option{ display:block; width:100%; text-align:left; padding:14px 18px; margin-bottom:10px; border-radius:var(--radius-sm); background:rgba(255,255,255,0.03); border:1px solid var(--glass-brd); color:var(--ink-0); font-size:14.5px; transition:.25s; }
+  .q-option:hover{ border-color:var(--glass-brd-strong); background:rgba(255,255,255,0.06); }
+  .q-option.correct{ background:rgba(39,174,96,0.35); border-color:var(--accent-2); }
+  .q-option.wrong{ background:rgba(220,80,80,0.28); border-color:#e07070; }
+
+  /* ============================= BADGES ============================= */
+  .badge-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  @media (max-width:700px){ .badge-grid{ grid-template-columns:repeat(2,1fr); } }
+  .badge{ text-align:center; padding:20px 10px; opacity:.35; filter:grayscale(1); transition:.4s; }
+  .badge.unlocked{ opacity:1; filter:none; }
+  .badge .icon{ width:52px; height:52px; margin:0 auto 10px; border-radius:50%; background:conic-gradient(from 180deg, var(--accent), var(--gold)); display:flex; align-items:center; justify-content:center; font-size:22px; }
+  .badge .name{ font-size:12.5px; color:var(--ink-1); }
+
+  /* ============================= DASHBOARD ============================= */
+  .dash-ring-wrap{ display:flex; gap:24px; flex-wrap:wrap; justify-content:center; }
+  .mini-ring{ width:110px; height:110px; position:relative; }
+  .mini-ring svg{ width:100%; height:100%; transform:rotate(-90deg); }
+  .mini-ring circle.bg{ fill:none; stroke:rgba(255,255,255,0.07); stroke-width:8; }
+  .mini-ring circle.fg{ fill:none; stroke:var(--accent-2); stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset .6s var(--ease); }
+  .mini-ring .lbl{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .mini-ring .lbl b{ font-size:18px; font-family:var(--serif); }
+  .mini-ring .lbl span{ font-size:9px; color:var(--ink-2); text-transform:uppercase; }
+
+  /* ============================= QUOTES ============================= */
+  .quote-card{ font-family:var(--serif); font-size:19px; line-height:1.5; position:relative; }
+  .quote-card .mark{ font-size:44px; color:var(--accent-2); opacity:.4; line-height:0; display:block; margin-bottom:10px; }
+  .quote-card .attr{ margin-top:16px; font-family:var(--sans); font-size:12.5px; color:var(--ink-2); text-transform:uppercase; letter-spacing:.1em; }
+
+  /* ============================= KEYWORD CLOUD ============================= */
+  .cloud{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+  .cloud button{ padding:10px 18px; border-radius:100px; border:1px solid var(--glass-brd); background:rgba(255,255,255,0.03); color:var(--ink-1); font-size:14px; transition:.3s; }
+  .cloud button:hover{ color:var(--ink-0); border-color:var(--glass-brd-strong); background:rgba(39,174,96,0.12); transform:scale(1.05); }
+  #keywordDetail{ margin-top:22px; min-height:60px; }
+
+  /* ============================= FOOTER GRADUATION ============================= */
+  .grad-grade{ font-family:var(--serif); font-size:72px; text-align:center; background:linear-gradient(120deg,var(--accent-2),var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  #confettiCanvasWrap{ position:fixed; inset:0; pointer-events:none; z-index:1500; }
+
+  /* ============================= MISC ============================= */
+  .center{ text-align:center; }
+  .muted{ color:var(--ink-1); }
+  .divider{ height:1px; background:linear-gradient(90deg, transparent, var(--glass-brd-strong), transparent); margin:60px 0; }
+  .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+  .toast{ position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px); background:rgba(10,20,15,0.92); border:1px solid var(--glass-brd-strong); padding:14px 22px; border-radius:100px; font-size:14px; opacity:0; transition:.4s var(--ease); z-index:2000; box-shadow:var(--shadow-1); display:flex; align-items:center; gap:10px; }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  .high-contrast{ filter:contrast(1.25) brightness(1.08); }
+  select.settings-select{ background:rgba(255,255,255,0.05); color:var(--ink-0); border:1px solid var(--glass-brd); border-radius:10px; padding:8px 12px; }
+</style>
+</head>
+<body>
+
+<div id="progressBar" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+<div id="particles" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="brand"><span class="brand-mark">LS</span><span>The Reading Room</span></div>
+  <div class="nav-scroll">
+    <nav class="links" aria-label="Section navigation">
+      <a href="#summary">Summary</a>
+      <a href="#bml">Build·Measure·Learn</a>
+      <a href="#journey">Journey</a>
+      <a href="#mvp">MVP Lab</a>
+      <a href="#games">Games</a>
+      <a href="#flashcards">Flashcards</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#keywords">Keywords</a>
+      <a href="#dashboard">Dashboard</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================= HERO ============================= -->
+<section class="hero">
+  <div class="cover float glow-pulse" role="img" aria-label="Book cover placeholder for The Lean Startup">
+    <div class="cover-title">The Lean Startup</div>
+  </div>
+  <p class="eyebrow">Eric Ries · Reading Room Edition</p>
+  <h1>Build. Measure. Learn.</h1>
+  <p class="tagline">Learn how to build successful products through rapid experimentation, customer feedback, and continuous innovation.</p>
+  <div class="hero-cta">
+    <button class="btn" data-ripple onclick="document.getElementById('summary').scrollIntoView({behavior:'smooth'})">Start Reading</button>
+    <button class="btn ghost" data-ripple onclick="document.getElementById('dashboard').scrollIntoView({behavior:'smooth'})">View Progress</button>
+  </div>
+  <div class="scroll-hint">Scroll to explore<span class="chev"></span></div>
+</section>
+
+<!-- ============================= SUMMARY ============================= -->
+<section class="section" id="summary">
+  <div class="section-head reveal">
+    <p class="eyebrow">01 · Core Summary</p>
+    <h2>The book, distilled</h2>
+    <p class="sub">Expand each card for a concise, original explanation of the book's foundational ideas.</p>
+  </div>
+  <div class="grid" id="summaryCards"></div>
+</section>
+
+<!-- ============================= BML SIMULATOR ============================= -->
+<section class="section" id="bml">
+  <div class="section-head reveal">
+    <p class="eyebrow">02 · Interactive Simulator</p>
+    <h2>Run the Build → Measure → Learn loop</h2>
+    <p class="sub">Click each stage in order. Complete full cycles to build learning velocity — the core engine of a lean startup.</p>
+  </div>
+  <div class="glass card bml-wrap">
+    <div class="bml-ring">
+      <svg viewBox="0 0 120 120">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#27AE60"/>
+            <stop offset="100%" stop-color="#e8b44c"/>
+          </linearGradient>
+        </defs>
+        <circle class="bg" cx="60" cy="60" r="52"></circle>
+        <circle class="fg" id="bmlRingFg" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle>
+      </svg>
+      <div class="bml-center">
+        <div class="stage" id="bmlStage">Ready</div>
+        <div class="cyclecount" id="bmlCycles">0 cycles complete</div>
+      </div>
+    </div>
+    <div class="bml-buttons">
+      <button class="glass card bml-node small btn ghost" id="bmlBuild" data-ripple onclick="bmlClick('build')">🔨 Build</button>
+      <button class="glass card bml-node small btn ghost" id="bmlMeasure" data-ripple onclick="bmlClick('measure')">📊 Measure</button>
+      <button class="glass card bml-node small btn ghost" id="bmlLearn" data-ripple onclick="bmlClick('learn')">💡 Learn</button>
+    </div>
+    <div class="bml-feedback" id="bmlFeedback" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ============================= TIMELINE ============================= -->
+<section class="section" id="journey">
+  <div class="section-head reveal">
+    <p class="eyebrow">03 · Startup Journey</p>
+    <h2>The lifecycle of a lean startup</h2>
+    <p class="sub">Click a stage to reveal what actually happens there.</p>
+  </div>
+  <div class="glass card">
+    <div class="timeline" id="timelineList"></div>
+  </div>
+</section>
+
+<!-- ============================= MVP CHALLENGE ============================= -->
+<section class="section" id="mvp">
+  <div class="section-head reveal">
+    <p class="eyebrow">04 · MVP Challenge</p>
+    <h2>Choose only five features</h2>
+    <p class="sub">Twenty features are on the table. Select exactly five to ship your Minimum Viable Product, then launch it.</p>
+  </div>
+  <div class="glass card">
+    <div class="chip-grid" id="mvpChips"></div>
+    <div style="margin-top:20px; display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+      <span class="muted" id="mvpCount">0 / 5 selected</span>
+      <button class="btn" data-ripple onclick="launchMVP()">🚀 Launch MVP</button>
+    </div>
+    <div class="stat-row" id="mvpStats" style="display:none;">
+      <div class="glass stat-box"><div class="val" id="mvpCost">–</div><div class="lbl">Dev Cost</div></div>
+      <div class="glass stat-box"><div class="val" id="mvpSat">–</div><div class="lbl">Customer Satisfaction</div></div>
+      <div class="glass stat-box"><div class="val" id="mvpLearn">–</div><div class="lbl">Learning Score</div></div>
+    </div>
+    <div class="result-box" id="mvpExplain"></div>
+  </div>
+</section>
+
+<!-- ============================= GAMES CLUSTER ============================= -->
+<section class="section" id="games">
+  <div class="section-head reveal">
+    <p class="eyebrow">05 · Practice Lab</p>
+    <h2>Pivot, interview, test, and diagnose</h2>
+    <p class="sub">Six focused simulations covering the book's core decision-making tools.</p>
+  </div>
+
+  <!-- Pivot or Persevere -->
+  <div class="glass card" style="margin-bottom:22px;">
+    <h3>Pivot or Persevere</h3>
+    <p class="muted" style="margin-top:6px;">Read each scenario and decide the startup's fate.</p>
+    <div id="pivotScenario" style="margin-top:18px;"></div>
+  </div>
+
+  <!-- Customer Interview Simulator -->
+  <div class="glass card" style="margin-bottom:22px;">
+    <h3>Customer Interview Simulator</h3>
+    <p class="muted" style="margin-top:6px;">Choose your questions carefully — leading questions teach you nothing.</p>
+    <div class="chat-window" id="chatWindow" style="margin-top:16px;"></div>
+    <div class="choice-list" id="chatChoices"></div>
+  </div>
+
+  <!-- A/B Testing Lab -->
+  <div class="glass card" style="margin-bottom:22px;">
+    <h3>A/B Testing Lab</h3>
+    <p class="muted" style="margin-top:6px;">Pick a variant to test against the control. Reveal the winner.</p>
+    <div class="grid grid-2" id="abTester" style="margin-top:16px;"></div>
+    <div class="result-box" id="abResult"></div>
+  </div>
+
+  <!-- Metric Detective -->
+  <div class="glass card" style="margin-bottom:22px;">
+    <h3>Metric Detective</h3>
+    <p class="muted" style="margin-top:6px;">Sort each metric: vanity or actionable?</p>
+    <div id="metricGame" style="margin-top:16px;"></div>
+  </div>
+
+  <!-- Five Whys -->
+  <div class="glass card" style="margin-bottom:22px;">
+    <h3>Five Whys Puzzle</h3>
+    <p class="muted" style="margin-top:6px;">A server crashed. Ask "why" until you reach the root cause.</p>
+    <div id="fiveWhys" style="margin-top:16px;"></div>
+  </div>
+
+  <!-- Growth Engine -->
+  <div class="glass card">
+    <h3>Growth Engine Simulator</h3>
+    <p class="muted" style="margin-top:6px;">Compare the three engines of growth.</p>
+    <div class="grid grid-3" id="growthEngines" style="margin-top:16px;"></div>
+  </div>
+</section>
+
+<!-- ============================= PMF METER ============================= -->
+<section class="section" id="pmf">
+  <div class="section-head reveal">
+    <p class="eyebrow">06 · Live Gauge</p>
+    <h2>Product-Market Fit Meter</h2>
+    <p class="sub">This gauge rises automatically as you complete simulations across the page.</p>
+  </div>
+  <div class="glass card center">
+    <svg class="gauge" viewBox="0 0 200 110">
+      <path d="M10,100 A90,90 0 0,1 190,100" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="14"/>
+      <path id="gaugeArc" d="M10,100 A90,90 0 0,1 190,100" fill="none" stroke="url(#ringGrad)" stroke-width="14" stroke-dasharray="283" stroke-dashoffset="283" stroke-linecap="round"/>
+    </svg>
+    <div class="gauge-label" id="gaugeLabel">Not Yet Felt</div>
+    <p class="muted" style="margin-top:6px; font-size:13px;">PMF Score: <span id="gaugeScore">0</span>/100</p>
+  </div>
+</section>
+
+<!-- ============================= FLASHCARDS ============================= -->
+<section class="section" id="flashcards">
+  <div class="section-head reveal">
+    <p class="eyebrow">07 · Flashcards</p>
+    <h2>40 concepts, front to back</h2>
+    <p class="sub">Click any card to flip it.</p>
+  </div>
+  <div class="grid grid-4" id="flashGrid"></div>
+</section>
+
+<!-- ============================= MEMORY MATCH ============================= -->
+<section class="section" id="memory">
+  <div class="section-head reveal">
+    <p class="eyebrow">08 · Memory Match</p>
+    <h2>Match each concept to its definition</h2>
+    <p class="sub">Flip two tiles at a time. Matching pairs stay revealed.</p>
+  </div>
+  <div class="glass card">
+    <div class="memory-grid" id="memoryGrid"></div>
+    <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <span class="muted" id="memoryStatus">0 pairs matched</span>
+      <button class="btn ghost small" data-ripple onclick="setupMemory()">↺ Reset</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= QUIZ ============================= -->
+<section class="section" id="quiz">
+  <div class="section-head reveal">
+    <p class="eyebrow">09 · Lean Startup Quiz</p>
+    <h2>Test your understanding</h2>
+    <p class="sub">30 randomized questions — multiple choice, true/false, and scenario-based.</p>
+  </div>
+  <div class="glass card">
+    <div class="quiz-progress"><div class="quiz-progress-fill" id="quizProgFill" style="width:0%"></div></div>
+    <div id="quizArea"></div>
+  </div>
+</section>
+
+<!-- ============================= DECISION CHALLENGE ============================= -->
+<section class="section" id="decisions">
+  <div class="section-head reveal">
+    <p class="eyebrow">10 · Decision Challenge</p>
+    <h2>20 startup situations</h2>
+    <p class="sub">Every choice moves your Cash, Learning, Customers, and Growth meters.</p>
+  </div>
+  <div class="glass card">
+    <div class="stat-row" style="margin-bottom:20px;">
+      <div class="glass stat-box"><div class="val" id="statCash">50</div><div class="lbl">Cash</div></div>
+      <div class="glass stat-box"><div class="val" id="statLearn2">50</div><div class="lbl">Learning</div></div>
+      <div class="glass stat-box"><div class="val" id="statCust">50</div><div class="lbl">Customers</div></div>
+      <div class="glass stat-box"><div class="val" id="statGrowth">50</div><div class="lbl">Growth</div></div>
+    </div>
+    <div id="decisionArea"></div>
+  </div>
+</section>
+
+<!-- ============================= ACHIEVEMENTS ============================= -->
+<section class="section" id="achievements">
+  <div class="section-head reveal">
+    <p class="eyebrow">11 · Achievements</p>
+    <h2>Unlockable badges</h2>
+    <p class="sub">Earned automatically as you engage with each simulation.</p>
+  </div>
+  <div class="glass card badge-grid" id="badgeGrid"></div>
+</section>
+
+<!-- ============================= DASHBOARD ============================= -->
+<section class="section" id="dashboard">
+  <div class="section-head reveal">
+    <p class="eyebrow">12 · Progress Dashboard</p>
+    <h2>Your reading journey so far</h2>
+  </div>
+  <div class="glass card">
+    <div class="dash-ring-wrap">
+      <div class="mini-ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"></circle><circle class="fg" id="ringCompletion" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle></svg><div class="lbl"><b id="lblCompletion">0%</b><span>Completion</span></div></div>
+      <div class="mini-ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"></circle><circle class="fg" id="ringQuiz" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle></svg><div class="lbl"><b id="lblQuiz">0%</b><span>Quiz Score</span></div></div>
+      <div class="mini-ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"></circle><circle class="fg" id="ringBadges" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle></svg><div class="lbl"><b id="lblBadges">0/8</b><span>Badges</span></div></div>
+      <div class="mini-ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"></circle><circle class="fg" id="ringLevel" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle></svg><div class="lbl"><b id="lblLevel">1</b><span>Founder Level</span></div></div>
+    </div>
+    <div class="center" style="margin-top:24px;">
+      <p class="muted">Learning Points: <strong id="lpVal" style="color:var(--accent-2)">0</strong></p>
+    </div>
+    <div class="center" style="margin-top:18px;">
+      <button class="btn ghost small" data-ripple onclick="resetProgress()">Reset all progress</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= QUOTES ============================= -->
+<section class="section" id="quotesSection">
+  <div class="section-head reveal">
+    <p class="eyebrow">13 · Best Quotes</p>
+    <h2>Words worth remembering</h2>
+  </div>
+  <div class="grid grid-2" id="quoteGrid"></div>
+</section>
+
+<!-- ============================= KEYWORD EXPLORER ============================= -->
+<section class="section" id="keywords">
+  <div class="section-head reveal">
+    <p class="eyebrow">14 · Keyword Explorer</p>
+    <h2>Click a term to learn it</h2>
+  </div>
+  <div class="glass card">
+    <div class="cloud" id="keywordCloud"></div>
+    <div class="glass card" id="keywordDetail" style="margin-top:10px; display:none;"></div>
+  </div>
+</section>
+
+<!-- ============================= GLOSSARY & TAKEAWAYS ============================= -->
+<section class="section" id="glossary">
+  <div class="section-head reveal">
+    <p class="eyebrow">15 · Glossary & Key Takeaways</p>
+    <h2>Reference and recap</h2>
+  </div>
+  <div class="grid grid-2">
+    <div class="glass card">
+      <h3 style="margin-bottom:14px;">Glossary</h3>
+      <div id="glossaryList" style="font-size:14px; color:var(--ink-1); display:flex; flex-direction:column; gap:10px;"></div>
+    </div>
+    <div class="glass card">
+      <h3 style="margin-bottom:14px;">Key Takeaways</h3>
+      <ul id="takeawayList" style="padding-left:18px; display:flex; flex-direction:column; gap:10px; font-size:14px; color:var(--ink-1);"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= GRADUATION ============================= -->
+<section class="section" id="graduation">
+  <div class="section-head reveal center" style="margin:0 auto 40px;">
+    <p class="eyebrow">16 · Final Graduation</p>
+    <h2>Your startup report card</h2>
+  </div>
+  <div class="glass card center">
+    <div class="grad-grade" id="gradGrade">–</div>
+    <p class="muted" style="margin-top:8px;">Overall Learning Score: <strong id="gradScore" style="color:var(--accent-2)">0</strong>/100</p>
+    <p class="muted" style="margin-top:6px;" id="gradFeedback">Complete more sections to see your feedback.</p>
+    <div class="badge-grid" id="gradBadges" style="margin-top:26px;"></div>
+    <button class="btn" data-ripple onclick="graduate()" style="margin-top:26px;">🎓 Graduate Me</button>
+  </div>
+</section>
+
+<div id="confettiCanvasWrap"><canvas id="confettiCanvas" style="width:100%;height:100%;"></canvas></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================= STATE ============================= */
+const STORAGE_KEY = "leanStartup:state";
+const defaultState = {
+  completedSections: {},
+  quiz: { score:0, total:0, answered:0 },
+  badges: {},
+  learningPoints: 0,
+  bml: { cycles:0, stage:0 },
+  pmf: 0,
+  decisions: { cash:50, learn:50, cust:50, growth:50, index:0 },
+  memory: { matched:0 },
+  mvpDone:false
+};
+let state = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return JSON.parse(JSON.stringify(defaultState));
+    const parsed = JSON.parse(raw);
+    return Object.assign(JSON.parse(JSON.stringify(defaultState)), parsed);
+  }catch(e){ return JSON.parse(JSON.stringify(defaultState)); }
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){ /* storage unavailable */ }
+}
+function markSection(id){
+  if(!state.completedSections[id]){ state.completedSections[id]=true; saveState(); updateDashboard(); }
+}
+function addLP(n){ state.learningPoints += n; saveState(); updateDashboard(); }
+function unlockBadge(key){
+  if(!state.badges[key]){
+    state.badges[key]=true; saveState();
+    renderBadges(); updateDashboard();
+    showToast("🏅 Badge unlocked: " + BADGES[key].name);
+  }
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer=setTimeout(()=>t.classList.remove('show'), 2600);
+}
+
+/* ============================= RIPPLE ============================= */
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('[data-ripple], .btn');
+  if(!btn) return;
+  const rect = btn.getBoundingClientRect();
+  const ripple = document.createElement('span');
+  ripple.className='ripple';
+  const size = Math.max(rect.width, rect.height);
+  ripple.style.width = ripple.style.height = size+'px';
+  ripple.style.left = (e.clientX-rect.left-size/2)+'px';
+  ripple.style.top = (e.clientY-rect.top-size/2)+'px';
+  btn.style.position = btn.style.position || 'relative';
+  btn.appendChild(ripple);
+  setTimeout(()=>ripple.remove(), 650);
+});
+
+/* ============================= PARTICLES ============================= */
+(function initParticles(){
+  const wrap = document.getElementById('particles');
+  const n = window.innerWidth < 700 ? 16 : 30;
+  for(let i=0;i<n;i++){
+    const p = document.createElement('div');
+    p.className='particle';
+    const size = 3 + Math.random()*6;
+    p.style.width=p.style.height=size+'px';
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDuration = (14+Math.random()*16)+'s';
+    p.style.animationDelay = (Math.random()*14)+'s';
+    wrap.appendChild(p);
+  }
+})();
+
+/* ============================= PROGRESS BAR + REVEALS ============================= */
+window.addEventListener('scroll', function(){
+  const h = document.documentElement;
+  const pct = (h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  const bar = document.getElementById('progressBar');
+  bar.style.width = pct+'%';
+  bar.setAttribute('aria-valuenow', Math.round(pct));
+}, {passive:true});
+
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add('in'); });
+}, {threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+const sectionObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting && en.target.id) markSection(en.target.id); });
+}, {threshold:0.4});
+document.querySelectorAll('.section').forEach(el=>sectionObserver.observe(el));
+
+/* ============================= DATA: SUMMARY ============================= */
+const SUMMARY = [
+  {t:"The Core Problem", b:"Most new products fail not from bad execution but from building things nobody actually wants. Traditional planning assumes you already know the answers; Ries argues startups must treat every plan as a hypothesis to be tested."},
+  {t:"Validated Learning", b:"Progress in a startup is measured by what you've proven true about customers, not by shipped features or hours worked. A demo that teaches you your assumption was wrong is more valuable than a feature nobody asked for."},
+  {t:"Build-Measure-Learn", b:"The central loop of the method: build the smallest thing that tests an assumption, measure real behavior, learn from the gap between expectation and reality, then repeat — faster each time."},
+  {t:"Minimum Viable Product", b:"An MVP is the version of a product with just enough features to start the learning loop with real customers. It is a research tool, not a stripped-down final product."},
+  {t:"Innovation Accounting", b:"A framework for measuring progress in pre-revenue or pre-scale companies using actionable metrics tied to a specific hypothesis, rather than vanity numbers that always trend upward."},
+  {t:"Pivot or Persevere", b:"Regularly, teams must decide whether their strategy is working. A pivot is a structured course correction that keeps the vision but changes the strategy in response to what was learned."}
+];
+const summaryWrap = document.getElementById('summaryCards');
+SUMMARY.forEach((s,i)=>{
+  const el = document.createElement('div');
+  el.className='glass card exp-card reveal';
+  el.innerHTML = `<div class="head"><h3>${s.t}</h3><span class="chevron">⌄</span></div><span class="num">0${i+1}</span>
+    <div class="exp-body"><p>${s.b}</p></div>`;
+  el.addEventListener('click', ()=>{ el.classList.toggle('open'); markSection('summary'); addLPOnce('summary_'+i, 2); });
+  summaryWrap.appendChild(el);
+  observer.observe(el);
+});
+
+const lpFlags = {};
+function addLPOnce(flag, n){ if(!lpFlags[flag]){ lpFlags[flag]=true; addLP(n); } }
+
+/* ============================= BML SIMULATOR ============================= */
+const bmlOrder = ['build','measure','learn'];
+const bmlLabels = {build:'Building…', measure:'Measuring…', learn:'Learning…'};
+function bmlClick(stageName){
+  const expected = bmlOrder[state.bml.stage % 3];
+  const fb = document.getElementById('bmlFeedback');
+  if(stageName !== expected){
+    fb.textContent = `Not yet — try "${expected.charAt(0).toUpperCase()+expected.slice(1)}" first.`;
+    return;
+  }
+  state.bml.stage++;
+  document.getElementById('bmlStage').textContent = bmlLabels[stageName];
+  document.querySelectorAll('.bml-node').forEach(b=>b.classList.remove('active'));
+  document.getElementById('bml'+stageName.charAt(0).toUpperCase()+stageName.slice(1)).classList.add('active');
+  const progressed = (state.bml.stage % 3);
+  const frac = progressed===0 ? 1 : progressed/3;
+  const dash = 326.7;
+  document.getElementById('bmlRingFg').style.strokeDashoffset = dash - dash*frac;
+  if(state.bml.stage % 3 === 0){
+    state.bml.cycles++;
+    document.getElementById('bmlCycles').textContent = state.bml.cycles + " cycle" + (state.bml.cycles===1?'':'s') + " complete";
+    fb.textContent = "Full loop complete! Learning velocity increasing.";
+    document.getElementById('bmlStage').textContent = "Ready";
+    document.querySelectorAll('.bml-node').forEach(b=>b.classList.remove('active'));
+    addLP(5);
+    bumpPMF(4);
+    if(state.bml.cycles>=3) unlockBadge('leanThinker');
+  } else {
+    fb.textContent = `Good — now "${bmlOrder[(state.bml.stage)%3]}".`;
+  }
+  saveState();
+  markSection('bml');
+}
+
+/* ============================= TIMELINE ============================= */
+const JOURNEY = [
+  {n:"Idea", d:"A founder identifies a problem worth solving and forms a leap-of-faith hypothesis about customers and value."},
+  {n:"MVP", d:"The team builds the smallest experiment that can validate or invalidate the riskiest assumption."},
+  {n:"Launch", d:"The MVP reaches real users — not to generate revenue yet, but to generate data."},
+  {n:"Feedback", d:"Quantitative usage data and qualitative interviews reveal whether the value hypothesis holds."},
+  {n:"Pivot", d:"If the data contradicts the hypothesis, the team changes strategy while keeping the underlying vision."},
+  {n:"Growth", d:"Once an engine of growth is identified, the company doubles down and begins to scale it deliberately."},
+  {n:"Scale", d:"Processes, culture, and metrics mature; the company shifts from search to disciplined execution."}
+];
+const tlList = document.getElementById('timelineList');
+JOURNEY.forEach((j,i)=>{
+  const item = document.createElement('div');
+  item.className='t-item' + (i===0?' active':'');
+  item.innerHTML = `<h4>${i+1}. ${j.n}</h4><p>${j.d}</p>`;
+  item.addEventListener('click', ()=>{
+    document.querySelectorAll('.t-item').forEach(x=>x.classList.remove('active'));
+    item.classList.add('active');
+    markSection('journey'); addLPOnce('journey_'+i,2);
+  });
+  tlList.appendChild(item);
+});
+
+/* ============================= MVP CHALLENGE ============================= */
+const MVP_FEATURES = [
+  {n:"User accounts", cost:8, sat:5, learn:6},
+  {n:"Payment processing", cost:12, sat:6, learn:5},
+  {n:"Core value action", cost:6, sat:9, learn:10},
+  {n:"Push notifications", cost:5, sat:4, learn:3},
+  {n:"Social sharing", cost:4, sat:5, learn:4},
+  {n:"Admin dashboard", cost:10, sat:2, learn:2},
+  {n:"Onboarding tutorial", cost:5, sat:6, learn:5},
+  {n:"Dark mode", cost:3, sat:3, learn:1},
+  {n:"Multi-language support", cost:9, sat:3, learn:2},
+  {n:"Referral program", cost:6, sat:5, learn:7},
+  {n:"Advanced analytics", cost:11, sat:2, learn:8},
+  {n:"Offline mode", cost:9, sat:3, learn:2},
+  {n:"Customer support chat", cost:7, sat:7, learn:6},
+  {n:"Gamified badges", cost:5, sat:4, learn:3},
+  {n:"API integrations", cost:10, sat:2, learn:3},
+  {n:"Custom themes", cost:4, sat:3, learn:1},
+  {n:"Feedback survey", cost:2, sat:6, learn:9},
+  {n:"Video tutorials", cost:6, sat:5, learn:3},
+  {n:"Enterprise SSO", cost:13, sat:1, learn:2},
+  {n:"Waitlist landing page", cost:2, sat:8, learn:9}
+];
+let mvpSelected = new Set();
+const mvpChipsWrap = document.getElementById('mvpChips');
+MVP_FEATURES.forEach((f,i)=>{
+  const chip = document.createElement('button');
+  chip.className='chip'; chip.textContent=f.n; chip.type='button';
+  chip.addEventListener('click', ()=>{
+    if(mvpSelected.has(i)){ mvpSelected.delete(i); chip.classList.remove('selected'); }
+    else{
+      if(mvpSelected.size>=5) return;
+      mvpSelected.add(i); chip.classList.add('selected');
+    }
+    document.getElementById('mvpCount').textContent = mvpSelected.size+" / 5 selected";
+    document.querySelectorAll('#mvpChips .chip').forEach((c,ci)=>{
+      c.disabled = mvpSelected.size>=5 && !mvpSelected.has(ci);
+    });
+  });
+  mvpChipsWrap.appendChild(chip);
+});
+function launchMVP(){
+  if(mvpSelected.size!==5){ showToast("Select exactly 5 features first."); return; }
+  let cost=0, sat=0, learn=0;
+  mvpSelected.forEach(i=>{ cost+=MVP_FEATURES[i].cost; sat+=MVP_FEATURES[i].sat; learn+=MVP_FEATURES[i].learn; });
+  document.getElementById('mvpStats').style.display='flex';
+  document.getElementById('mvpCost').textContent = '$'+(cost*1000).toLocaleString();
+  document.getElementById('mvpSat').textContent = Math.min(100, sat*4)+'%';
+  document.getElementById('mvpLearn').textContent = Math.min(100, learn*3)+'%';
+  const box = document.getElementById('mvpExplain');
+  box.classList.add('show');
+  const learnScore = Math.min(100, learn*3);
+  if(learnScore>=70){
+    box.textContent = "Excellent MVP: you prioritized features that directly test your core value hypothesis, keeping cost low and learning high.";
+  } else if(learnScore>=40){
+    box.textContent = "Decent MVP, but a few of your picks (like polish features) added cost without teaching you much. An MVP should maximize validated learning per dollar spent.";
+  } else {
+    box.textContent = "This MVP is too heavy on 'nice-to-have' features and too light on experiments that test your riskiest assumption. Simpler and more focused would learn faster.";
+  }
+  addLP(6); bumpPMF(learnScore>=70?6:3);
+  unlockBadge('mvpMaster');
+  markSection('mvp');
+}
+
+/* ============================= PIVOT OR PERSEVERE ============================= */
+const PIVOT_SCENARIOS = [
+  {s:"After 3 months, engagement is flat despite feature after feature being shipped. Interviews reveal users like the idea but not this execution.", a:"Persevere with more features", b:"Pivot the customer segment or channel",
+   feedback:{a:"Adding more features onto a flawed premise usually just burns runway — this is the 'move the deck chairs' trap the book warns against.", b:"Correct instinct: when the product is liked in concept but not in practice, a zoom-out or segment pivot often finds the real fit."}},
+  {s:"A core metric (activation rate) has improved every single sprint for two months, and customers report genuine delight.", a:"Persevere on current strategy", b:"Pivot to a new business model",
+   feedback:{a:"Right call — consistent, validated improvement on an actionable metric is exactly the signal to keep executing.", b:"Pivoting away from working traction discards real validated learning for no reason."}},
+  {s:"Growth is driven almost entirely by paid ads; the moment spend stops, usage drops to zero. No organic word-of-mouth exists.", a:"Persevere and keep raising ad budget", b:"Pivot toward a product with inherent stickiness",
+   feedback:{a:"This scales cost linearly with users and hides the absence of a real growth engine — risky long-term.", b:"Smart — the book stresses finding a sustainable engine of growth rather than renting attention indefinitely."}}
+];
+let pivotIndex = 0;
+function renderPivot(){
+  const wrap = document.getElementById('pivotScenario');
+  const sc = PIVOT_SCENARIOS[pivotIndex % PIVOT_SCENARIOS.length];
+  wrap.innerHTML = `<div class="scenario"><p>${sc.s}</p>
+    <div class="choices">
+      <button class="btn ghost small" data-choice="a">${sc.a}</button>
+      <button class="btn ghost small" data-choice="b">${sc.b}</button>
+    </div>
+    <div class="result-box" id="pivotResult"></div></div>`;
+  wrap.querySelectorAll('[data-choice]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.getAttribute('data-choice');
+      const res = document.getElementById('pivotResult');
+      res.textContent = sc.feedback[key];
+      res.classList.add('show');
+      addLPOnce('pivot_'+pivotIndex, 4);
+      bumpPMF(2);
+      unlockBadge('pivotExpert');
+      pivotIndex++;
+      setTimeout(()=>{ if(pivotIndex < PIVOT_SCENARIOS.length*2) renderPivot(); }, 1800);
+      markSection('games');
+    }, {once:true});
+  });
+}
+renderPivot();
+
+/* ============================= CUSTOMER INTERVIEW SIMULATOR ============================= */
+const INTERVIEW_TREE = {
+  start:{ them:"Thanks for hopping on this call — I hear you've been looking for a way to manage freelance invoices?",
+    choices:[
+      {t:"Would you use a tool that does automatic invoice reminders?", outcome:"leading"},
+      {t:"Walk me through the last time you sent an invoice — what happened?", outcome:"good"},
+      {t:"Do you like this idea?", outcome:"leading"}
+    ]},
+  leading:{ them:"Sure, that sounds useful!", note:"That answer feels agreeable but teaches you little — people are polite about hypotheticals. Try asking about a real past behavior instead.", end:true},
+  good:{ them:"Actually, I just email a PDF and follow up manually. I once lost a $2,000 invoice because I forgot to chase it.", note:"Excellent — you uncovered a real, painful behavior instead of a hypothetical opinion. This is the customer development method in action.", end:true}
+};
+let interviewState = 'start';
+function renderInterview(){
+  const node = INTERVIEW_TREE[interviewState];
+  const win = document.getElementById('chatWindow');
+  const choicesWrap = document.getElementById('chatChoices');
+  const bubble = document.createElement('div');
+  bubble.className='bubble them fade-in';
+  bubble.textContent = node.them;
+  win.appendChild(bubble);
+  choicesWrap.innerHTML='';
+  if(node.end){
+    const note = document.createElement('p');
+    note.className='muted'; note.style.marginTop='10px'; note.style.fontSize='13.5px';
+    note.textContent = node.note;
+    choicesWrap.appendChild(note);
+    const again = document.createElement('button');
+    again.className='btn ghost small'; again.style.marginTop='10px'; again.textContent='Try another approach';
+    again.addEventListener('click', ()=>{ interviewState='start'; win.innerHTML=''; renderInterview(); });
+    choicesWrap.appendChild(again);
+    addLPOnce('interview_'+interviewState, 4);
+    bumpPMF(2);
+    unlockBadge('customerListener');
+    markSection('games');
+    return;
+  }
+  node.choices.forEach(c=>{
+    const b = document.createElement('button');
+    b.className='q-option';
+    b.textContent = c.t;
+    b.addEventListener('click', ()=>{
+      const me = document.createElement('div');
+      me.className='bubble me fade-in'; me.textContent=c.t;
+      win.appendChild(me);
+      interviewState = c.outcome;
+      choicesWrap.innerHTML='';
+      setTimeout(renderInterview, 400);
+    });
+    choicesWrap.appendChild(b);
+  });
+}
+renderInterview();
+
+/* ============================= A/B TESTING LAB ============================= */
+const AB_TESTS = [
+  {cat:"Headline", a:"“Manage your tasks”", b:"“Never miss a deadline again”", winnerIsB:true, explain:"Outcome-focused, emotionally specific headlines usually out-convert feature-focused ones."},
+  {cat:"Pricing", a:"$9/month flat", b:"$0 free tier + $19 pro", winnerIsB:true, explain:"A free entry point often lifts total signups and lets you test willingness-to-pay for premium features separately."},
+  {cat:"Button", a:"“Submit”", b:"“Get my free plan”", winnerIsB:true, explain:"Specific, benefit-driven button copy consistently beats generic verbs like 'submit' in real tests."},
+  {cat:"Landing Page", a:"Long feature list", b:"Single clear value prop + CTA", winnerIsB:true, explain:"Focused pages that state one promise clearly tend to convert better than pages trying to say everything at once."}
+];
+const abWrap = document.getElementById('abTester');
+AB_TESTS.forEach((test,i)=>{
+  const box = document.createElement('div');
+  box.className='glass card';
+  box.innerHTML = `<p class="eyebrow">${test.cat}</p>
+    <div style="margin-top:10px; display:flex; flex-direction:column; gap:10px;">
+      <button class="q-option" data-side="a">A — ${test.a}</button>
+      <button class="q-option" data-side="b">B — ${test.b}</button>
+    </div>`;
+  box.querySelectorAll('[data-side]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const chose = btn.getAttribute('data-side');
+      const correct = (chose==='b') === test.winnerIsB;
+      box.querySelectorAll('[data-side]').forEach(b2=>{
+        const side = b2.getAttribute('data-side');
+        const isWinner = (side==='b')===test.winnerIsB;
+        b2.classList.add(isWinner?'correct':'wrong');
+        b2.disabled = true;
+      });
+      const res = document.getElementById('abResult');
+      res.classList.add('show');
+      res.textContent = (correct? "Nice pick — ":"Not quite — ") + test.explain;
+      addLPOnce('ab_'+i, 3);
+      bumpPMF(1);
+      if(i===AB_TESTS.length-1) unlockBadge('dataDrivenFounder');
+      markSection('games');
+    }, {once:true});
+  });
+  abWrap.appendChild(box);
+});
+
+/* ============================= METRIC DETECTIVE ============================= */
+const METRICS = [
+  {m:"Total registered users (all-time)", vanity:true},
+  {m:"Week-over-week active user retention", vanity:false},
+  {m:"Total page views", vanity:true},
+  {m:"Conversion rate per traffic cohort", vanity:false},
+  {m:"Cumulative downloads since launch", vanity:true},
+  {m:"Revenue per customer segment, tracked over time", vanity:false}
+];
+const metricWrap = document.getElementById('metricGame');
+let metricScore=0, metricAnswered=0;
+METRICS.forEach((met,i)=>{
+  const row = document.createElement('div');
+  row.className='glass card'; row.style.marginBottom='10px';
+  row.innerHTML = `<p>${met.m}</p><div class="choices" style="margin-top:10px; display:flex; gap:10px;">
+    <button class="btn ghost small" data-ans="vanity">Vanity Metric</button>
+    <button class="btn ghost small" data-ans="actionable">Actionable Metric</button></div>`;
+  row.querySelectorAll('[data-ans]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const correct = (btn.getAttribute('data-ans')==='vanity') === met.vanity;
+      btn.classList.add(correct?'q-option':'q-option');
+      btn.style.borderColor = correct? 'var(--accent-2)':'#e07070';
+      row.querySelectorAll('[data-ans]').forEach(b=>b.disabled=true);
+      metricAnswered++; if(correct) metricScore++;
+      addLPOnce('metric_'+i,2);
+      if(metricAnswered===METRICS.length){ bumpPMF(3); markSection('games'); }
+    }, {once:true});
+  });
+  metricWrap.appendChild(row);
+});
+
+/* ============================= FIVE WHYS ============================= */
+const FIVE_WHYS = [
+  {q:"Why did the server crash?", options:["Because traffic spiked unexpectedly","Because the on-call engineer was asleep"], correct:0},
+  {q:"Why couldn't the system handle the traffic spike?", options:["Auto-scaling wasn't configured","The office wifi was slow"], correct:0},
+  {q:"Why wasn't auto-scaling configured?", options:["It was deprioritized during launch crunch","Nobody likes cloud infrastructure"], correct:0},
+  {q:"Why was it deprioritized during the crunch?", options:["There's no process for balancing tech debt vs. features","The team took too many vacations"], correct:0},
+  {q:"Why is there no process for balancing tech debt vs. features?", options:["Leadership has never explicitly prioritized operational resilience","The invoicing software is outdated"], correct:0}
+];
+let whyIndex=0;
+function renderWhys(){
+  const wrap = document.getElementById('fiveWhys');
+  if(whyIndex>=FIVE_WHYS.length){
+    wrap.innerHTML = `<p class="muted">Root cause found: resilience was never made an explicit organizational priority — the real fix is a process change, not a quick patch. That's the point of the Five Whys: symptoms trace back to systemic causes.</p>`;
+    addLPOnce('fivewhys_done',5);
+    bumpPMF(3);
+    markSection('games');
+    return;
+  }
+  const step = FIVE_WHYS[whyIndex];
+  wrap.innerHTML = `<p><strong>Why #${whyIndex+1}:</strong> ${step.q}</p>
+    <div class="choices" style="margin-top:10px;">
+      ${step.options.map((o,i)=>`<button class="btn ghost small" data-i="${i}">${o}</button>`).join('')}
+    </div>`;
+  wrap.querySelectorAll('[data-i]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      whyIndex++;
+      renderWhys();
+    });
+  });
+}
+renderWhys();
+
+/* ============================= GROWTH ENGINES ============================= */
+const GROWTH = [
+  {n:"Sticky Engine", d:"Growth comes from retaining customers longer than you lose them — measured by churn rate. Focus: reduce churn below acquisition rate."},
+  {n:"Viral Engine", d:"Growth is a side-effect of product usage itself — each user brings more users. Measured by the viral coefficient."},
+  {n:"Paid Engine", d:"Growth is bought — revenue per customer funds the acquisition of the next customer. Measured by customer lifetime value vs. cost of acquisition."}
+];
+const growthWrap = document.getElementById('growthEngines');
+GROWTH.forEach((g,i)=>{
+  const el = document.createElement('div');
+  el.className='glass card';
+  el.innerHTML = `<h4 style="font-size:16px;">${g.n}</h4><p class="muted" style="margin-top:8px; font-size:13.5px;">${g.d}</p>`;
+  el.addEventListener('click', ()=>{ addLPOnce('growth_'+i,2); unlockBadge('growthHacker'); markSection('games'); }, {once:true});
+  growthWrap.appendChild(el);
+});
+
+/* ============================= PMF METER ============================= */
+function bumpPMF(n){
+  state.pmf = Math.min(100, state.pmf+n);
+  saveState();
+  const arc = document.getElementById('gaugeArc');
+  const dash = 283;
+  arc.style.strokeDashoffset = dash - dash*(state.pmf/100);
+  document.getElementById('gaugeScore').textContent = state.pmf;
+  const label = document.getElementById('gaugeLabel');
+  label.textContent = state.pmf<25?"Not Yet Felt": state.pmf<55?"Early Signal": state.pmf<80?"Building Momentum":"Fit Achieved";
+  if(state.pmf>=80) unlockBadge('pmfHero');
+}
+bumpPMF(0);
+
+/* ============================= FLASHCARDS DATA (40) ============================= */
+const FLASHCARDS = [
+  ["MVP","The smallest version of a product that lets you start the Build-Measure-Learn loop with real users."],
+  ["Validated Learning","Proof, gained through experiments, of what customers actually want — not opinion or assumption."],
+  ["Pivot","A structured change in strategy, while keeping the vision, made in response to validated learning."],
+  ["Persevere","The decision to keep executing the current strategy because data supports it."],
+  ["Innovation Accounting","A system for measuring progress using actionable metrics tied to specific hypotheses."],
+  ["Vanity Metric","A number that always looks good (like total signups) but doesn't guide decisions."],
+  ["Actionable Metric","A metric tied to a specific, repeatable cause and effect that informs decisions."],
+  ["Leap of Faith Assumption","The riskiest, most uncertain belief a business plan depends on."],
+  ["Value Hypothesis","The assumption that a product delivers real value to customers once they use it."],
+  ["Growth Hypothesis","The assumption about how new customers will discover the product."],
+  ["Customer Discovery","The process of testing assumptions about who the customer is and what they need."],
+  ["Customer Validation","Testing whether customers will actually pay for or adopt the proposed solution."],
+  ["Continuous Deployment","Shipping small code changes to production automatically and frequently."],
+  ["Split-Run (A/B) Test","An experiment comparing two variants to see which produces a better outcome."],
+  ["Five Whys","Asking 'why' repeatedly after a problem to trace it back to its root cause."],
+  ["Product-Market Fit","The point where a product satisfies strong market demand and pull replaces push."],
+  ["Sticky Engine of Growth","Growth driven by high customer retention relative to churn."],
+  ["Viral Engine of Growth","Growth driven by users spreading the product as a natural side effect of use."],
+  ["Paid Engine of Growth","Growth driven by reinvesting revenue per customer into acquiring new customers."],
+  ["Cohort Analysis","Studying groups of customers who joined during the same period to see real trends."],
+  ["Concierge MVP","A manual, high-touch version of a product used to test demand before automating."],
+  ["Wizard of Oz MVP","An MVP that appears automated to users but is operated manually behind the scenes."],
+  ["Runway","The amount of time before a startup runs out of money, at current spending."],
+  ["Pivot Types","Distinct categories of strategic change, e.g. zoom-in, zoom-out, customer segment, platform."],
+  ["Batch Size","The amount of work moved through a process at once; smaller batches speed up learning."],
+  ["Kanban","A visual workflow method used to manage and limit work-in-progress."],
+  ["Andon Cord","A manufacturing-inspired practice of stopping the line the moment a defect is found."],
+  ["Just-in-Time Scaling","Adding infrastructure or resources only as real demand requires it."],
+  ["Small Batches Principle","Working in small increments to detect and fix problems faster."],
+  ["Engine of Growth","A sustainable model by which a startup grows its customer base."],
+  ["Actionable Insight","A learning specific enough that it changes what the team does next."],
+  ["Total Addressable Market","The total demand that theoretically exists for a product or service."],
+  ["Vision vs. Strategy","The vision is the constant destination; the strategy is the changeable path to get there."],
+  ["Experiment-Driven Development","Treating each feature as a hypothesis to be tested rather than a certainty to be built."],
+  ["Customer Archetype","A composite sketch of a target customer's needs used to guide product decisions."],
+  ["Lean Manufacturing Roots","Lean Startup borrows heavily from Toyota's lean production system and its focus on waste elimination."],
+  ["Waste (in Lean Startup)","Any effort spent building something that does not produce validated learning."],
+  ["Adaptive Organization","A company structured to adjust its processes automatically as it scales."],
+  ["Net Promoter Signal","Customer willingness to recommend a product, used cautiously as one input among many."],
+  ["Founder's Bias","The tendency for founders to interpret ambiguous data as confirming their existing belief."]
+];
+const flashGrid = document.getElementById('flashGrid');
+FLASHCARDS.forEach((f,i)=>{
+  const scene = document.createElement('div');
+  scene.className='flash-scene reveal';
+  scene.innerHTML = `<div class="flash-card" tabindex="0" role="button" aria-label="Flashcard ${i+1}: ${f[0]}">
+      <div class="flash-face front">${f[0]}</div>
+      <div class="flash-face back">${f[1]}</div>
+    </div>`;
+  const card = scene.querySelector('.flash-card');
+  const flip = ()=>{ card.classList.toggle('flipped'); addLPOnce('flash_'+i,1); if(i===FLASHCARDS.length-1) markSection('flashcards'); };
+  card.addEventListener('click', flip);
+  card.addEventListener('keypress', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); flip(); } });
+  flashGrid.appendChild(scene);
+  observer.observe(scene);
+});
+
+/* ============================= MEMORY MATCH ============================= */
+const MEMORY_PAIRS = [
+  ["MVP","Smallest testable product"],
+  ["Pivot","Change strategy, keep vision"],
+  ["Vanity Metric","Looks good, guides nothing"],
+  ["Actionable Metric","Guides real decisions"],
+  ["Validated Learning","Proof from experiments"],
+  ["A/B Test","Compare two variants"],
+  ["Five Whys","Trace root cause"],
+  ["PMF","Strong market pull"]
+];
+let memoryFirst=null, memoryLock=false;
+function setupMemory(){
+  state.memory.matched=0; saveState();
+  const grid = document.getElementById('memoryGrid');
+  grid.innerHTML='';
+  let cells=[];
+  MEMORY_PAIRS.forEach((p,i)=>{ cells.push({key:i, txt:p[0]}); cells.push({key:i, txt:p[1]}); });
+  cells = cells.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(v=>v[1]);
+  cells.forEach((c,idx)=>{
+    const el = document.createElement('div');
+    el.className='mem-card';
+    el.innerHTML = `<span class="txt">${c.txt}</span>`;
+    el.dataset.key = c.key;
+    el.dataset.idx = idx;
+    el.addEventListener('click', ()=>onMemoryClick(el));
+    grid.appendChild(el);
+  });
+  document.getElementById('memoryStatus').textContent = '0 pairs matched';
+}
+function onMemoryClick(el){
+  if(memoryLock || el.classList.contains('matched') || el===memoryFirst) return;
+  el.classList.add('revealed');
+  if(!memoryFirst){ memoryFirst = el; return; }
+  memoryLock = true;
+  const a = memoryFirst, b = el;
+  if(a.dataset.key === b.dataset.key){
+    a.classList.add('matched'); b.classList.add('matched');
+    state.memory.matched++;
+    document.getElementById('memoryStatus').textContent = state.memory.matched + ' pairs matched';
+    addLP(3);
+    saveState();
+    if(state.memory.matched === MEMORY_PAIRS.length){
+      markSection('memory');
+      unlockBadge('leanThinker');
+    }
+    memoryFirst=null; memoryLock=false;
+  } else {
+    setTimeout(()=>{
+      a.classList.remove('revealed'); b.classList.remove('revealed');
+      memoryFirst=null; memoryLock=false;
+    }, 700);
+  }
+}
+setupMemory();
+
+/* ============================= QUIZ (30 QUESTIONS) ============================= */
+const QUIZ_BANK = [
+  {q:"An MVP's primary purpose is to:", opts:["Impress investors","Start the validated learning loop","Launch with maximum features","Replace the final product"], a:1},
+  {q:"True or False: Vanity metrics should be the primary way to report progress to a board.", opts:["True","False"], a:1},
+  {q:"A pivot means:", opts:["Giving up entirely","Changing strategy while keeping the vision","Firing the team","Raising more money"], a:1},
+  {q:"Which is an actionable metric?", opts:["Total signups ever","Conversion rate per cohort, tracked over time","Total page views","Number of tweets about the product"], a:1},
+  {q:"True or False: Continuous deployment means shipping large releases quarterly.", opts:["True","False"], a:1},
+  {q:"The 'Five Whys' technique is used to:", opts:["Set pricing","Trace a root cause","Design a logo","Hire engineers"], a:1},
+  {q:"Scenario: Your DAU/MAU ratio steadily rises for 3 months. This suggests:", opts:["A vanity metric problem","Improving product stickiness","You should pivot immediately","Nothing meaningful"], a:1},
+  {q:"Product-Market Fit is best described as:", opts:["A logo that resonates","Strong, validated demand pulling the product forward","A pitch deck slide","A funding round"], a:1},
+  {q:"True or False: A Concierge MVP is delivered manually behind the scenes.", opts:["True","False"], a:0},
+  {q:"Which engine of growth relies on customer referrals as a side effect of use?", opts:["Paid engine","Sticky engine","Viral engine","Sales engine"], a:2},
+  {q:"Innovation accounting mainly helps startups:", opts:["File taxes","Measure progress under uncertainty","Design UI","Write code faster"], a:1},
+  {q:"Scenario: Users love the idea in interviews but usage data shows nobody returns. Best next step?", opts:["Ignore the data, trust the interviews","Investigate the gap between stated and revealed preference","Add more marketing spend","Shut down immediately"], a:1},
+  {q:"A leap-of-faith assumption is:", opts:["A proven fact","The riskiest unproven belief in the plan","A legal requirement","A marketing slogan"], a:1},
+  {q:"True or False: Small batch sizes generally slow down learning.", opts:["True","False"], a:1},
+  {q:"The Build-Measure-Learn loop should ideally be:", opts:["As slow as possible","As fast as possible","Skipped when funded","Run only once"], a:1},
+  {q:"Which is a sign a team should persevere rather than pivot?", opts:["Actionable metrics are steadily improving","Engagement is flat despite changes","Customers dislike the core concept","Runway is nearly gone with no traction"], a:0},
+  {q:"A Wizard of Oz MVP is one where:", opts:["The backend is fully automated","The product appears automated but is run manually","There is no product at all","Customers are told it's fake"], a:1},
+  {q:"Scenario: Growth is 100% dependent on ad spend and disappears when spend stops. This indicates:", opts:["A sustainable viral engine","No real organic engine of growth yet","Strong product-market fit","A pivot is unnecessary"], a:1},
+  {q:"True or False: Customer development means writing the business plan before talking to any customers.", opts:["True","False"], a:1},
+  {q:"An A/B test primarily helps you:", opts:["Guess the winner","Compare real outcomes between variants","Avoid measuring anything","Replace customer interviews entirely"], a:1},
+  {q:"Cohort analysis is useful because it:", opts:["Hides trends over time","Reveals real trends by grouping users by shared start date","Only works for large companies","Replaces the need for metrics"], a:1},
+  {q:"Which is NOT one of the three engines of growth described?", opts:["Sticky","Viral","Paid","Organic-only"], a:3},
+  {q:"Scenario: A five-whys investigation into a bug ends at 'nobody owns monitoring.' The real fix is:", opts:["Patch the bug and move on","Create a monitoring ownership process","Fire the engineer on call","Ignore it, it was a one-off"], a:1},
+  {q:"True or False: Runway refers to marketing budget only.", opts:["True","False"], a:1},
+  {q:"The value hypothesis tests whether:", opts:["The product can be built at all","Customers derive real value once they use it","The team can raise funding","The logo is appealing"], a:1},
+  {q:"A zoom-in pivot typically means:", opts:["A single feature becomes the whole product","The company shuts down","Adding ten new features at once","Changing the pricing model only"], a:0},
+  {q:"Scenario: You've validated demand but revenue per customer can't cover acquisition cost. Which growth engine is failing?", opts:["Sticky", "Viral", "Paid","None, this is fine"], a:2},
+  {q:"True or False: Kanban is used to visualize and limit work in progress.", opts:["True","False"], a:0},
+  {q:"The main risk of vanity metrics is that they:", opts:["Are illegal to report","Create a false sense of progress","Are too hard to calculate","Only apply to nonprofits"], a:1},
+  {q:"Overall, The Lean Startup's central argument is that startups should:", opts:["Plan everything in detail before building","Treat their plan as a set of testable hypotheses","Avoid customer feedback until launch","Scale as fast as possible regardless of data"], a:1}
+];
+let quizOrder=[], quizIdx=0, quizScore=0;
+function shuffle(arr){ return arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(v=>v[1]); }
+function startQuiz(){
+  quizOrder = shuffle(QUIZ_BANK.map((q,i)=>i));
+  quizIdx=0; quizScore=0;
+  renderQuiz();
+}
+function renderQuiz(){
+  const area = document.getElementById('quizArea');
+  const fill = document.getElementById('quizProgFill');
+  if(quizIdx >= quizOrder.length){
+    fill.style.width='100%';
+    const pct = Math.round(100*quizScore/quizOrder.length);
+    state.quiz = {score:quizScore, total:quizOrder.length, answered:quizOrder.length};
+    saveState();
+    area.innerHTML = `<div class="center fade-in">
+      <h3>Quiz complete!</h3>
+      <p class="muted" style="margin-top:10px;">You scored ${quizScore} / ${quizOrder.length} (${pct}%).</p>
+      <button class="btn" style="margin-top:18px;" data-ripple onclick="startQuiz()">Retake Quiz</button>
+    </div>`;
+    addLP(quizScore*2);
+    bumpPMF(Math.round(pct/10));
+    if(pct>=70) unlockBadge('startupSurvivor');
+    updateDashboard();
+    markSection('quiz');
+    return;
+  }
+  fill.style.width = Math.round(100*quizIdx/quizOrder.length)+'%';
+  const q = QUIZ_BANK[quizOrder[quizIdx]];
+  area.innerHTML = `<p style="font-size:16px; margin-bottom:16px;">${quizIdx+1}. ${q.q}</p>`;
+  q.opts.forEach((opt,i)=>{
+    const b = document.createElement('button');
+    b.className='q-option'; b.textContent=opt;
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('#quizArea .q-option').forEach((el,ei)=>{
+        el.disabled=true;
+        if(ei===q.a) el.classList.add('correct');
+        else if(ei===i) el.classList.add('wrong');
+      });
+      if(i===q.a) quizScore++;
+      setTimeout(()=>{ quizIdx++; renderQuiz(); }, 900);
+    });
+    area.appendChild(b);
+  });
+}
+startQuiz();
+
+/* ============================= DECISION CHALLENGE (20) ============================= */
+const DECISIONS = [
+  {s:"A big customer asks for a custom feature only they'll use.", a:{t:"Build it for the deal",e:{cash:8,cust:6,learn:-4,growth:-2}}, b:{t:"Decline and stay focused",e:{cash:-4,cust:-2,learn:4,growth:2}}},
+  {s:"Your MVP gets 50 signups in week one.", a:{t:"Interview 10 of them",e:{cash:0,cust:2,learn:8,growth:1}}, b:{t:"Immediately start scaling ads",e:{cash:-6,cust:1,learn:-3,growth:5}}},
+  {s:"Support tickets reveal a confusing onboarding flow.", a:{t:"Fix onboarding before adding features",e:{cash:-2,cust:6,learn:5,growth:2}}, b:{t:"Ignore it, ship the roadmap",e:{cash:0,cust:-5,learn:-2,growth:0}}},
+  {s:"An investor suggests pivoting to enterprise sales.", a:{t:"Run a small enterprise pilot to test it",e:{cash:-3,cust:2,learn:6,growth:1}}, b:{t:"Fully rebuild the product for enterprise now",e:{cash:-10,cust:0,learn:-4,growth:0}}},
+  {s:"Churn is climbing quietly month over month.", a:{t:"Dig into cohort data to find why",e:{cash:0,cust:2,learn:7,growth:1}}, b:{t:"Launch a referral program to offset it",e:{cash:-4,cust:1,learn:-3,growth:3}}},
+  {s:"A competitor raises a huge funding round.", a:{t:"Stay focused on your own validated learning",e:{cash:0,cust:1,learn:3,growth:1}}, b:{t:"Panic-raise and overspend to compete",e:{cash:-8,cust:0,learn:-5,growth:2}}},
+  {s:"Your team wants to add five new features this sprint.", a:{t:"Cut to one, tied to the riskiest assumption",e:{cash:2,cust:2,learn:6,growth:1}}, b:{t:"Ship all five to look productive",e:{cash:-6,cust:-1,learn:-4,growth:0}}},
+  {s:"A key metric looks great, but it's total downloads.", a:{t:"Dig for an actionable metric instead",e:{cash:0,cust:1,learn:6,growth:0}}, b:{t:"Put it on the homepage as proof of success",e:{cash:0,cust:0,learn:-3,growth:1}}},
+  {s:"Early users ask for a feature you know isn't core to your hypothesis.", a:{t:"Politely decline and explain your focus",e:{cash:0,cust:-1,learn:3,growth:0}}, b:{t:"Build it to keep them happy",e:{cash:-3,cust:3,learn:-3,growth:-1}}},
+  {s:"You have 3 months of runway left and flat growth.", a:{t:"Run a decisive pivot experiment now",e:{cash:-2,cust:0,learn:8,growth:2}}, b:{t:"Keep doing the same thing, hope it works",e:{cash:-4,cust:-2,learn:-5,growth:-2}}},
+  {s:"A/B test shows variant B converts 40% better.", a:{t:"Roll out variant B",e:{cash:3,cust:3,learn:2,growth:3}}, b:{t:"Keep variant A because you like it more",e:{cash:-2,cust:-2,learn:-4,growth:-2}}},
+  {s:"Your viral coefficient is just above 1.", a:{t:"Invest in the referral loop further",e:{cash:-2,cust:2,learn:3,growth:6}}, b:{t:"Ignore it and focus on paid ads only",e:{cash:-6,cust:0,learn:-2,growth:1}}},
+  {s:"A customer interview reveals a painful, unsolved problem outside your current focus.", a:{t:"Note it, keep testing your current hypothesis",e:{cash:0,cust:1,learn:4,growth:0}}, b:{t:"Drop everything to chase the new idea",e:{cash:-5,cust:-2,learn:-3,growth:-1}}},
+  {s:"Board members want a big vanity number for the next update.", a:{t:"Present actionable metrics with honest context",e:{cash:0,cust:1,learn:5,growth:1}}, b:{t:"Cherry-pick a vanity metric that looks great",e:{cash:2,cust:-1,learn:-6,growth:-1}}},
+  {s:"Your team debates batch size for the next release.", a:{t:"Ship in small, frequent batches",e:{cash:1,cust:2,learn:5,growth:1}}, b:{t:"Bundle everything into one big quarterly release",e:{cash:-3,cust:-1,learn:-4,growth:-1}}},
+  {s:"Retention data shows a specific segment loves the product; others churn fast.", a:{t:"Double down on the loving segment",e:{cash:2,cust:4,learn:5,growth:3}}, b:{t:"Keep marketing to everyone equally",e:{cash:-3,cust:-2,learn:-3,growth:-1}}},
+  {s:"A cheap manual process could test demand before you build automation.", a:{t:"Run a Concierge MVP manually first",e:{cash:2,cust:2,learn:7,growth:1}}, b:{t:"Build the full automated system right away",e:{cash:-8,cust:0,learn:-3,growth:0}}},
+  {s:"Engineers want to fix tech debt; sales wants new features.", a:{t:"Balance both with a small, planned allocation",e:{cash:0,cust:1,learn:3,growth:1}}, b:{t:"Ignore tech debt entirely for feature velocity",e:{cash:2,cust:-1,learn:-4,growth:-1}}},
+  {s:"You discover your growth is entirely paid and unprofitable per customer.", a:{t:"Pause spend and fix unit economics first",e:{cash:1,cust:0,learn:6,growth:-2}}, b:{t:"Keep spending, hoping scale fixes it",e:{cash:-10,cust:1,learn:-5,growth:2}}},
+  {s:"After many pivots, one direction finally shows strong validated learning and rising actionable metrics.", a:{t:"Persevere and scale this direction deliberately",e:{cash:3,cust:5,learn:6,growth:5}}, b:{t:"Pivot again just in case something better exists",e:{cash:-5,cust:-3,learn:-4,growth:-3}}}
+];
+let decisionIdx=0;
+function renderDecision(){
+  const wrap = document.getElementById('decisionArea');
+  if(decisionIdx>=DECISIONS.length){
+    wrap.innerHTML = `<div class="center fade-in"><h3>Challenge complete!</h3><p class="muted" style="margin-top:8px;">Final meters — Cash ${state.decisions.cash}, Learning ${state.decisions.learn}, Customers ${state.decisions.cust}, Growth ${state.decisions.growth}.</p></div>`;
+    unlockBadge('leanThinker');
+    markSection('decisions');
+    return;
+  }
+  const d = DECISIONS[decisionIdx];
+  wrap.innerHTML = `<div class="scenario"><p>${d.s}</p>
+    <div class="choices">
+      <button class="btn ghost small" data-c="a">${d.a.t}</button>
+      <button class="btn ghost small" data-c="b">${d.b.t}</button>
+    </div></div>`;
+  wrap.querySelectorAll('[data-c]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const choice = d[btn.getAttribute('data-c')];
+      applyDecisionEffects(choice.e);
+      decisionIdx++;
+      addLPOnce('decision_'+decisionIdx,2);
+      renderDecision();
+    });
+  });
+}
+function applyDecisionEffects(e){
+  state.decisions.cash = clamp(state.decisions.cash + e.cash);
+  state.decisions.learn = clamp(state.decisions.learn + e.learn);
+  state.decisions.cust = clamp(state.decisions.cust + e.cust);
+  state.decisions.growth = clamp(state.decisions.growth + e.growth);
+  document.getElementById('statCash').textContent = state.decisions.cash;
+  document.getElementById('statLearn2').textContent = state.decisions.learn;
+  document.getElementById('statCust').textContent = state.decisions.cust;
+  document.getElementById('statGrowth').textContent = state.decisions.growth;
+  bumpPMF(1);
+  saveState();
+}
+function clamp(v){ return Math.max(0, Math.min(100, v)); }
+document.getElementById('statCash').textContent = state.decisions.cash;
+document.getElementById('statLearn2').textContent = state.decisions.learn;
+document.getElementById('statCust').textContent = state.decisions.cust;
+document.getElementById('statGrowth').textContent = state.decisions.growth;
+renderDecision();
+
+/* ============================= BADGES ============================= */
+const BADGES = {
+  mvpMaster:{name:"MVP Master", icon:"🚀"},
+  customerListener:{name:"Customer Listener", icon:"🎧"},
+  pivotExpert:{name:"Pivot Expert", icon:"🔄"},
+  leanThinker:{name:"Lean Thinker", icon:"🧠"},
+  growthHacker:{name:"Growth Hacker", icon:"📈"},
+  pmfHero:{name:"PMF Hero", icon:"🎯"},
+  startupSurvivor:{name:"Startup Survivor", icon:"🛡️"},
+  dataDrivenFounder:{name:"Data-Driven Founder", icon:"📊"}
+};
+function renderBadges(){
+  const grids = [document.getElementById('badgeGrid'), document.getElementById('gradBadges')];
+  grids.forEach(grid=>{
+    if(!grid) return;
+    grid.innerHTML='';
+    Object.keys(BADGES).forEach(key=>{
+      const b = BADGES[key];
+      const unlocked = !!state.badges[key];
+      const el = document.createElement('div');
+      el.className='badge' + (unlocked?' unlocked pop':'');
+      el.innerHTML = `<div class="icon">${b.icon}</div><div class="name">${b.name}</div>`;
+      grid.appendChild(el);
+    });
+  });
+}
+renderBadges();
+
+/* ============================= DASHBOARD ============================= */
+function updateDashboard(){
+  const totalSections = 16;
+  const completedCount = Object.keys(state.completedSections).length;
+  const completionPct = Math.min(100, Math.round(100*completedCount/totalSections));
+  setRing('ringCompletion', completionPct); document.getElementById('lblCompletion').textContent = completionPct+'%';
+  const quizPct = state.quiz.total ? Math.round(100*state.quiz.score/state.quiz.total) : 0;
+  setRing('ringQuiz', quizPct); document.getElementById('lblQuiz').textContent = quizPct+'%';
+  const badgeCount = Object.keys(state.badges).length;
+  setRing('ringBadges', Math.round(100*badgeCount/8)); document.getElementById('lblBadges').textContent = badgeCount+'/8';
+  const level = 1 + Math.floor(state.learningPoints/40);
+  setRing('ringLevel', Math.min(100, level*20)); document.getElementById('lblLevel').textContent = level;
+  document.getElementById('lpVal').textContent = state.learningPoints;
+}
+function setRing(id, pct){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const c = 264;
+  el.style.strokeDashoffset = c - c*(pct/100);
+}
+updateDashboard();
+
+function resetProgress(){
+  if(!confirm("Reset all saved progress on this page? This cannot be undone.")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+window.resetProgress = resetProgress;
+window.launchMVP = launchMVP;
+window.bmlClick = bmlClick;
+window.startQuiz = startQuiz;
+window.setupMemory = setupMemory;
+window.graduate = graduate;
+
+/* ============================= QUOTES ============================= */
+const QUOTES = [
+  "The only way to win is to learn faster than anyone else.",
+  "A startup is a human institution designed to create something new under conditions of extreme uncertainty.",
+  "Success is not delivering a feature; success is learning how to solve the customer's problem.",
+  "If you cannot fail, you cannot learn."
+];
+const quoteGrid = document.getElementById('quoteGrid');
+QUOTES.forEach(q=>{
+  const el = document.createElement('div');
+  el.className='glass card quote-card reveal';
+  el.innerHTML = `<span class="mark">“</span>${q}<div class="attr">Eric Ries · The Lean Startup</div>`;
+  quoteGrid.appendChild(el);
+  observer.observe(el);
+});
+
+/* ============================= KEYWORD EXPLORER ============================= */
+const KEYWORDS = {
+  "MVP":"The smallest product version that starts the Build-Measure-Learn loop with real customers.",
+  "Pivot":"A structured strategy change that preserves the underlying vision.",
+  "Validated Learning":"Proof gained from experiments about what customers truly want.",
+  "Build Measure Learn":"The core feedback loop: build an experiment, measure results, learn, repeat.",
+  "Innovation Accounting":"A measurement framework for progress in high-uncertainty environments.",
+  "Five Whys":"Repeatedly asking why to trace a problem to its systemic root cause.",
+  "A/B Testing":"Comparing two variants against each other to see which performs better.",
+  "Product-Market Fit":"The moment strong, validated demand pulls a product into the market.",
+  "Customer Discovery":"Testing who your customer really is and what they truly need.",
+  "Actionable Metrics":"Metrics tied to specific causes that inform real decisions.",
+  "Vanity Metrics":"Numbers that look impressive but don't guide meaningful decisions.",
+  "Continuous Deployment":"Automatically shipping small, frequent changes to production.",
+  "Sticky Growth":"Growth sustained through high retention relative to churn.",
+  "Viral Growth":"Growth that happens as a natural side effect of product usage.",
+  "Paid Growth":"Growth funded by reinvesting revenue per customer into acquisition."
+};
+const cloud = document.getElementById('keywordCloud');
+Object.keys(KEYWORDS).forEach(k=>{
+  const b = document.createElement('button');
+  b.textContent = k;
+  b.addEventListener('click', ()=>{
+    const detail = document.getElementById('keywordDetail');
+    detail.style.display='block';
+    detail.classList.remove('fade-in'); void detail.offsetWidth; detail.classList.add('fade-in');
+    detail.innerHTML = `<h4>${k}</h4><p class="muted" style="margin-top:8px;">${KEYWORDS[k]}</p>`;
+    addLPOnce('kw_'+k,1);
+    markSection('keywords');
+  });
+  cloud.appendChild(b);
+});
+
+/* ============================= GLOSSARY & TAKEAWAYS ============================= */
+const GLOSSARY = [
+  ["Runway","Time remaining before a company runs out of cash at its current burn rate."],
+  ["Batch Size","The amount of work processed together before moving to the next stage."],
+  ["Cohort","A group of customers who share a common starting point in time, studied together."],
+  ["Concierge MVP","A manual, unscalable version of a product used to validate demand early."],
+  ["Engine of Growth","The mechanism — sticky, viral, or paid — by which a company sustainably grows."],
+  ["Leap-of-Faith Assumption","The riskiest, most important unproven belief behind a business plan."]
+];
+const glossaryList = document.getElementById('glossaryList');
+GLOSSARY.forEach(g=>{
+  const row = document.createElement('div');
+  row.innerHTML = `<strong style="color:var(--ink-0);">${g[0]}</strong> — ${g[1]}`;
+  glossaryList.appendChild(row);
+});
+const TAKEAWAYS = [
+  "Treat every product decision as a testable hypothesis, not a certainty.",
+  "Measure progress with actionable metrics, not vanity numbers.",
+  "An MVP is a learning tool, not a smaller version of the final product.",
+  "Pivot on evidence, not impatience or panic.",
+  "Small batches and fast loops beat big, slow releases.",
+  "Sustainable growth comes from one clear engine, not scattered tactics."
+];
+const takeawayList = document.getElementById('takeawayList');
+TAKEAWAYS.forEach(t=>{ const li=document.createElement('li'); li.textContent=t; takeawayList.appendChild(li); });
+
+/* ============================= GRADUATION + CONFETTI ============================= */
+function graduate(){
+  const totalSections = 16;
+  const completedCount = Object.keys(state.completedSections).length;
+  const completionScore = Math.min(100, Math.round(100*completedCount/totalSections));
+  const quizPct = state.quiz.total ? Math.round(100*state.quiz.score/state.quiz.total) : 0;
+  const badgeScore = Math.round(100*Object.keys(state.badges).length/8);
+  const overall = Math.round((completionScore*0.4)+(quizPct*0.35)+(badgeScore*0.25));
+  document.getElementById('gradScore').textContent = overall;
+  const gradeLetter = overall>=90?"A+": overall>=80?"A": overall>=65?"B": overall>=45?"C":"D";
+  document.getElementById('gradGrade').textContent = gradeLetter;
+  const fb = document.getElementById('gradFeedback');
+  fb.textContent = overall>=80 ? "Outstanding — you've internalized the Build-Measure-Learn mindset and applied it across every simulation."
+    : overall>=50 ? "Solid grasp of the fundamentals. Revisit the sections you skipped to sharpen your instincts further."
+    : "You've made a start — explore more of the simulators above to deepen your understanding of validated learning.";
+  addLP(10);
+  launchConfetti();
+  showToast("🎓 Graduation complete!");
+}
+
+function launchConfetti(){
+  const canvas = document.getElementById('confettiCanvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth*dpr; canvas.height = window.innerHeight*dpr;
+  ctx.scale(dpr,dpr);
+  const colors = ['#27AE60','#5bd88a','#e8b44c','#eafff1'];
+  const pieces = Array.from({length:120}).map(()=>({
+    x: Math.random()*window.innerWidth,
+    y: -20 - Math.random()*200,
+    r: 4+Math.random()*5,
+    c: colors[Math.floor(Math.random()*colors.length)],
+    vy: 2+Math.random()*3,
+    vx: -1.5+Math.random()*3,
+    rot: Math.random()*360,
+    vr: -6+Math.random()*12
+  }));
+  let frame=0;
+  function tick(){
+    frame++;
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    pieces.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.c;
+      ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6);
+      ctx.restore();
+    });
+    if(frame<170) requestAnimationFrame(tick);
+    else ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+  }
+  tick();
+}
+
+/* ============================= INIT: apply any previously saved BML ring / gauge visuals ============================= */
+(function restoreVisuals(){
+  document.getElementById('bmlCycles').textContent = state.bml.cycles + " cycle" + (state.bml.cycles===1?'':'s') + " complete";
+})();
+
+})();
+</script>
+
+<script src="../assets/library-core.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>
